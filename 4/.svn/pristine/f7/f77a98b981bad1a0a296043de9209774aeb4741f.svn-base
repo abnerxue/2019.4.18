@@ -1,0 +1,4 @@
+@import '../self.less';
+@import '../mixins/mixin.less';
+
+.make-classes(bg, background-color, @bg-colors);

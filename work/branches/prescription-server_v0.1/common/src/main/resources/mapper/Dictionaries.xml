@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ck.springboot.mapper.DictionariesMapper">
+	<resultMap id="BaseResultMap"
+		type="com.ck.springboot.pojo.HosDept">
+		<id column="id" property="id" />
+		<result column="name" property="name" />
+		<result column="hospital_id" property="hospitalId" />
+	</resultMap>
+
+	<resultMap id="BaseResultMap1"
+		type="com.ck.springboot.pojo.HosStaff">
+		<id column="id" property="id" />
+		<result column="name" property="name" />
+		<result column="medical_dept_id" property="medicalDeptId" />
+		<result column="type" property="type" />
+	</resultMap>
+	<resultMap id="BaseResultMap2"
+		type="com.ck.springboot.pojo.Type">
+		<id column="id" property="id" />
+		<result column="desp" property="typeName" />
+	</resultMap>
+
+	<resultMap id="BaseResultMap3"
+		type="com.ck.springboot.pojo.AuditState2">
+		<id column="id" property="id" />
+		<result column="desp" property="stateName" />
+	</resultMap>
+
+	<resultMap id="BaseResultMap4"
+		type="com.ck.springboot.pojo.Classify1">
+		<id column="id" property="id" />
+		<result column="desp" property="categoryName" />
+	</resultMap>
+
+	<resultMap id="BaseResultMap5" type="com.ck.springboot.pojo.Classify2">
+		<id column="id" property="id" />
+		<result column="desp" property="subcategoryName" />
+	</resultMap>
+	
+	<resultMap type="com.ck.springboot.pojo.UnitName" id="unit_name">
+		<id column="id" property="id" />
+		<result column="unit_name" property="unitName" />
+		<result column="district_id" property="districtId" />
+	</resultMap>
+
+	<select id="selectAllAuditLevel"
+		resultType="com.ck.springboot.pojo.AuditLevel">
+		select * from t_audit_level
+	</select>
+
+	<select id="selectAllAuditState" resultMap="BaseResultMap3">
+		select * from t_audit_state
+	</select>
+	<select id="selectAllHospital" resultMap="unit_name">
+		select * from t_unit_name
+	</select>
+
+	<select id="selectAllClassify1" resultMap="BaseResultMap4">
+		select * from t_classify1_dictionary t where 1=1
+		<if test="type!=null and type!=-1">
+			AND t.type=#{type}
+		</if>
+	</select>
+	<select id="selectAllClassify2" resultMap="BaseResultMap5">
+		select * from t_classify2_dictionary t where 1=1
+		<if test="type!=null and type!=-1">
+			AND t.type=#{type}
+		</if>
+		<if test="classify1!=null and classify1!=-1">
+			AND t.classify1=#{classify1}
+		</if>
+	</select>
+	<select id="selectAllType" resultMap="BaseResultMap2">
+		select * from t_type1_dictionary
+	</select>
+
+	<select id="selectAllType2" resultMap="BaseResultMap2">
+		select * from t_type2_dictionary
+	</select>
+	<select id="selectAllAuditRulesFold"
+		resultType="com.ck.springboot.pojo.AuditRulesFold">
+		select * from t_audit_rules
+	</select>
+	<select id="selectAllHosDept" resultMap="BaseResultMap">
+		select * from t_medical_dept
+	</select>
+	<select id="selectAllHosStaff" resultMap="BaseResultMap1">
+		select * from t_hospital_staff
+	</select>
+	<select id="selectAllCrowd"
+		resultType="com.ck.springboot.pojo.CrowdRestriction">
+		select * from t_crowd_restriction
+	</select>
+	<select id="selectAllOperator"
+		resultType="com.ck.springboot.pojo.OperatorDictionary">
+		select * from t_operator_dictionary
+	</select>
+	<select id="selectAllUnit" resultType="com.ck.springboot.pojo.UnitDictionary">
+		select * from t_unit_dictionary
+	</select>
+	<select id="selectCategory" resultType="com.ck.springboot.pojo.Category">
+		select t.id,t.name,t.pid,1 as sign from t_category t
+	</select>
+	<select id="selectReaction" resultType="com.ck.springboot.pojo.Reaction">
+		select t.id,t.reaction_description as reactionDescription,t.type from t_reaction_dictionary t
+		where t.type=#{type}
+	</select>
+</mapper>
+
+ 

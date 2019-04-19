@@ -1,0 +1,231 @@
+<template>
+  <el-dialog
+    :title="title"
+    :visible.sync="isShowModal"
+    width="700px"
+    :before-close="hideModal"
+  >
+    <el-form
+      ref="form"
+      label-width="120px"
+      size="small"
+      :rules="rules"
+      :model="form"
+    >
+      <el-form-item
+        label="异常名称："
+        prop="ruleName"
+      >
+        <el-input
+          v-model="form.ruleName"
+          style="width: 199px"
+          placeholder="输入异常名称"
+        ></el-input>
+      </el-form-item>
+      <el-form-item label="检验项目：">
+        <el-row>
+          <el-col
+            :span="2"
+            class="text-center"
+          >序号</el-col>
+          <el-col
+            :span="8"
+            class="text-center"
+          >项目名称</el-col>
+          <el-col
+            :span="8"
+            class="text-center"
+          >区间</el-col>
+          <el-col :span="2"></el-col>
+        </el-row>
+        <el-row
+          v-for="(item, index) in form.checkRules"
+          :key="index"
+        >
+          <el-col
+            :span="2"
+            class="text-center"
+          >{{index + 1}}</el-col>
+          <el-col
+            :span="8"
+            class="text-center"
+          >
+            <el-select
+              v-model="item.checkItemId"
+              placeholder="检查项目"
+              style="width: 160px"
+            >
+              <el-option
+                v-for="i in checkItemsList"
+                :key="i.name"
+                :label="i.name"
+                :value="i.id"
+              >
+              </el-option>
+            </el-select>
+          </el-col>
+          <el-col
+            :span="10"
+            class="text-center"
+          >
+            <el-form-item
+              class="d-inline-block"
+              :prop="'checkRules.' + index + '.lowerbound'"
+              :rules="{ required: true, message: '不能为空', trigger: 'blur'}"
+            >
+              <el-input
+                v-model="item.lowerbound"
+                style="width: 60px"
+              ></el-input>
+            </el-form-item>
+            <span>~</span>
+            <el-form-item
+              class="d-inline-block"
+              :prop="'checkRules.' + index + '.upperbound'"
+              :rules="{ required: true, message: '不能为空', trigger: 'blur'}"
+            >
+              <el-input
+                v-model="item.upperbound"
+                style="width: 60px"
+              ></el-input>
+            </el-form-item>
+            <span>{{item.unitName}}</span>
+          </el-col>
+          <el-col :span="2">
+            <i
+              @click="clickAdd"
+              class="el-icon-plus pointer"
+            ></i>
+            <span
+              class="d-inline-block"
+              style="width: 8px;"
+            ></span>
+            <i
+              v-if="index !== 0"
+              @click="handleDelete(index)"
+              class="el-icon-delete text-red pointer"
+            ></i>
+          </el-col>
+        </el-row>
+      </el-form-item>
+      <el-form-item
+        label="审方等级："
+        prop="level"
+      >
+        <el-select
+          v-model="form.level"
+          placeholder="选择审方等级"
+        >
+          <el-option
+            v-for="(item, index) in auditlevel"
+            :key="index"
+            :label="item.desp"
+            :value="item.desp"
+          ></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item>
+        <el-button @click="hideModal">取消</el-button>
+        <el-button
+          type="primary"
+          :loading="loading"
+          @click="clickSubmit"
+        >确定</el-button>
+      </el-form-item>
+    </el-form>
+  </el-dialog>
+</template>
+
+<script>
+import { AllCheckItemsList } from '@/api/dataMana'
+
+import { auditlevel } from '@/global/cfg'
+
+export default {
+  props: ['detail', 'title'],
+  data() {
+    return {
+      isShowModal: false,
+      loading: false,
+      auditlevel,
+      checkItemsList: [],
+      form: {
+        ruleName: '',
+        level: '',
+        checkRules: [
+          {
+            id: null,
+            checkItemId: '',
+            unitName: '',
+            lowerbound: '',
+            upperbound: ''
+          }
+        ]
+      },
+      rules: {
+        ruleName: [
+          { required: true, message: '请输入规则名称', trigger: 'blur' }
+        ],
+        level: [
+          { required: true, message: '请选择审方等级', trigger: 'change' }
+        ]
+      }
+    }
+  },
+  watch: {
+    detail() {
+      this.form = this.detail || this.form
+    }
+  },
+  created() {
+    this.getList()
+  },
+  methods: {
+    hideModal() {
+      this.isShowModal = false
+      this.$refs.form.resetFields()
+      this.form.checkRules = [
+        {
+          id: null,
+          checkItemId: this.checkItemsList[0].id,
+          unitName: this.checkItemsList[0].unitName,
+          lowerbound: '',
+          upperbound: ''
+        }
+      ]
+    },
+    handleDelete(rowIndex) {
+      this.form.checkRules.splice(rowIndex, 1)
+    },
+    clickSubmit() {
+      this.$refs.form.validate((valid) => {
+        if (valid) {
+          this.$emit('click', this.form)
+        } else {
+          console.log('error submit!!')
+        }
+      })
+    },
+    clickAdd() {
+      this.form.checkRules.push({
+        id: null,
+        checkItemId: this.checkItemsList[0].id,
+        unitName: this.checkItemsList[0].unitName,
+        lowerbound: '',
+        upperbound: ''
+      })
+    },
+    // 检查项目列表
+    async getList() {
+      const res = await AllCheckItemsList()
+      if (res.code === 0) {
+        this.checkItemsList = res.result
+        this.form.checkRules[0].checkItemId = this.checkItemsList[0].id
+        this.form.checkRules[0].unitName = this.checkItemsList[0].unitName
+      } else {
+        this.$message.error(res.msg)
+      }
+    }
+  }
+}
+</script>

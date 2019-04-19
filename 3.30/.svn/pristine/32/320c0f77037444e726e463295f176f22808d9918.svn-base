@@ -1,0 +1,101 @@
+<template>
+  <div>
+    <el-button
+      type="primary"
+      @click="showModal"
+      style="position: absolute; top: 110px; right: 20px;"
+    >添加规则</el-button>
+    <el-tabs @tab-click="clickTab">
+      <el-tab-pane label="肝功能异常">
+        <CheckTab
+          :choose="choose"
+          :type="type"
+          :list="list"
+          @getAllMedicinelimit="getAllMedicinelimit"
+        />
+      </el-tab-pane>
+      <el-tab-pane label="肾功能异常">
+        <CheckTab
+          :choose="choose"
+          :type="type"
+          :list="list"
+          @getAllMedicinelimit="getAllMedicinelimit"
+        />
+      </el-tab-pane>
+    </el-tabs>
+    <CheckModal ref="modal" :title="'添加规则'" @click="handleAdd"/>
+  </div>
+</template>
+<script>
+import { AllMedicinelimit, AddMedicinelimit } from '@/api/dataMana'
+import CheckTab from './components/CheckTab'
+import CheckModal from './components/CheckModal'
+
+export default {
+  name: '',
+  components: { CheckTab, CheckModal },
+  data() {
+    return {
+      type: 1,
+      tabIndex: 0,
+      list: []
+    }
+  },
+  methods: {
+    showModal() {
+      this.$refs.modal.isShowModal = true
+    },
+    // todo add
+    async handleAdd(val) {
+      this.$refs.modal.loading = true
+      this.$refs.modal.getList()
+      const args = {
+        type: this.type,
+        ...val
+      }
+      const res = await AddMedicinelimit(args)
+      this.$refs.modal.loading = false
+      if (res.code === 0) {
+        this.$message.success(res.msg)
+        this.$refs.modal.hideModal()
+        this.getAllMedicinelimit()
+      } else {
+        this.$message.error(res.msg)
+      }
+    },
+    clickTab(tab) {
+      this.tabIndex = Number(tab.index)
+      this.type = Number(tab.index) + 1
+      this.getAllMedicinelimit()
+    },
+    // todo 获取限用列表
+    async getAllMedicinelimit() {
+      const res = await AllMedicinelimit({
+        type: this.type
+      })
+      if (res.code === 0) {
+        this.list = []
+        const resp = res.result
+        if (resp.length > 0) {
+          resp.forEach((data) => {
+            data.checkRules.forEach((item, index) => {
+              this.list.push({
+                rowSpan: index === 0 ? data.checkRules.length : 0,
+                level: data.level,
+                medicineId: data.medicineId,
+                ruleId: data.ruleId,
+                ruleName: data.ruleName,
+                type: data.type,
+                ...item
+              })
+            })
+          })
+        }
+      } else {
+        this.$message.error(res.msg)
+        this.list = []
+      }
+    }
+  }
+}
+</script>

@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ck.springboot.mapper.CompatibilityMapper">
+	<resultMap id="BaseResultMapMdM" type="com.ck.springboot.pojo.CompatibilityMdM">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="medcine_pair_id" property="medcinePairId" jdbcType="INTEGER" />
+		<result column="reaction_description" property="reactionDescription" jdbcType="VARCHAR" />
+		<result column="medcine_id" property="medcineId" jdbcType="INTEGER" />
+		<result column="audit_level_id" property="auditLevelId" jdbcType="INTEGER" />
+		<result column="type" property="type" jdbcType="INTEGER" />
+	</resultMap>
+	<resultMap id="BaseResultMapMdC" type="com.ck.springboot.pojo.CompatibilityMdC">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="category_id" property="categoryId" jdbcType="INTEGER" />
+		<result column="reaction_description" property="reactionDescription" jdbcType="VARCHAR" />
+		<result column="medcine_id" property="medcineId" jdbcType="INTEGER" />
+		<result column="audit_level_id" property="auditLevelId" jdbcType="INTEGER" />
+		<result column="type" property="type" jdbcType="INTEGER" />
+	</resultMap>
+	<resultMap id="BaseResultMapMdL" type="com.ck.springboot.pojo.CompatibilityMdL">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="lbl_id" property="labelId" jdbcType="INTEGER" />
+		<result column="reaction_description" property="reactionDescription" jdbcType="VARCHAR" />
+		<result column="medcine_id" property="medcineId" jdbcType="INTEGER" />
+		<result column="audit_level_id" property="auditLevelId" jdbcType="INTEGER" />
+		<result column="type" property="type" jdbcType="INTEGER" />
+	</resultMap>
+	<resultMap id="BaseResultMapCdC" type="com.ck.springboot.pojo.CompatibilityCdC">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="category_pair_id" property="categoryPairId" jdbcType="INTEGER" />
+		<result column="reaction_description" property="reactionDescription" jdbcType="VARCHAR" />
+		<result column="category_id" property="categoryId" jdbcType="INTEGER" />
+		<result column="audit_level_id" property="auditLevelId" jdbcType="INTEGER" />
+		<result column="type" property="type" jdbcType="INTEGER" />
+	</resultMap>
+	<resultMap id="BaseResultMapLdL" type="com.ck.springboot.pojo.CompatibilityLdL">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="lbl_id" property="labelId" jdbcType="INTEGER" />
+		<result column="reaction_description" property="reactionDescription" jdbcType="VARCHAR" />
+		<result column="lbl_pair_id" property="labelPairId" jdbcType="INTEGER" />
+		<result column="audit_level_id" property="auditLevelId" jdbcType="INTEGER" />
+		<result column="type" property="type" jdbcType="INTEGER" />
+	</resultMap>
+	<resultMap id="BaseResultMapCdL" type="com.ck.springboot.pojo.CompatibilityCdL">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="lbl_id" property="labelId" jdbcType="INTEGER" />
+		<result column="reaction_description" property="reactionDescription" jdbcType="VARCHAR" />
+		<result column="category_id" property="categoryId" jdbcType="INTEGER" />
+		<result column="audit_level_id" property="auditLevelId" jdbcType="INTEGER" />
+		<result column="type" property="type" jdbcType="INTEGER" />
+	</resultMap>
+	<select id="selectMdM" resultMap="BaseResultMapMdM">
+		select * from t_compatibility_interplay
+		where medcine_id = #{id,jdbcType=INTEGER} or
+		medcine_pair_id = #{id,jdbcType=INTEGER}
+	</select>
+	<select id="selectMdC" resultMap="BaseResultMapMdC">
+		select * from t_compatibility_interplay_medcine_category
+		where medcine_id = #{id,jdbcType=INTEGER}
+	</select>
+
+	<select id="selectMdL" resultMap="BaseResultMapMdL">
+		select * from t_compatibility_interplay_medcine_lbl
+		where medcine_id = #{id,jdbcType=INTEGER}
+	</select>
+	
+	<select id="selectCdM" resultMap="BaseResultMapMdC">
+		select * from t_compatibility_interplay_medcine_category
+		where category_id = #{id,jdbcType=INTEGER}
+	</select>
+	<select id="selectCdC" resultMap="BaseResultMapCdC">
+		select * from t_compatibility_category_category
+		where category_id = #{id,jdbcType=INTEGER} or category_pair_id = #{id,jdbcType=INTEGER}
+	</select>
+	
+	<select id="selectCdL" resultMap="BaseResultMapCdL">
+		select * from t_category_lbl
+		where category_id = #{id,jdbcType=INTEGER}
+	</select>
+	
+	<select id="selectLdM" resultMap="BaseResultMapMdL">
+		select * from t_compatibility_interplay_medcine_lbl
+		where lbl_id = #{id,jdbcType=INTEGER}
+	</select>
+	
+	<select id="selectLdC" resultMap="BaseResultMapCdL">
+		select * from t_category_lbl
+		where lbl_id = #{id,jdbcType=INTEGER}
+	</select>
+	
+	<select id="selectLdL" resultMap="BaseResultMapLdL">
+		select * from t_compatibility_lbl_lbl
+		where lbl_id = #{id,jdbcType=INTEGER} or lbl_pair_id = #{id,jdbcType=INTEGER}
+	</select>
+	<select id="repeatVerification"
+		parameterType="java.lang.Integer" resultType="INTEGER">
+		select count(*) from t_compatibility
+		where medcine_pair_id = #{medcinePairId,jdbcType=INTEGER} 
+		and medcine_id = #{medcineId,jdbcType=INTEGER}
+	</select>
+	<select id="repeatVerificationMdM" parameterType="java.lang.Integer" resultType="INTEGER">
+		select count(*) from t_compatibility_interplay
+		where medcine_id = #{id,jdbcType=INTEGER} and medcine_pair_id = #{pairId,jdbcType=INTEGER}
+	</select>
+	<select id="repeatVerificationMdC" parameterType="java.lang.Integer" resultType="INTEGER">
+		select count(*) from t_compatibility_interplay_medcine_category
+		where medcine_id = #{id,jdbcType=INTEGER} and category_id = #{pairId,jdbcType=INTEGER}
+	</select>
+	<select id="repeatVerificationMdL" parameterType="java.lang.Integer" resultType="INTEGER">
+		select count(*) from t_compatibility_interplay_medcine_lbl
+		where medcine_id = #{id,jdbcType=INTEGER} and lbl_id = #{pairId,jdbcType=INTEGER}
+	</select>
+	<select id="repeatVerificationCdM" parameterType="java.lang.Integer" resultType="INTEGER">
+		select count(*) from t_compatibility_interplay_medcine_category
+		where medcine_id = #{pairId,jdbcType=INTEGER} and category_id = #{id,jdbcType=INTEGER}
+	</select>
+	<select id="repeatVerificationCdC" parameterType="java.lang.Integer" resultType="INTEGER">
+		select count(*) from t_compatibility_category_category
+		where category_id = #{id,jdbcType=INTEGER} and category_pair_id = #{pairId,jdbcType=INTEGER}
+	</select>
+	<select id="repeatVerificationCdL" parameterType="java.lang.Integer" resultType="INTEGER">
+		select count(*) from t_category_lbl
+		where category_id = #{id,jdbcType=INTEGER} and lbl_id = #{pairId,jdbcType=INTEGER}
+	</select>
+	<select id="repeatVerificationLdM" parameterType="java.lang.Integer" resultType="INTEGER">
+		select count(*) from t_compatibility_interplay_medcine_lbl
+		where medcine_id = #{pairId,jdbcType=INTEGER} and lbl_id = #{id,jdbcType=INTEGER}
+	</select>
+	<select id="repeatVerificationLdC" parameterType="java.lang.Integer" resultType="INTEGER">
+		select count(*) from t_category_lbl
+		where category_id = #{pairId,jdbcType=INTEGER} and lbl_id = #{id,jdbcType=INTEGER}
+	</select>
+	<select id="repeatVerificationLdL" parameterType="java.lang.Integer" resultType="INTEGER">
+		select count(*) from t_compatibility_lbl_lbl
+		where lbl_id = #{id,jdbcType=INTEGER} and lbl_pair_id = #{pairId,jdbcType=INTEGER}
+	</select>
+	
+	<delete id="deleteCompatibilityMdM" parameterType="java.lang.Integer">
+		delete from t_compatibility_interplay 
+		where medcine_id = #{id,jdbcType=INTEGER} and medcine_pair_id = #{pairId,jdbcType=INTEGER}
+	</delete>
+	<delete id="deleteCompatibilityMdC" parameterType="java.lang.Integer">
+		delete from t_compatibility_interplay_medcine_category
+		 where medcine_id = #{id,jdbcType=INTEGER} and category_id = #{pairId,jdbcType=INTEGER}
+	</delete>
+	<delete id="deleteCompatibilityMdL" parameterType="java.lang.Integer">
+		delete from t_compatibility_interplay_medcine_lbl
+		where medcine_id = #{id,jdbcType=INTEGER} and lbl_id = #{pairId,jdbcType=INTEGER}
+	</delete>
+		<delete id="deleteCompatibilityCdC" parameterType="java.lang.Integer">
+		delete from t_compatibility_category_category 
+		where category_id = #{id,jdbcType=INTEGER} and category_pair_id = #{pairId,jdbcType=INTEGER}
+	</delete>
+	<delete id="deleteCompatibilityCdL" parameterType="java.lang.Integer">
+		delete from t_category_lbl 
+		where category_id = #{id,jdbcType=INTEGER} and lbl_id = #{pairId,jdbcType=INTEGER}
+	</delete>
+	<delete id="deleteCompatibilityLdL" parameterType="java.lang.Integer">
+		delete from t_compatibility_lbl_lbl 
+		where lbl_id = #{id,jdbcType=INTEGER} and lbl_pair_id = #{pairId,jdbcType=INTEGER}
+	</delete>
+	<update id="saveCompatibilityLdL" parameterType="com.ck.springboot.pojo.Compatibility">
+		update t_compatibility_lbl_lbl
+		set reaction_description = #{reactionDescription,jdbcType=VARCHAR},
+		audit_level_id = #{auditLevelId,jdbcType=INTEGER}
+		where lbl_id = #{labelId,jdbcType=INTEGER} and lbl_pair_id = #{labelPairId,jdbcType=INTEGER}
+	</update>
+	<update id="saveCompatibilityCdL" parameterType="com.ck.springboot.pojo.Compatibility">
+		update t_category_lbl
+		set reaction_description = #{reactionDescription,jdbcType=VARCHAR},
+		audit_level_id = #{auditLevelId,jdbcType=VARCHAR}
+		where lbl_id = #{labelId,jdbcType=INTEGER} and category_id = #{categoryId,jdbcType=INTEGER}
+	</update>
+	<update id="saveCompatibilityMdL" parameterType="com.ck.springboot.pojo.Compatibility">
+		update t_compatibility_interplay_medcine_lbl
+		set reaction_description = #{reactionDescription,jdbcType=VARCHAR},
+		audit_level_id = #{auditLevelId,jdbcType=VARCHAR}
+		where lbl_id = #{labelId,jdbcType=INTEGER} and medcine_id = #{medcineId,jdbcType=INTEGER}
+	</update>
+	<update id="saveCompatibilityMdC" parameterType="com.ck.springboot.pojo.Compatibility">
+		update t_compatibility_interplay_medcine_category
+		set reaction_description = #{reactionDescription,jdbcType=VARCHAR},
+		audit_level_id = #{auditLevelId,jdbcType=VARCHAR}
+		where medcine_id = #{medcineId,jdbcType=INTEGER} and category_id = #{categoryId,jdbcType=INTEGER}
+	</update>
+	<update id="saveCompatibilityCdC" parameterType="com.ck.springboot.pojo.Compatibility">
+		update t_category_lbl
+		set reaction_description = #{reactionDescription,jdbcType=VARCHAR},
+		audit_level_id = #{auditLevelId,jdbcType=VARCHAR}
+		where category_id = #{categoryId,jdbcType=INTEGER} and category_pair_id = #{categoryPairId,jdbcType=INTEGER}
+	</update>
+	<update id="saveCompatibilityMdM" parameterType="com.ck.springboot.pojo.Compatibility">
+		update t_compatibility_interplay
+		set reaction_description = #{reactionDescription,jdbcType=VARCHAR},
+		audit_level_id = #{auditLevelId,jdbcType=VARCHAR}
+		where medcine_id = #{medcineId,jdbcType=INTEGER} and medcine_pair_id = #{medcinePairId,jdbcType=INTEGER}
+	</update>
+	 <!-- 药品+ 药品-->
+  <insert id="insertCompatibilityMdM" parameterType="Map">
+    insert into t_compatibility_interplay (medcine_id, medcine_pair_id, type,medcine_commonName,medcine_pair_commonName)
+    values (#{id,jdbcType=INTEGER}, #{pairId,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}
+      ,#{medcineName,jdbcType=VARCHAR},#{medcinePairName,jdbcType=VARCHAR})
+  </insert>
+   <!-- 药品+ 分类-->
+   <insert id="insertCompatibilityMdC" parameterType="Map">
+    insert into t_compatibility_interplay_medcine_category (medcine_id, category_id, type,medcine_commonName)
+    values (#{id,jdbcType=INTEGER}, #{pairId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}
+      ,#{medcineName,jdbcType=VARCHAR})
+  </insert>
+   <!-- 药品+ 标签-->
+   <insert id="insertCompatibilityMdL" parameterType="Map">
+    insert into t_compatibility_interplay_medcine_lbl (medcine_id, lbl_id, type,medcine_commonName)
+    values (#{id,jdbcType=INTEGER}, #{pairId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}
+      ,#{medcineName,jdbcType=VARCHAR})
+  </insert>
+  <!-- 分类+药品 -->
+  <insert id="insertCompatibilityCdM" parameterType="Map">
+    insert into t_compatibility_interplay_medcine_category (category_id, medcine_id, type, medcine_commonName)
+    values (#{id,jdbcType=INTEGER}, #{pairId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER},#{medcinePairName,jdbcType=VARCHAR})
+  </insert>
+   <!-- 分类+分类 -->
+   <insert id="insertCompatibilityCdC" parameterType="Map">
+    insert into t_compatibility_category_category (category_id, category_pair_id, type)
+    values (#{id,jdbcType=INTEGER}, #{pairId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER})
+  </insert>
+    <!-- 分类+标签 -->
+   <insert id="insertCompatibilityCdL" parameterType="Map">
+    insert into t_category_lbl (category_id, lbl_id, type)
+    values (#{id,jdbcType=INTEGER}, #{pairId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER})
+  </insert>
+   <!-- 标签+药品 -->
+  <insert id="insertCompatibilityLdM" parameterType="Map">
+    insert into t_compatibility_interplay_medcine_lbl (lbl_id, medcine_id, type,medcine_commonName)
+    values (#{id,jdbcType=INTEGER}, #{pairId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER},#{medcinePairName,jdbcType=VARCHAR})
+  </insert>
+  <!-- 标签+分类 -->
+  <insert id="insertCompatibilityLdC" parameterType="Map">
+    insert into t_category_lbl (lbl_id, category_id, type)
+    values (#{id,jdbcType=INTEGER}, #{pairId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER})
+  </insert>
+    <!-- 标签+标签 -->
+   <insert id="insertCompatibilityLdL" parameterType="Map">
+    insert into t_compatibility_lbl_lbl (lbl_id, lbl_pair_id, type)
+    values (#{id,jdbcType=INTEGER}, #{pairId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER})
+  </insert>
+</mapper>

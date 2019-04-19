@@ -1,0 +1,70 @@
+{
+	"state": "1",
+	"prescriptionNumber": "cfh0308005",
+	"prescriptionContent": "这是一段处方内容...",
+	"prescriptionReason": "感冒了，开点给你吃",
+	"visitNumber": "jzhm001",
+	"submmitTime": "2019-3-6 19:51:00",
+	"auditPharmacist": "1",
+	"auditTime": "2019-3-6 19:51:00",
+	"comfirmPharmacist": "1",
+	"comfirmTime": "2019-3-6 19:51:00",
+	"type": "1",
+	"auditCenter": "1",
+	"medicalUnit": "1",
+	"denyReason": "打回原因",
+	"denyOwner": "打回对象",
+	"denyLevel": "打回等级",
+	"doctorName": "王医生",
+	"departmentName": "内科",
+	"isEmergency": "false",
+	"patientInfo": {
+		"name": "芮玉琪",
+		"gender": "false",
+		"age": "30",
+		"address": "苏州某某小区",
+		"allergyHistory": "无过敏史",
+		"weight": "65",
+		"birthday": "1990-1-1"
+	},
+	"totalFee": "100.00",
+	"prescriptionDate": "2019-3-6",
+	"diagnosis": [
+		{
+			"diagnosisName": "上呼吸道感染",
+			"icd10": "DK.1100"
+		},
+		{
+			"diagnosisName": "伤寒",
+			"icd10": "C0.J568"
+		}
+	],
+	"medcineItems": [
+		{
+			"commonName": "阿莫西林分散片",
+			"specification": "0.25g*24片",
+			"eachDose": "0.25",
+			"eachDoseUnit": "g",
+			"total": "1",
+			"totalUnit": "g",
+			"routeOfMedication": "口服",
+			"frequency": "qd",
+			"price": "10",
+			"duration": "4",
+			"dailyDose": "1"
+		},
+		{
+			"commonName": "感冒清热胶囊",
+			"specification": "0.5g*24s/盒",
+			"eachDose": "0.5",
+			"eachDoseUnit": "g",
+			"total": "1",
+			"totalUnit": "g",
+			"routeOfMedication": "口服",
+			"frequency": "qd",
+			"price": "20",
+			"duration": "2",
+			"dailyDose": "1"
+		}
+	]
+}

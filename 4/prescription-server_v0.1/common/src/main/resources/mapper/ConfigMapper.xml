@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ck.springboot.mapper.ConfigMapper">
+	<resultMap id="BaseResultMap"
+		type="com.ck.springboot.pojo.Config">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="values" property="values" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, name, values
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from t_config
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+
+	<select id="selectAllConfig" resultMap="BaseResultMap">
+		select * from t_config t where t.id in(1,2,3)
+	</select>
+	<select id="selectAllRangeConfig" resultMap="BaseResultMap">
+		select * from t_config t where t.id in(4,5)
+	</select>
+	<select id="selectSetUpTime" resultMap="BaseResultMap">
+		select * from t_config t where t.id in(6,7,8,9)
+	</select>
+	<select id="selectSetUpRule" resultMap="BaseResultMap">
+		select * from t_config t where t.id in(10,11)
+	</select>
+	<delete id="deleteByPrimaryKey"
+		parameterType="java.lang.Integer">
+		delete from t_config
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert"
+		parameterType="com.ck.springboot.pojo.Config">
+		insert into t_config (id, name, values
+		)
+		values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR},
+		#{values,jdbcType=VARCHAR}
+		)
+	</insert>
+	<insert id="insertSelective"
+		parameterType="com.ck.springboot.pojo.Config">
+		insert into t_config
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="name != null">
+				name,
+			</if>
+			<if test="values != null">
+				values,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="name != null">
+				#{name,jdbcType=VARCHAR},
+			</if>
+			<if test="values != null">
+				#{values,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective"
+		parameterType="com.ck.springboot.pojo.Config">
+		update t_config
+		<set>
+			<if test="name != null">
+				name = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test="values != null">
+				values = #{values,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateConfig" parameterType="java.util.List">
+            update t_config
+            <trim prefix="set" suffixOverrides=",">
+             <trim prefix="[values] =case" suffix="end,">
+                 <foreach collection="config" item="i" index="index">
+                         <if test="i.values!=null">
+                          when name=#{i.name} then #{i.values}
+                         </if>
+                 </foreach>
+              </trim>
+             </trim>
+            where
+            <foreach collection="config" separator="or" item="a" index="index" >
+              name=#{a.name}
+          </foreach>
+	</update>
+	<update id="updateRangeConfig" parameterType="java.util.List">
+            update t_config
+            <trim prefix="set" suffixOverrides=",">
+             <trim prefix="[values] =case" suffix="end,">
+                 <foreach collection="config" item="i" index="index">
+                         <if test="i.values!=null">
+                          when name=#{i.name} then #{i.values}
+                         </if>
+                 </foreach>
+              </trim>
+             </trim>
+            where
+            <foreach collection="config" separator="or" item="a" index="index" >
+              name=#{a.name}
+          </foreach>
+	</update>
+</mapper>

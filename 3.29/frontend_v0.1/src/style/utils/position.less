@@ -1,0 +1,39 @@
+@import '../mixins/mixin.less';
+
+@positions: static, relative, absolute, fixed;
+
+.make-position(@i: length(@positions)) when (@i > 0) {
+  .make-position(@i - 1);
+  @position: extract(@positions, @i);
+  .position-@{position} {
+    position: @position;
+  }
+}
+
+.make-position();
+
+.fixed-top {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: @zindex-fixed;
+}
+
+.fixed-bottom {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: @zindex-fixed;
+}
+
+.center {
+  .center;
+}
+
+.left-bottom{
+  position:absolute;
+  bottom:0;
+  left:0;
+}

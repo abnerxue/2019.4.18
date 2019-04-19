@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ck.springboot.mapper.AgeRangeIndicationAntiinfectiveMapper">
+  <resultMap id="BaseResultMap" type="com.ck.springboot.pojo.AgeRangeIndicationAntiinfective">
+    <result column="Id" jdbcType="INTEGER" property="id" />
+    <result column="medcine_id" jdbcType="INTEGER" property="medcineId" />
+    <result column="diagnosis_id" jdbcType="INTEGER" property="diagnosisId" />
+    <result column="under_3_month" jdbcType="INTEGER" property="under3Month" />
+    <result column="under_6_month" jdbcType="INTEGER" property="under6Month" />
+    <result column="under_2_year" jdbcType="INTEGER" property="under2Year" />
+    <result column="under_12_year" jdbcType="INTEGER" property="under12Year" />
+    <result column="under_16_year" jdbcType="INTEGER" property="under16Year" />
+    <result column="under_18_year" jdbcType="INTEGER" property="under18Year" />
+    <result column="above_60_year" jdbcType="INTEGER" property="above60Year" />
+    <result column="above_70_year" jdbcType="INTEGER" property="above70Year" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    Id, medcine_id, diagnosis_id, under_3_month, under_6_month, under_2_year, under_12_year, 
+    under_16_year, under_18_year, above_60_year, above_70_year
+  </sql>
+  <select id="selectByExample" parameterType="com.ck.springboot.pojo.AgeRangeIndicationAntiinfectiveExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_age_range_indication_antiinfective
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.ck.springboot.pojo.AgeRangeIndicationAntiinfectiveExample">
+    delete from t_age_range_indication_antiinfective
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ck.springboot.pojo.AgeRangeIndicationAntiinfective">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT SCOPE_IDENTITY()
+    </selectKey>
+    insert into t_age_range_indication_antiinfective (medcine_id, diagnosis_id, under_3_month, 
+      under_6_month, under_2_year, under_12_year, 
+      under_16_year, under_18_year, above_60_year, 
+      above_70_year)
+    values (#{medcineId,jdbcType=INTEGER}, #{diagnosisId,jdbcType=INTEGER}, #{under3Month,jdbcType=INTEGER}, 
+      #{under6Month,jdbcType=INTEGER}, #{under2Year,jdbcType=INTEGER}, #{under12Year,jdbcType=INTEGER}, 
+      #{under16Year,jdbcType=INTEGER}, #{under18Year,jdbcType=INTEGER}, #{above60Year,jdbcType=INTEGER}, 
+      #{above70Year,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ck.springboot.pojo.AgeRangeIndicationAntiinfective">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT SCOPE_IDENTITY()
+    </selectKey>
+    insert into t_age_range_indication_antiinfective
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="medcineId != null">
+        medcine_id,
+      </if>
+      <if test="diagnosisId != null">
+        diagnosis_id,
+      </if>
+      <if test="under3Month != null">
+        under_3_month,
+      </if>
+      <if test="under6Month != null">
+        under_6_month,
+      </if>
+      <if test="under2Year != null">
+        under_2_year,
+      </if>
+      <if test="under12Year != null">
+        under_12_year,
+      </if>
+      <if test="under16Year != null">
+        under_16_year,
+      </if>
+      <if test="under18Year != null">
+        under_18_year,
+      </if>
+      <if test="above60Year != null">
+        above_60_year,
+      </if>
+      <if test="above70Year != null">
+        above_70_year,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="medcineId != null">
+        #{medcineId,jdbcType=INTEGER},
+      </if>
+      <if test="diagnosisId != null">
+        #{diagnosisId,jdbcType=INTEGER},
+      </if>
+      <if test="under3Month != null">
+        #{under3Month,jdbcType=INTEGER},
+      </if>
+      <if test="under6Month != null">
+        #{under6Month,jdbcType=INTEGER},
+      </if>
+      <if test="under2Year != null">
+        #{under2Year,jdbcType=INTEGER},
+      </if>
+      <if test="under12Year != null">
+        #{under12Year,jdbcType=INTEGER},
+      </if>
+      <if test="under16Year != null">
+        #{under16Year,jdbcType=INTEGER},
+      </if>
+      <if test="under18Year != null">
+        #{under18Year,jdbcType=INTEGER},
+      </if>
+      <if test="above60Year != null">
+        #{above60Year,jdbcType=INTEGER},
+      </if>
+      <if test="above70Year != null">
+        #{above70Year,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ck.springboot.pojo.AgeRangeIndicationAntiinfectiveExample" resultType="java.lang.Long">
+    select count(*) from t_age_range_indication_antiinfective
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update t_age_range_indication_antiinfective
+    <set>
+      <if test="record.id != null">
+        Id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.medcineId != null">
+        medcine_id = #{record.medcineId,jdbcType=INTEGER},
+      </if>
+      <if test="record.diagnosisId != null">
+        diagnosis_id = #{record.diagnosisId,jdbcType=INTEGER},
+      </if>
+      <if test="record.under3Month != null">
+        under_3_month = #{record.under3Month,jdbcType=INTEGER},
+      </if>
+      <if test="record.under6Month != null">
+        under_6_month = #{record.under6Month,jdbcType=INTEGER},
+      </if>
+      <if test="record.under2Year != null">
+        under_2_year = #{record.under2Year,jdbcType=INTEGER},
+      </if>
+      <if test="record.under12Year != null">
+        under_12_year = #{record.under12Year,jdbcType=INTEGER},
+      </if>
+      <if test="record.under16Year != null">
+        under_16_year = #{record.under16Year,jdbcType=INTEGER},
+      </if>
+      <if test="record.under18Year != null">
+        under_18_year = #{record.under18Year,jdbcType=INTEGER},
+      </if>
+      <if test="record.above60Year != null">
+        above_60_year = #{record.above60Year,jdbcType=INTEGER},
+      </if>
+      <if test="record.above70Year != null">
+        above_70_year = #{record.above70Year,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update t_age_range_indication_antiinfective
+    set Id = #{record.id,jdbcType=INTEGER},
+      medcine_id = #{record.medcineId,jdbcType=INTEGER},
+      diagnosis_id = #{record.diagnosisId,jdbcType=INTEGER},
+      under_3_month = #{record.under3Month,jdbcType=INTEGER},
+      under_6_month = #{record.under6Month,jdbcType=INTEGER},
+      under_2_year = #{record.under2Year,jdbcType=INTEGER},
+      under_12_year = #{record.under12Year,jdbcType=INTEGER},
+      under_16_year = #{record.under16Year,jdbcType=INTEGER},
+      under_18_year = #{record.under18Year,jdbcType=INTEGER},
+      above_60_year = #{record.above60Year,jdbcType=INTEGER},
+      above_70_year = #{record.above70Year,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+</mapper>

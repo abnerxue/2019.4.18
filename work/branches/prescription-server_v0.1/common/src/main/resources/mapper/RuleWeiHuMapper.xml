@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+   
+<mapper namespace="com.ck.springboot.mapper.RuleWeiHuMapper">
+	<resultMap type="com.ck.springboot.pojo.MedicineLimit" id="medicineLimit">
+		<id property="id" column="id"/>
+		<result property="medicineId" column="medicine_id"/>
+		<result property="ruleName" column="rule_name"/>
+		<result property="lowerbound" column="lowerbound"/>
+		<result property="upperbound" column="upperbound"/>
+		<result property="unitName" column="unit_name"/>
+		<result property="checkItemId" column="check_items_id"/>
+		<result property="level" column="level"/>
+		<result property="name" column="name"/>
+		<result property="type" column="type"/>
+	</resultMap>
+
+	<select id="getMedicineLimit" parameterType="int"
+		resultMap="medicineLimit">
+		select tcl.*,tci.name,tci.unit_name from t_check_limit tcl
+		left join t_check_items tci on (tcl.check_items_id = tci.id)
+		where medicine_id = #{medicineId} and type = #{type}
+	</select>
+	
+	<select id="getMedicineLimitGroupBy" parameterType="int"
+		resultType="com.ck.springboot.pojo.RuleName">
+		select rule_name as ruleName from t_check_limit where medicine_id = #{medicineId} and type = #{type} group by rule_name
+	</select>
+
+	<insert id="addMedicineLimit" parameterType="com.ck.springboot.pojo.MedicineLimit">
+		insert into t_check_limit (medicine_id,rule_name,lowerbound,upperbound,check_items_id,level,type)
+		values (#{medicineId},#{ruleName},#{lowerbound},#{upperbound},#{checkItemId},#{level},#{type})
+	</insert>
+	
+	<select id="getMedicineLimitCountsByRuleName" parameterType="String" resultType="int">
+		select count(1) from t_check_limit where rule_name=#{ruleName}
+	</select>
+	
+	<delete id="deleteMedicineLimitByRuleName" parameterType="String">
+		delete from t_check_limit where rule_name=#{ruleName}
+	</delete>
+	
+	<update id="updateMedicineLimitByRuleName" parameterType="com.ck.springboot.pojo.MedicineLimit">
+		update t_check_limit set rule_name=#{ruleName},type=#{type},level=#{level},lowerbound=#{lowerbound},
+		upperbound=#{upperbound},check_items_id=#{checkItemId}
+		where id=#{id}
+	</update>
+	
+	<select id="getCheckItemsList" resultType="com.ck.springboot.pojo.CheckItems">
+		select id,name,unit_name unitName from t_check_items
+	</select>
+
+	<select id="getMedicineLimitDetilByRuleName" resultMap="medicineLimit">
+		select tcl.*,tci.name,tci.unit_name from t_check_limit tcl
+		left join t_check_items tci on (tcl.check_items_id = tci.id)
+		where medicine_id = #{medicineId} and type = #{type} and rule_name = #{ruleName}
+	</select>
+	
+	<!-- ///////////////////////////////////////// -->
+	<select id="getRuleNameByid" parameterType="Integer" resultType="String">
+		select rule_name from t_check_limit where id=#{id}
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+</mapper>

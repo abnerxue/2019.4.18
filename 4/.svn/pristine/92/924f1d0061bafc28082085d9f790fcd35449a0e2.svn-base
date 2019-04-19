@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ck.springboot.mapper.DurationLimitMapper" >
+  <resultMap id="BaseResultMap" type="com.ck.springboot.pojo.DurationLimit" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="medcine_id" property="medcineId" jdbcType="INTEGER" />
+    <result column="rule_name" property="ruleName" jdbcType="VARCHAR" />
+    <result column="lowerbound" property="lowerbound" jdbcType="DECIMAL" />
+    <result column="upperbound" property="upperbound" jdbcType="DECIMAL" />
+    <result column="level" property="level" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, medcine_id, rule_name, lowerbound, upperbound, level
+  </sql>
+  <select id="selectByMedcineId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select * from t_duration_limit where medcine_id = #{medcineId,jdbcType=INTEGER}
+  </select>
+  <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select * from t_duration_limit where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteDurationById" parameterType="java.lang.Integer" >
+    delete from t_duration_limit
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.ck.springboot.pojo.DurationLimit" >
+    insert into t_duration_limit (id, medcine_id, rule_name, 
+      lowerbound, upperbound, level
+      )
+    values (#{id,jdbcType=INTEGER}, #{medcineId,jdbcType=INTEGER}, #{ruleName,jdbcType=VARCHAR}, 
+      #{lowerbound,jdbcType=DECIMAL}, #{upperbound,jdbcType=DECIMAL}, #{level,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertDuration" parameterType="com.ck.springboot.pojo.DurationLimit" >
+    insert into t_duration_limit
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="medcineId != null" >
+        medcine_id,
+      </if>
+      <if test="ruleName != null" >
+        rule_name,
+      </if>
+      <if test="lowerbound != null" >
+        lowerbound,
+      </if>
+      <if test="upperbound != null" >
+        upperbound,
+      </if>
+      <if test="level != null" >
+        level,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="medcineId != null" >
+        #{medcineId,jdbcType=INTEGER},
+      </if>
+      <if test="ruleName != null" >
+        #{ruleName,jdbcType=VARCHAR},
+      </if>
+      <if test="lowerbound != null" >
+        #{lowerbound,jdbcType=DECIMAL},
+      </if>
+      <if test="upperbound != null" >
+        #{upperbound,jdbcType=DECIMAL},
+      </if>
+      <if test="level != null" >
+        #{level,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateDurationById" parameterType="com.ck.springboot.pojo.DurationLimit" >
+    update t_duration_limit
+    <set >
+      <if test="ruleName != null" >
+        rule_name = #{ruleName,jdbcType=VARCHAR},
+      </if>
+      <if test="lowerbound != null" >
+        lowerbound = #{lowerbound,jdbcType=DECIMAL},
+      </if>
+      <if test="upperbound != null" >
+        upperbound = #{upperbound,jdbcType=DECIMAL},
+      </if>
+      <if test="level != null" >
+        level = #{level,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ck.springboot.pojo.DurationLimit" >
+    update t_duration_limit
+    set medcine_id = #{medcineId,jdbcType=INTEGER},
+      rule_name = #{ruleName,jdbcType=VARCHAR},
+      lowerbound = #{lowerbound,jdbcType=DECIMAL},
+      upperbound = #{upperbound,jdbcType=DECIMAL},
+      level = #{level,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

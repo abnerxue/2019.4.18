@@ -1,0 +1,50 @@
+.loading-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .box {
+    padding: 8px 20px;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 8px;
+
+    .ball-clip-rotate {
+      margin: 10px auto;
+      height: 20px;
+      width: 20px;
+      border-radius: 100%;
+      animation-fill-mode: both;
+      border: 2px solid #fff;
+      border-bottom-color: transparent;
+      animation: ball-clip-rotate 1s 0s linear infinite;
+    }
+
+    p {
+      color: #fff;
+      font-size: 12px;
+      line-height: 2;
+      letter-spacing: 2px;
+    }
+  }
+}
+
+@keyframes ball-clip-rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  50% {
+    transform: rotate(180deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}

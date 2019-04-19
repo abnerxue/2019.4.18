@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ck.springboot.mapper.MedcineMapper">
+	<resultMap id="BaseResultMap"
+		type="com.ck.springboot.pojo.Medcine">
+		<id column="id" property="id" />
+		<result column="name" property="name" />
+		<result column="type" property="type" />
+		<result column="category" property="category" />
+		<result column="subcategory" property="subcategory" />
+		<result column="dosage_form" property="dosageForm" />
+		<result column="standard_source" property="standardSource" />
+		<result column="dose_recommend_per_time_min" property="doseRecommendPerTimeMin" />
+		<result column="dose_recommend_per_time_max" property="doseRecommendPerTimeMax" />
+		<result column="dose_recommend_per_day" property="doseRecommendPerDay" />
+		<result column="dose_max_per_time" property="doseMaxPerTime" />
+		<result column="dose_max_per_day" property="doseMaxPerDay" />
+		<result column="frequency_min" property="frequencyMin" />
+		<result column="frequency_max" property="frequencyMax" />
+		<result column="total_dose" property="totalDose" />
+		<result column="max_duration" property="maxDuration" />
+		<result column="max_multidays_dose" property="maxMultidaysDose" />
+		<result column="route_of_medication" property="routeOfMedication" />
+		<result column="skin_test" property="skinTest" />
+		<result column="mental_stupefacient_Toxic" property="mentalStupefacientToxic" />
+		<result column="specification" property="specification" />
+		<result column="need_audit" property="needAudit" />
+		<result column="platform_standard" property="platformStandard" />
+		<association property="dosageform" javaType="com.ck.springboot.pojo.DosageForm">
+			<id column="id" property="id" />
+			<result column="dosage_form_name" property="dosageFormName" />
+		</association>
+		<association property="typedic" javaType="com.ck.springboot.pojo.Type">
+			<id property="id" column="id" />
+			<result property="typeName" column="typeName" />
+		</association>
+		<association property="typedic2" javaType="com.ck.springboot.pojo.Type2">
+			<id property="id" column="id" />
+			<result property="mentalStupefacientToxicName" column="mentalStupefacientToxicName" />
+		</association>
+		<association property="classify1" javaType="com.ck.springboot.pojo.Classify1">
+			<id property="id" column="id" />
+			<result property="categoryName" column="categoryName" />
+		</association>
+		<association property="classify2" javaType="com.ck.springboot.pojo.Classify2">
+			<id property="id" column="id" />
+			<result property="subcategoryName" column="subcategoryName" />
+		</association>
+		<association property="unitname" javaType="com.ck.springboot.pojo.UnitName">
+			<id property="id" column="uid" />
+			<result property="unitName" column="unitName" />
+		</association>
+	</resultMap>
+
+	<resultMap id="BaseResultMap2"
+		type="com.ck.springboot.pojo.MedcineOnly">
+		<id column="id" property="id" />
+		<result column="name" property="name" />
+		<result column="type" property="type" />
+		<result column="category" property="category" />
+		<result column="subcategory" property="subcategory" />
+		<result column="dosage_form" property="dosageForm" />
+		<result column="standard_source" property="standardSource" />
+		<result column="dose_recommend_per_time_min" property="doseRecommendPerTimeMin" />
+		<result column="dose_recommend_per_time_max" property="doseRecommendPerTimeMax" />
+		<result column="dose_recommend_per_day" property="doseRecommendPerDay" />
+		<result column="dose_max_per_time" property="doseMaxPerTime" />
+		<result column="dose_max_per_day" property="doseMaxPerDay" />
+		<result column="frequency_min" property="frequencyMin" />
+		<result column="frequency_max" property="frequencyMax" />
+		<result column="total_dose" property="totalDose" />
+		<result column="max_duration" property="maxDuration" />
+		<result column="max_multidays_dose" property="maxMultidaysDose" />
+		<result column="route_of_medication" property="routeOfMedication" />
+		<result column="skin_test" property="skinTest" />
+		<result column="mental_stupefacient_Toxic" property="mentalStupefacientToxic" />
+		<result column="specification" property="specification" />
+		<result column="need_audit" property="needAudit" />
+		<result column="platform_standard" property="platformStandard" />
+		<association property="dosageform"
+			javaType="com.ck.springboot.pojo.DosageForm">
+			<id column="id" property="id" />
+			<result column="dosage_form_name" property="dosageFormName" />
+		</association>
+		<association property="typedic" javaType="com.ck.springboot.pojo.Type">
+			<id property="id" column="id" />
+			<result property="typeName" column="typeName" />
+		</association>
+		<association property="typedic2" javaType="com.ck.springboot.pojo.Type2">
+			<id property="id" column="id" />
+			<result property="mentalStupefacientToxicName" column="mentalStupefacientToxicName" />
+		</association>
+		<association property="classify1" javaType="com.ck.springboot.pojo.Classify1">
+			<id property="id" column="id" />
+			<result property="categoryName" column="categoryName" />
+		</association>
+		<association property="classify2" javaType="com.ck.springboot.pojo.Classify2">
+			<id property="id" column="id" />
+			<result property="subcategoryName" column="subcategoryName" />
+		</association>
+		<association property="unitname" javaType="com.ck.springboot.pojo.UnitName">
+			<id property="id" column="uid" />
+			<result property="unitName" column="unitName" />
+		</association>
+	</resultMap>
+	<select id="getAllMedcine" resultMap="BaseResultMap2">
+		select v.* from v_medcine v where v.platform_standard =1
+		<if test="standardSource!=null and standardSource!=-1">
+			AND v.standard_source=#{standardSource}
+		</if>
+		<if test="type!=null and type!=-1">
+			AND v.type=#{type}
+		</if>
+		<if test="category!=null and category!=-1">
+			AND v.category=#{category}
+		</if>
+		<if test="subcategory!=null and subcategory!=-1">
+			AND v.subcategory=#{subcategory}
+		</if>
+		<if test="name!=null and name!=''">
+			AND v.name like '%'+#{name}+'%'
+		</if>
+		order by v.id
+	</select>
+	<select id="getAllMedcineHos" resultMap="BaseResultMap">
+		select top ${pageSize} v.* from v_medcine v
+		where v.id not in (select top (${pageSize}*(${pageNo}-1)) t.id from t_medcine t where 1=1
+		<if test="standardSource!=null and standardSource!=-1">
+			AND t.standard_source=#{standardSource}
+		</if>
+		<if test="type!=null and type!=-1">
+			AND t.type=#{type}
+		</if>
+		<if test="category!=null and category!=-1">
+			AND t.category=#{category}
+		</if>
+		<if test="subcategory!=null and subcategory!=-1">
+			AND t.subcategory=#{subcategory}
+		</if>
+		<if test="name!=null and name!=''">
+			AND t.name like '%'+#{name}+'%'
+		</if> order by id)
+		<if test="standardSource!=null and standardSource!=-1">
+			AND v.standard_source=#{standardSource}
+		</if>
+		<if test="type!=null and type!=-1">
+			AND v.type=#{type}
+		</if>
+		<if test="category!=null and category!=-1">
+			AND v.category=#{category}
+		</if>
+		<if test="subcategory!=null and subcategory!=-1">
+			AND v.subcategory=#{subcategory}
+		</if>
+		<if test="name!=null and name!=''">
+			AND v.name like '%'+#{name}+'%'
+		</if>
+		order by v.id
+	</select>
+	<select id="getMedcineById" resultMap="BaseResultMap">
+		select v.* from v_medcine v
+		 where v.name = #{name} AND v.specification=#{specification}
+	</select>
+	<select id="getMedcineCountHos" resultType="java.lang.Integer">
+		select count(*) from t_medcine
+	</select>
+	<select id="getMedcineFilterCount" resultType="java.lang.Integer">
+		select count(*) from t_medcine t where t.platform_standard=1
+		<if test="standardSource!=null and standardSource!=-1">
+			AND t.standard_source=#{standardSource}
+		</if>
+		<if test="type!=null and type!=-1">
+			AND t.type=#{type}
+		</if>
+		<if test="category!=null and category!=-1">
+			AND t.category=#{category}
+		</if>
+		<if test="subcategory!=null and subcategory!=-1">
+			AND t.subcategory=#{subcategory}
+		</if>
+		<if test="name!=null and name!=''">
+			AND t.name like '%'+#{name}+'%'
+		</if>
+	</select>
+	<select id="getMedcineHosFilterCount" resultType="java.lang.Integer">
+		select count(*) from t_medcine t where 1=1
+		<if test="standardSource!=null and standardSource!=-1">
+			AND t.standard_source=#{standardSource}
+		</if>
+		<if test="type!=null and type!=-1">
+			AND t.type=#{type}
+		</if>
+		<if test="category!=null and category!=-1">
+			AND t.category=#{category}
+		</if>
+		<if test="subcategory!=null and subcategory!=-1">
+			AND t.subcategory=#{subcategory}
+		</if>
+		<if test="name!=null and name!=''">
+			AND t.name like '%'+#{name}+'%'
+		</if>
+	</select>
+	<select id="getAllMedcineFold" resultType="com.ck.springboot.pojo.MedcineFold">
+		select t.*,0 as sign from t_medcine t where 1=1
+		<if test="name!=null and name!=''">
+			AND t.name like '%'+#{name}+'%'
+		</if>
+	</select>
+	<select id="getMedcineNameById" parameterType="java.lang.Integer"
+	resultType = "String">
+		select name from t_medcine t where t.id = #{id}
+	</select>
+	<select id="selectMedcine" resultType="com.ck.springboot.pojo.CompatibilitySelect">
+		select t.id,t.name,0 as sign from t_medcine t
+	</select>
+	<select id="selectCategory" resultType="com.ck.springboot.pojo.CompatibilitySelect">
+		select t.id,t.name,1 as sign from t_category t
+	</select>
+	<select id="selectLabel" resultType="com.ck.springboot.pojo.CompatibilitySelect">
+		select t.id,t.name,2 as sign from t_label t
+	</select>
+	<update id="saveMedcineHos" parameterType="java.util.List">
+         update t_medcine
+         <trim prefix="set" suffixOverrides=",">
+          <trim prefix="need_audit =case" suffix="end,">
+              <foreach collection="med" item="i" index="index">
+                      <if test="i.needAudit!=null">
+                       when id=#{i.id} then #{i.needAudit}
+                      </if>
+              </foreach>
+           </trim>
+          </trim>
+         where
+         <foreach collection="med" separator="or" item="a" index="index" >
+           id=#{a.id}
+       </foreach>
+	</update>
+	<update id="saveMedcine" parameterType="java.util.List">
+         update t_medcine
+         <trim prefix="set" suffixOverrides=",">
+          <trim prefix="platform_standard =case" suffix="end,">
+              <foreach collection="med" item="i" index="index">
+                      <if test="i.platformStandard!=null">
+                       when id=#{i.id} then #{i.platformStandard}
+                      </if>
+              </foreach>
+           </trim>
+          </trim>
+         where
+         <foreach collection="med" separator="or" item="a" index="index" >
+           id=#{a.id}
+       </foreach>
+	</update>
+</mapper>

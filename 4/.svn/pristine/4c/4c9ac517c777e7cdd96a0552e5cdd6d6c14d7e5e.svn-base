@@ -1,0 +1,11 @@
+@import "../self.less";
+@import "../mixins/mixin.less";
+.make-color-classes(@i: length(@font-sizes)) when (@i > 0) {
+    .make-color-classes(@i - 1);
+    @size: extract(@font-sizes, @i);
+    .f@{i} {
+      font-size: ~'@{size}px';
+    }
+}
+
+.make-color-classes();

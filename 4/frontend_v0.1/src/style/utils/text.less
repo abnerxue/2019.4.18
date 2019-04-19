@@ -1,0 +1,46 @@
+@import '../self.less';
+
+.text-left {
+  text-align: left !important;
+}
+
+.text-right {
+  text-align: right !important;
+}
+
+.text-center {
+  text-align: center !important;
+}
+
+.font-light {
+  font-weight: @font-weight-light !important;
+}
+
+.font-normal {
+  font-weight: @font-weight-normal !important;
+}
+
+.font-bold {
+  font-weight: @font-weight-bold !important;
+}
+
+.font-italic {
+  font-style: italic !important;
+}
+
+.num-family {
+  font-family: arial !important;
+}
+
+.ellipsis {
+  overflow: hidden;
+  -o-text-overflow: ellipsis;
+  text-overflow: ellipsis;
+  word-break: break-word;
+  white-space: nowrap;
+}
+
+.pointer {
+  cursor: pointer;
+}
+.make-classes(text, color, @text-colors);

@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ck.springboot.mapper.MedcineRestrictionMapper" >
+  <resultMap id="BaseResultMap" type="com.ck.springboot.pojo.MedcineRestriction" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="diagnosis_id" property="diagnosisId" jdbcType="INTEGER" />
+    <result column="medcine_id" property="medcineId" jdbcType="INTEGER" />
+    <result column="action" property="action" jdbcType="INTEGER" />
+  </resultMap>
+  
+    <resultMap id="BaseResultMap1" type="com.ck.springboot.pojo.CourseOfTreatment" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="diagnosis_id" property="diagnosisId" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="duration" property="duration" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, code, name, medcine_id, action
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_medcine_restriction
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+    <select id="selectByDiagnosisId" resultMap="BaseResultMap">
+    select *
+    from t_medcine_restriction
+    where diagnosis_id = #{diagnosisId,jdbcType=INTEGER}
+  </select>
+  
+   <select id="repeatVerification" parameterType="java.lang.Integer" resultType="INTEGER">
+    select count(*) from t_medcine_restriction
+    where diagnosis_id = #{diagnosisId,jdbcType=INTEGER} and medcine_id = #{medcineId,jdbcType=INTEGER}
+  </select>
+   <select id="selectTreatmentByDiagnosisId" resultMap="BaseResultMap1">
+    select *
+    from t_course_of_treatment
+    where diagnosis_id = #{diagnosisId,jdbcType=VARCHAR}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_medcine_restriction
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <delete id="deleteDiagnosisidMedcine" parameterType="java.lang.Integer" >
+    delete from t_medcine_restriction
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insertDiagnsis" parameterType="com.ck.springboot.pojo.MedcineRestriction">
+    insert into t_medcine_restriction (diagnosis_id, medcine_id, action)
+    values (#{diagnosisId,jdbcType=INTEGER}, #{medcineId,jdbcType=INTEGER}, #{action,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ck.springboot.pojo.MedcineRestriction" >
+    insert into t_medcine_restriction
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="code != null" >
+        code,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="medcineId != null" >
+        medcine_id,
+      </if>
+      <if test="action != null" >
+        action,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="code != null" >
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="medcineId != null" >
+        #{medcineId,jdbcType=INTEGER},
+      </if>
+      <if test="action != null" >
+        #{action,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ck.springboot.pojo.MedcineRestriction" >
+    update t_medcine_restriction
+    <set >
+      <if test="code != null" >
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="medcineId != null" >
+        medcine_id = #{medcineId,jdbcType=INTEGER},
+      </if>
+      <if test="action != null" >
+        action = #{action,jdbcType=CHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ck.springboot.pojo.MedcineRestriction" >
+    update t_medcine_restriction
+    set code = #{code,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      medcine_id = #{medcineId,jdbcType=INTEGER},
+      action = #{action,jdbcType=CHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+    <update id="updateTreatmentById" parameterType="com.ck.springboot.pojo.CourseOfTreatment" >
+    update t_course_of_treatment
+    set type = #{type,jdbcType=INTEGER},
+      duration = #{duration,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER} and diagnosis_id = #{diagnosisId,jdbcType=INTEGER}
+  </update>
+  
+  	<update id="updateDiagnsisRestriction" parameterType="java.util.List">
+		update t_medcine_restriction
+		<trim prefix="set" suffixOverrides=",">
+			<trim prefix="diagnosis_id =case" suffix="end,">
+				<foreach collection="diagnsisrestriction" item="i" index="index">
+					<if test="i.diagnosisId!=null">
+						when id=#{i.id} then #{i.diagnosisId}
+					</if>
+				</foreach>
+			</trim>
+			<trim prefix="medcine_id =case" suffix="end,">
+				<foreach collection="diagnsisrestriction" item="i" index="index">
+					<if test="i.medcineId!=null">
+						when id=#{i.id} then #{i.medcineId}
+					</if>
+				</foreach>
+			</trim>
+			<trim prefix="action =case" suffix="end,">
+				<foreach collection="diagnsisrestriction" item="i" index="index">
+					<if test="i.action!=null">
+						when id=#{i.id} then #{i.action}
+					</if>
+				</foreach>
+			</trim>
+		</trim>
+			where
+			<foreach collection="diagnsisrestriction" separator="or" item="a"
+				index="index">
+				id=#{a.id}
+			</foreach>
+	</update>
+</mapper>

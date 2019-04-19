@@ -1,0 +1,79 @@
+@import '../mixins/mixin.less';
+
+.border {
+  border: @border-width solid @border-color; /*no*/
+}
+
+.border-top {
+  border-top: @border-width solid @border-color; /*no*/
+}
+
+.border-right {
+  border-right: @border-width solid @border-color; /*no*/
+}
+
+.border-bottom {
+  border-bottom: @border-width solid @border-color; /*no*/
+}
+
+.border-left {
+  border-left: @border-width solid @border-color; /*no*/
+}
+
+.border-0 {
+  border: 0;
+}
+
+.border-top-0 {
+  border-top: 0;
+}
+
+.border-right-0 {
+  border-right: 0;
+}
+
+.border-bottom-0 {
+  border-bottom: 0;
+}
+
+.border-left-0 {
+  border-left: 0;
+}
+
+.make-classes(border, border-color, @bg-colors);
+
+//
+// Border-radius
+//
+
+.rounded {
+  border-radius: @border-radius;
+}
+
+.rounded-top {
+  border-top-left-radius: @border-radius;
+  border-top-right-radius: @border-radius;
+}
+
+.rounded-right {
+  border-top-right-radius: @border-radius;
+  border-bottom-right-radius: @border-radius;
+}
+
+.rounded-bottom {
+  border-bottom-right-radius: @border-radius;
+  border-bottom-left-radius: @border-radius;
+}
+
+.rounded-left {
+  border-top-left-radius: @border-radius;
+  border-bottom-left-radius: @border-radius;
+}
+
+.rounded-circle {
+  border-radius: 50%;
+}
+
+.rounded-0 {
+  border-radius: 0;
+}

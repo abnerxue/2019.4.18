@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<link rel="shortcut icon" href="./webapp/image/logo.png"/>
+		<link rel="stylesheet" href="./webapp/css/login.css"/>
+	    <script src="./webapp/js/axios.min.js"></script>
+	    <script src="./webapp/js/jquery.min.js"></script>
+		<script src="./webapp/js/vue.min.js"></script>    
+		<title>区域智慧审方平台</title>
+	</head>
+	<body background="./webapp/image/登录背景.jpg">
+		<div>区域智慧审方平台（RIPAP）</div>
+		<div>登录</div>
+		<div id="app">
+			<div>
+				<span><img src="./webapp/image/userName.png" /></span>
+				<span><input type="text"/></span>
+			</div>
+			<div>
+				<span><img src="./webapp/image/password.png" /></span>
+				<span><input type="password"/></span>
+			</div>	
+			<div>
+				<button type="button">取消</button>
+				<button type="button" v-on:click="doLogin">登录</button>
+			</div>
+		</div>
+		
+		<script>
+		    var userObj = {
+		    	userName:'sa',
+		    	password:'123456'
+			};
+		
+		    var vue = new Vue({
+		        el: '#app',
+		        data: userObj,
+		        methods: {
+		            doLogin: function (event) {
+						axios.get('/getlogin', {
+							params:{
+								userName:'sa',
+								password:'123456'
+							}
+						})
+						.then(function(response){
+							console.log(response);
+						})
+						.catch(function(error){
+							console.log(error);
+						});
+		            }
+		   		 }
+		    });
+	    </script> 
+	    
+	</body>
+</html>

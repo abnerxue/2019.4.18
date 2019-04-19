@@ -1,0 +1,164 @@
+@import '../../style/self.less';
+@import '../../style/mixins/mixin.less';
+
+::-webkit-input-placeholder{ color: #999; }    /* 使用webkit内核的浏览器 */
+:-moz-placeholder{ color: #999; }                  /* Firefox版本4-18 */
+::-moz-placeholder{ color: #999; }                  /* Firefox版本19+ */
+:-ms-input-placeholder{ color: #999; }           /* IE浏览器 */
+
+input,
+textarea {
+  padding: 5px 8px;
+  border: 1px solid #999;
+  border-radius: 4px;
+}
+
+select {
+  padding: 0 8px;
+  border: 1px solid #999;
+  border-radius: 4px;
+  height: 30px;
+}
+
+.space {
+  height: 10px;
+}
+
+.l-dashed {
+  height: 0;
+  border: 1px dashed #ebeef5;
+  margin: 10px 0;
+}
+
+.icon-menu1 {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  margin-right: 2px;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.icon-menu2 {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.icon-menu3 {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.icon1-1 {
+  background-image: url(../images/icon1-1.png);
+}
+
+.icon1-2 {
+  background-image: url(../images/icon1-2.png);
+}
+
+.icon1-3 {
+  background-image: url(../images/icon1-2.png);
+}
+
+.icon1-4 {
+  background-image: url(../images/icon1-3.png);
+}
+
+.icon1-5 {
+  background-image: url(../images/icon1-5.png);
+}
+
+.icon1-6 {
+  background-image: url(../images/icon1-6.png);
+}
+
+.icon2-2-1 {
+  background-image: url(../images/icon2-6-2.png);
+}
+
+.icon2-2-2 {
+  background-image: url(../images/icon2-6-2.png);
+}
+
+.icon2-3-1 {
+  background-image: url(../images/icon1-3.png);
+}
+
+.icon2-4-1 {
+  background-image: url(../images/icon2-4-1.png);
+}
+
+.icon2-4-2 {
+  background-image: url(../images/icon2-4-2.png);
+}
+
+.icon2-4-3 {
+  background-image: url(../images/icon2-4-3.png);
+}
+
+.icon2-5-1 {
+  background-image: url(../images/icon2-5-1.png);
+}
+
+.icon2-5-2 {
+  background-image: url(../images/icon2-5-2.png);
+}
+
+.icon2-6-1 {
+  background-image: url(../images/icon2-5-1.png);
+}
+
+.icon2-6-2 {
+  background-image: url(../images/icon2-5-2.png);
+}
+
+.icon4 {
+  background-image: url(../images/icon-his.png);
+}
+.icon-pro {
+  background-image: url(../images/icon-pro.png);
+}
+.icon-u{
+  background-image: url(../images/icon-u.png);
+}
+
+.icon-user1 {
+  background-image: url(../images/icon-user1.png);
+}
+
+.icon-user2 {
+  background-image: url(../images/icon-user2.png);
+}
+
+.icon-range {
+  background-image: url(../images/icon-set1.png);
+}
+
+.icon-system {
+  background-image: url(../images/icon-set2.png);
+}
+.report1 {
+  background-image: url(../images/report1.png);
+}
+.report2 {
+  background-image: url(../images/report2.png);
+}
+.report3 {
+  background-image: url(../images/report3.png);
+}
+.report4 {
+  background-image: url(../images/report4.png);
+}
+.report5 {
+  background-image: url(../images/report5.png);
+}

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ck.springboot.mapper.UserMapper">
+
+	<resultMap id="BaseResultMap"
+		type="com.ck.springboot.pojo.User">
+		<id column="id" property="id" />
+		<result column="name" property="name" />
+		<result column="password" property="password" />
+		<result column="deptid" property="deptid" />
+		<result column="roleid" property="roleid" />
+		<association property="dept"
+			javaType="com.ck.springboot.pojo.Dept">
+			<id column="deptId" property="deptId" />
+			<result column="deptName" property="deptName" />
+		</association>
+		<association property="role"
+			javaType="com.ck.springboot.pojo.Role">
+			<id column="roleId" property="roleId" />
+			<result column="roleName" property="roleName" />
+		</association>
+	</resultMap>
+	<select id="getlogin" resultType="com.ck.springboot.pojo.UserLogin">
+		select * from t_user where name=
+		#{name} and password= #{password}
+	</select>
+
+	<select id="getAllUser" resultMap="BaseResultMap">
+		select u.*,d.name as deptName,d.id as deptId ,r.name as roleName,r.id as roleId
+		from t_user u
+		left join t_dept d on u.deptid = d.id
+		left join t_role r on u.roleid = r.id
+		where 1=1
+		<if test="name!=null and name!=''">
+			AND u.name like '%'+#{name}+'%'
+		</if>
+		<if test="deptId!=null and deptId!=''">
+			AND u.deptId = #{deptId}
+		</if>
+	</select>
+
+	<insert id="insertUser"
+		parameterType="com.ck.springboot.pojo.User">
+		insert into t_user (name, password, deptid, roleid)
+		values (#{name,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
+		#{deptid,jdbcType=INTEGER}, #{roleid,jdbcType=INTEGER})
+	</insert>
+	<update id="updateUser" parameterType="com.ck.springboot.pojo.User">
+		update t_user
+		<set>
+			<if test="name != null and name !=''">
+				name = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test="password != null and password !=''">
+				password = #{password,jdbcType=VARCHAR},
+			</if>
+			<if test="deptid != null">
+				deptid = #{deptid,jdbcType=INTEGER},
+			</if>
+			<if test="roleid != null">
+				roleid = #{roleid,jdbcType=INTEGER},
+			</if>
+		</set>
+		 where id = #{id,jdbcType=INTEGER}
+	</update>
+	<delete id="deleteUser" parameterType="java.lang.Integer" >
+    delete from t_user
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+</mapper>

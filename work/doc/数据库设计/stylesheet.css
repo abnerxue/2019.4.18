@@ -1,0 +1,59 @@
+/* javadoc 僗僞僀儖僔乕僩   */
+
+/* 怓傗僼僅儞僩側偳偺僗僞僀儖懏惈偺僨僼僅儖僩抣傪忋彂偒偡傞偵偼丄偙偙偱掕媊偟傑偡丅   */
+
+/* 儁乕僕偺僶僢僋僌儔僂儞僪偺怓   */
+body { background-color: #FFFFFF }
+
+/* 僥乕僽儖偺怓   */
+.TableHeadingColor     { background: #CCCCFF } /* 擹偄摗怓   */
+.TableSubHeadingColor  { background: #EEEEFF } /* 敄偄摗怓   */
+.TableRowColor         { background: #FFFFFF } /* 敀   */
+
+/* 嵍懁偺僼儗乕儉偺儕僗僩偵巊梡偡傞僼僅儞僩   */
+.FrameTitleFont   { font-size: 10pts; font-family: Helvetica, Arial, san-serif }
+.FrameHeadingFont { font-size: 1.2em; font-family: Helvetica, Arial, san-serif; font-weight : bold; }
+.FrameItemFont    { font-size: 10pts; font-family: Helvetica, Arial, san-serif }
+
+/* 僼儗乕儉偵偍偗傞丄傛傝彫偝偄丄僙儕僼側偟僼僅儞僩偺椺   */
+/* .FrameItemFont  { font-size: 10pt; font-family: Helvetica, Arial, sans-serif } */
+
+/* 僫價僎乕僔儑儞僶乕偺僼僅儞僩偲怓   */
+.NavBarCell1    {
+	background-color:#EEEEFF;
+	font-family: Arial, Helvetica, sans-serif; color:#000000;
+	font-weight : bold;
+}/* 敄偄摗怓   */
+
+.NavBarCell1Rev {
+	background-color:#00008B;
+	font-family: Arial, Helvetica, sans-serif; color:#FFFFFF;
+	font-weight : bold;
+}/* 擹偄惵   */
+
+.NavBarCell2    {
+	background-color:#FFFFFF;
+	font-family: Arial, Helvetica, sans-serif; background-color:#FFFFFF;
+	font-size : 0.6em;
+	font-weight : bold;
+	padding-left : 0.5em;
+}
+
+.NavBarCell3    { font-family: Arial, Helvetica, sans-serif; background-color:#FFFFFF;}
+
+.AttributeTable {
+	width : 100%;
+}
+
+.AttributeTable TR.TableHeadingColor {
+	font-size : 1.6em;
+	font-wight : bold;
+	text-align : left;
+}
+
+.AttributeTable TH {
+}
+
+.AttributeTable TD {
+}
+

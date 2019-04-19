@@ -1,0 +1,183 @@
+<template>
+  <div style="height: 100%">
+    <!-- 适用药及疗程维护 -->
+    <el-row
+      :gutter="20"
+      style="height: 100%"
+    >
+      <el-col
+        :span="10"
+        style="height: 100%"
+      >
+        <el-card class="box-card">
+          <div
+            slot="header"
+            class="clearfix"
+          >
+            <span class="f4">诊断列表</span>
+          </div>
+          <div>
+            <el-input
+              v-model="searchKey"
+              size="small"
+              placeholder="查找诊断"
+              clearable
+              @change="handleSearch"
+            >
+            </el-input>
+            <div class="space"></div>
+            <el-table
+              ref="table"
+              :data="list"
+              @row-click="handleClickRow"
+              highlight-current-row
+              border
+              size="small"
+              style="width: 100%;"
+              :height="tableHeight"
+              :header-cell-class-name="tableHeaderName"
+            >
+              <el-table-column
+                prop="icd10"
+                label="编码"
+                align="center"
+                width="100"
+              ></el-table-column>
+              <el-table-column
+                prop="diagnosisName"
+                label="名称"
+                align="center"
+              ></el-table-column>
+            </el-table>
+            <Pagination
+              class="text-center"
+              :page="page"
+              @handlePageChange="getAllList"
+            />
+          </div>
+        </el-card>
+      </el-col>
+      <el-col
+        :span="14"
+        style="height: 100%"
+      >
+        <el-card
+          class="box-card"
+          style="height: 100%"
+        >
+          <div
+            slot="header"
+            class="clearfix"
+          >
+            <span class="f4">适用药</span>
+            <template v-if="choose.label">
+              <span class="f1 font-bold">【 {{choose.label}} 】</span>
+              <el-button
+                style="position: absolute; top: 15px; right: 20px;"
+                type="primary"
+                size="small"
+                @click=""
+              >保存</el-button>
+            </template>
+          </div>
+          <div
+            class="f4"
+            v-if="!choose.label"
+          >请先选择药品</div>
+          <el-tabs
+            v-if="choose.label"
+          >
+            <el-tab-pane label="适用药品">
+            </el-tab-pane>
+            <el-tab-pane label="疗程设置">
+            </el-tab-pane>
+          </el-tabs>
+        </el-card>
+      </el-col>
+    </el-row>
+  </div>
+</template>
+
+<script>
+import {
+  SelectAllDiagnosis,
+  Allmedcinefold,
+} from '@/api/dataMana'
+import Pagination from '@/components/Pagination'
+
+export default {
+  name: '',
+  components: { Pagination },
+  data() {
+    return {
+      tableHeight: 50,
+      loading: false,
+      searchKey: '', // 查询诊断 关键字
+      list: [], // 诊断信息
+      page: {
+        pageSize: 10, // 每页显示10条数据
+        pageNo: 1, // 当前页码
+        totalCount: 0,
+        totalPage: 0
+      },
+      choose: {
+        id: '',
+        label: ''
+      },
+    }
+  },
+  created() {
+    this.getAllMedcine();
+    this.getAllList();
+  },
+  mounted() {
+    setTimeout(() => {
+      this.tableHeight = window.innerHeight - 350
+    }, 100)
+  },
+  methods: {
+    // *诊断列表查询诊断
+    handleSearch() {
+      this.getAllList(this.searchKey)
+    },
+
+    // *点击 表格
+    handleClickRow(row) {
+      console.log(row);
+      this.choose = {
+        id: row.id,
+        label: row.diagnosisName
+      };
+    },
+
+    // *获取诊断信息
+    async getAllList(key) {
+      const args = {
+        filter: key,
+        pageNo: this.page.pageNo,
+        pageSize: this.page.pageSize
+      }
+      const res = await SelectAllDiagnosis(args)
+      if (res.code === 0) {
+        this.list = res.result
+        this.page = res.page || this.page
+      }
+    },
+
+    // *获取药品信息
+    async getAllMedcine() {
+      const res = await Allmedcinefold()
+      if (res.code === 0) {
+        this.allMedcine = res.result
+        this.searchList = JSON.parse(JSON.stringify(this.allMedcine))
+        this.searchList.forEach((item) => { Object.assign(item, { value: item.name }) })
+      }
+    },
+
+    // *修改table header的背景色
+    tableHeaderName({ row, rowIndex }) {
+      return 'table-header'
+    }
+  }
+}
+</script>

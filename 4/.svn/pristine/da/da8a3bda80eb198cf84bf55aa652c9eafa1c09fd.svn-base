@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ck.springboot.mapper.IndicationLimitMapper">
+	
+	<!-- 年龄适应症表映射 -->
+	<resultMap type="TageAangeIndication" id="ageAangeIndication">
+		<id property="id" column="id"/>
+		<result property="medcineId" column="medcine_id"/>
+		<result property="medicineName" column="name"/>
+		<result property="diagnosisId" column="diagnosis_id"/>
+		<result property="under_3_month" column="under_3_month"/>
+	</resultMap>
+	<!-- 孕周适应症表映射 -->
+	<resultMap type="TgestationalWeekIndication" id="gestationalWeekIndication">
+		<id property="id" column="id"/>
+		<result property="medcineId" column="medcine_id"/>
+		<result property="medicineName" column="name"/>
+		<result property="diagnosisId" column="diagnosis_id"/>
+		<result property="alltime" column="alltime"/>
+		<result property="_0_12_week" column="zero_twelve_week"/>
+		<result property="_12_childbirth" column="twelve_childbirth"/>
+		<result property="_27_childbirth" column="twentyseven_childbirth"/>
+		<result property="_34_childbirth" column="thirtyfour_childbirth"/>
+	</resultMap>
+	<!-- 人群适应症表映射 -->
+	<resultMap type="TgroupIndication" id="groupIndication">
+		<id property="id" column="id"/>
+		<result property="medcineId" column="medcine_id"/>
+		<result property="medicineName" column="name"/>
+		<result property="diagnosisId" column="diagnosis_id"/>
+		<result property="male" column="male"/>
+		<result property="female" column="female"/>
+	</resultMap>
+	<!-- 病生理适应症表映射 -->
+	<resultMap type="TpathologyPhysiologyIndication" id="pathologyPhysiologyIndication">
+		<id property="id" column="id"/>
+		<result property="medcineId" column="medcine_id"/>
+		<result property="medicineName" column="name"/>
+		<result property="diagnosisId" column="diagnosis_id"/>
+		<result property="lactation" column="Lactation"/>
+		<result property="liver_function" column="liver_function"/>
+		<result property="liver_function_uparrow" column="liver_function_uparrow"/>
+		<result property="kidney_function" column="kidney_function"/>
+		<result property="kidney_function_uparrow" column="kidney_function_uparrow"/>
+	</resultMap>
+	
+	<select id="getDiagnosisList" resultType="Diagnosis">
+		select top ${pageSize} id,desp as diagnosisName,icd10 as icd10 from t_diagnosis
+		where id not in (select top (${pageSize}*(${pageNo}-1)) id from t_diagnosis)
+			<if test="name != null and name != ''">
+				and desp like ('%'+#{name}+'%')
+			</if>
+	</select>
+	
+	<select id="getDiagnosisCounts" resultType="int" parameterType="String">
+		select count(1) from t_diagnosis
+		<where>
+			<if test="name != null">
+				and desp like ('%'+#{name}+'%')
+			</if>
+		</where>
+	</select>
+	
+	<select id="getMedicine" resultType="MedcineFold" parameterType="String">
+		select id,name from t_medcine 
+		<where>
+			<if test="name != null">
+				and name like ('%'+#{name}+'%')
+			</if>
+		</where>
+	</select>
+	
+	<select id="getTageAangeIndicationListBydiagnosisId" parameterType="int"
+		resultMap="ageAangeIndication">
+		select tage.*,tm.name from t_age_range_indication tage
+		inner join t_medcine tm on (tage.medcine_id = tm.id)
+		where diagnosis_id = #{diagnosisId}
+	</select>
+	
+	<select id="getTgestationalWeekIndicationListBydiagnosisId" parameterType="int"
+		resultMap="gestationalWeekIndication">
+		select tweek.*,tm.name from t_gestational_week_indication tweek
+		inner join t_medcine tm on (tweek.medcine_id = tm.id)
+		where diagnosis_id = #{diagnosisId}
+	</select>
+	
+	<select id="getTgroupIndicationListBydiagnosisId" parameterType="int"
+		resultMap="groupIndication">
+		select tgroup.*,tm.name from t_group_indication tgroup
+		inner join t_medcine tm on (tgroup.medcine_id = tm.id)
+		where diagnosis_id = #{diagnosisId}
+	</select>
+	
+	<select id="getTpathologyPhysiologyIndicationListBydiagnosisId" parameterType="int"
+		resultMap="pathologyPhysiologyIndication">
+		select tphy.*,tm.name from t_pathology_physiology_indication tphy
+		inner join t_medcine tm on (tphy.medcine_id = tm.id)
+		where diagnosis_id = #{diagnosisId}
+	</select>
+	
+	<!-- 通过诊断id删除年龄适应症 -->
+	<delete id="deleteAgeIndication" parameterType="int">
+		delete from t_age_range_indication where diagnosis_id = #{diagnosisId}
+	</delete>
+	<!-- 添加年龄适应症表 -->
+	<insert id="insertAgeIndication">
+		insert into t_age_range_indication (diagnosis_id,medcine_id,under_3_month,under_6_month,
+		under_2_year,under_12_year,under_16_year,under_18_year,above_60_year,above_70_year) values
+		(#{diagnosisId},#{medcineId},#{under_3_month},#{under_6_month},#{under_2_year},
+		#{under_12_year},#{under_16_year},#{under_18_year},#{above_60_year},#{above_70_year})
+	</insert>
+	
+	<!-- 通过诊断删除孕周适应症 -->
+	<delete id="deleteTgestationalWeekIndication" parameterType="int">
+		delete from t_gestational_week_indication where diagnosis_id = #{diagnosisId}
+	</delete>
+	<!-- 添加孕周适应症 -->
+	<insert id="addTgestationalWeekIndication">
+		insert into t_gestational_week_indication (diagnosis_id,medcine_id,alltime,zero_twelve_week,
+		twelve_childbirth,twentyseven_childbirth,thirtyfour_childbirth) values (#{diagnosisId},#{medcineId},
+		#{alltime},#{_0_12_week},#{_12_childbirth},#{_27_childbirth},#{_34_childbirth})
+	</insert>
+	
+	<!-- 通过诊断id删除人群适应症 -->
+	<delete id="deleteTgroupIndication" parameterType="int">
+		delete from t_group_indication where diagnosis_id = #{diagnosisId}
+	</delete>
+	<insert id="addTgroupIndication">
+		insert into t_group_indication (diagnosis_id,medcine_id,male,female) values
+		(#{diagnosisId},#{medcineId},#{male},#{female})
+	</insert>
+	
+	<!-- 通过诊断id删除病生理适应症 -->
+	<delete id="deleteTpathologyPhysiologyIndication" parameterType="int">
+		delete from t_pathology_physiology_indication where diagnosis_id = #{diagnosisId}
+	</delete>
+	<insert id="addTpathologyPhysiologyIndication">
+		insert into t_pathology_physiology_indication 
+		(diagnosis_id,medcine_id,Lactation,liver_function,liver_function_uparrow,
+		kidney_function,kidney_function_uparrow) values (#{diagnosisId},#{medcineId},
+		#{lactation},#{liver_function},#{liver_function_uparrow},#{kidney_function},#{kidney_function_uparrow})
+	</insert>
+	
+	<!-- 获取审核结果列表 -->
+	<select id="getAuditLevelList" resultType="AuditLevel">
+		select id,desp from t_audit_level
+	</select>
+	
+</mapper>

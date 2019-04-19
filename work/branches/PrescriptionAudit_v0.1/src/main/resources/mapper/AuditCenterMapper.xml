@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ck.springboot.mapper.AuditCenterMapper">
+	<resultMap id="BaseResultMap"
+		type="com.ck.springboot.pojo.AuditCenter">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="district" property="district"
+			jdbcType="VARCHAR" />
+		<result column="unit_name" property="unitName"
+			jdbcType="VARCHAR" />
+		<result column="audit_center_name" property="auditCenterName"
+			jdbcType="VARCHAR" />
+		<result column="ip" property="ip" jdbcType="CHAR" />
+		<result column="platform_audit_state"
+			property="platformAuditState" jdbcType="BIT" />
+		<result column="unit_name_id" property="unitNameId"
+			jdbcType="BIT" />
+		<association property="unit" javaType="com.ck.springboot.pojo.UnitName">
+            <id property="id" column="id"/>
+            <result property="unitName" column="unitName"/>
+            <result property="districtId" column="districtId"/>
+        </association>
+        <association property="dis" javaType="com.ck.springboot.pojo.District">
+            <id property="districtId" column="districtId"/>
+            <result property="districtName" column="districtName"/>
+        </association>
+	</resultMap>
+	<resultMap id="BaseResultMap1"
+		type="com.ck.springboot.pojo.UnitName">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="unit_name" property="unitName"
+			jdbcType="VARCHAR" />
+		<result column="district_id" property="districtId"
+			jdbcType="INTEGER" />
+	</resultMap>
+	
+		<resultMap id="BaseResultMap2"
+		type="com.ck.springboot.pojo.District">
+		<id column="id" property="districtId" jdbcType="INTEGER" />
+		<result column="district" property="districtName" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<sql id="Base_Column_List">
+		id, district, unit_name, audit_center_name, ip,
+		platform_audit_state
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from t_audit_center
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<select id="selectAllAuditCenter" resultMap="BaseResultMap">
+		select * from
+		t_audit_center
+	</select>
+	<!-- <select id="selectAllUnitName" resultMap="BaseResultMap1"> select u.*,d.* 
+		from t_unit_name u left join t_district d on d.id = u.district_id </select> -->
+	<select id="selectDistrict" resultMap="BaseResultMap2">
+		select * from t_district
+	</select>
+	<select id="selectAllUnitName" resultMap="BaseResultMap1" parameterType="java.lang.Integer"> 
+		select * from t_unit_name u where 1=1
+		<if test="id!=null and id!=-1">
+			AND u.district_id=#{id,jdbcType=INTEGER}
+		</if>
+	</select>
+	<select id="selectAuditCenter" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		select a.*,
+		u.unit_name as unitName,u.district_id as districtId,
+		d.district as districtName 
+		from t_audit_center a ,t_unit_name u ,t_district d
+		where a.unit_name_id=u.id and d.id = u.district_id 
+		<if test="id!=null and id!=-1">
+			AND a.unit_name_id=#{id,jdbcType=INTEGER}
+		</if>
+		order by id desc
+	</select>
+	<select id="selectAllAuditArea" resultType="String">
+		select distinct
+		district from t_audit_center
+	</select>
+	<delete id="deleteCenterByPrimaryKey"
+		parameterType="java.lang.Integer">
+		delete from t_audit_center where id =
+		#{id,jdbcType=INTEGER}
+	</delete>
+	<delete id="deleteHospital" parameterType="java.lang.Integer">
+		delete from
+		t_unit_name where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<delete id="deleteDistrict" parameterType="java.lang.Integer">
+		delete from
+		t_district where id = #{districtId,jdbcType=INTEGER}
+	</delete>
+	<insert id="insertCenter"
+		parameterType="com.ck.springboot.pojo.AuditCenter">
+		insert into t_audit_center (district, unit_name,
+		audit_center_name, ip, platform_audit_state
+		)
+		values
+		(#{district,jdbcType=VARCHAR}, #{unitName,jdbcType=VARCHAR},
+		#{auditCenterName,jdbcType=VARCHAR}, #{ip,jdbcType=CHAR},
+		#{platformAuditState,jdbcType=BIT}
+		)
+	</insert>
+	<insert id="insertHospital" parameterType="com.ck.springboot.pojo.UnitName">
+		insert into t_unit_name
+			<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="districtId != null">
+				district_id,
+			</if>
+			<if test="unitName != null and unitName !=''">
+				unit_name,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="districtId != null">
+				#{districtId,jdbcType=VARCHAR},
+			</if>
+			<if test="unitName != null and unitName !=''">
+				#{unitName,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+	<insert id="insertDistrict"
+		parameterType="com.ck.springboot.pojo.District">
+		insert into t_district (district)
+		values (#{districtName,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertAuditCenter" parameterType="com.ck.springboot.pojo.AuditCenter">
+		insert into t_audit_center
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="auditCenterName != null and auditCenterName!=''">
+				audit_center_name,
+			</if>
+			<if test="ip != null">
+				ip,
+			</if>
+			<if test="unitNameId != null">
+				unit_name_id,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="auditCenterName != null and auditCenterName!=''">
+				#{auditCenterName,jdbcType=VARCHAR},
+			</if>
+			<if test="ip != null">
+				#{ip,jdbcType=INTEGER},
+			</if>
+			<if test="unitNameId != null">
+				#{unitNameId,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+	<insert id="insertSelective"
+		parameterType="com.ck.springboot.pojo.AuditCenter">
+		insert into t_audit_center
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="district != null">
+				district,
+			</if>
+			<if test="unitName != null">
+				unit_name,
+			</if>
+			<if test="auditCenterName != null">
+				audit_center_name,
+			</if>
+			<if test="ip != null">
+				ip,
+			</if>
+			<if test="platformAuditState != null">
+				platform_audit_state,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="district != null">
+				#{district,jdbcType=VARCHAR},
+			</if>
+			<if test="unitName != null">
+				#{unitName,jdbcType=VARCHAR},
+			</if>
+			<if test="auditCenterName != null">
+				#{auditCenterName,jdbcType=VARCHAR},
+			</if>
+			<if test="ip != null">
+				#{ip,jdbcType=CHAR},
+			</if>
+			<if test="platformAuditState != null">
+				#{platformAuditState,jdbcType=BIT},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateCenterByPrimaryKeySelective"
+		parameterType="com.ck.springboot.pojo.AuditCenter">
+		update t_audit_center
+		<set>
+			<if test="district != null">
+				district = #{district,jdbcType=VARCHAR},
+			</if>
+			<if test="unitName != null">
+				unit_name = #{unitName,jdbcType=VARCHAR},
+			</if>
+			<if test="auditCenterName != null">
+				audit_center_name = #{auditCenterName,jdbcType=VARCHAR},
+			</if>
+			<if test="ip != null">
+				ip = #{ip,jdbcType=CHAR},
+			</if>
+			<if test="platformAuditState != null">
+				platform_audit_state =
+				#{platformAuditState,jdbcType=BIT},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateAuditCenter"
+		parameterType="com.ck.springboot.pojo.AuditCenter">
+		update t_audit_center
+		<set>
+			<if test="auditCenterName != null">
+				audit_center_name = #{auditCenterName,jdbcType=VARCHAR},
+			</if>
+			<if test="ip != null">
+				ip = #{ip,jdbcType=CHAR},
+			</if>
+			<if test="platformAuditState != null">
+				platform_audit_state =
+				#{platformAuditState,jdbcType=BIT},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateHospital"
+		parameterType="com.ck.springboot.pojo.UnitName">
+		update t_unit_name
+		<set>
+			<if test="unitName != null">
+				unit_name = #{unitName,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<!-- 新加查询语句 
+	<select id="selectHospitalCounts" 
+		parameterType="com.ck.springboot.pojo.UnitName"
+		resultType="int">
+		select count(*) from t_unit_name where unit_name = #{unitName,jdbcType=VARCHAR}
+	</select>-->
+	
+	<update id="updateDistrict"
+		parameterType="com.ck.springboot.pojo.District">
+		update t_district
+		<set>
+			<if test="districtName != null and districtName != ''">
+				district = #{districtName,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id = #{districtId,jdbcType=INTEGER}
+	</update>
+</mapper>

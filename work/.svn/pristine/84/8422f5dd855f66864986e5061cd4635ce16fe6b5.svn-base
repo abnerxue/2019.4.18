@@ -1,0 +1,29 @@
+#database
+#spring.datasource.url=jdbc:mysql://127.0.0.1:3306/cksoft?characterEncoding=UTF-8
+#spring.datasource.username=root
+#spring.datasource.password=123456
+#spring.datasource.driver-class-name=com.mysql.jdbc.Driver
+
+spring.datasource.driver=com.microsoft.sqlserver.jdbc.SQLServerDriver
+# \u8FDE\u63A5
+spring.datasource.url=jdbc:sqlserver://192.168.0.7:1433;databaseName=yyzhsf;
+spring.datasource.username=sa
+spring.datasource.password=Ckzx123
+
+#mybatis
+mybatis.mapper-locations=classpath:mapper/*.xml
+mybatis.type-aliases-package=com.ck.springboot.pojo
+
+#thymeleaf
+spring.thymeleaf.mode=LEGACYHTML5
+spring.thymeleaf.encoding=UTF-8
+spring.thymeleaf.content-type=text/html
+spring.thymeleaf.cache=false
+server.port=8081
+
+
+logging.config=classpath:logback.xml
+
+# redis
+spring.redis.host=192.168.0.7
+spring.redis.port=6379

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ck.springboot.mapper.AuditRulesMapper">
+  	<resultMap id="BaseResultMap" type="com.ck.springboot.pojo.AuditRules" >
+    <result column="id" property="id" jdbcType="INTEGER" />
+    <result column="name" property="problemName" jdbcType="VARCHAR" />
+    <result column="action" property="action" jdbcType="INTEGER" />
+    <result column="enable" property="enable" jdbcType="INTEGER" />
+  </resultMap>
+	<select id="getAllAuditRules" resultMap="BaseResultMap">
+		select * from t_audit_rules
+	</select>
+
+	<select id="getAuditRulesCount" resultType="java.lang.Integer">
+		select count(*) from
+		t_audit_rules
+	</select>
+	<update id="updateAuditRules" parameterType="java.util.List">
+		update t_audit_rules
+		<trim prefix="set" suffixOverrides=",">
+			<trim prefix="action =case" suffix="end,">
+				<foreach collection="auditrules" item="i" index="index">
+					<if test="i.action!=null">
+						when id=#{i.id} then #{i.action}
+					</if>
+				</foreach>
+			</trim>
+			<trim prefix="enable =case" suffix="end,">
+				<foreach collection="auditrules" item="i" index="index">
+					<if test="i.enable!=null">
+						when id=#{i.id} then #{i.enable}
+					</if>
+				</foreach>
+			</trim>
+		</trim>
+		where
+		<foreach collection="auditrules" separator="or" item="a"
+			index="index">
+			id=#{a.id} and code=#{a.code} and name=#{a.problemName}
+		</foreach>
+	</update>
+</mapper>
+
+ 

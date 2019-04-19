@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper
+	namespace="com.ck.springboot.mapper.CrowdRestrictionMedcineMapper">
+	<resultMap id="BaseResultMap"
+		type="com.ck.springboot.pojo.CrowdRestrictionMedcine">
+		<result column="t_crowd_id" property="tCrowdId"
+			jdbcType="INTEGER" />
+		<result column="medcine_id" property="medcineId"
+			jdbcType="INTEGER" />
+		<result column="action" property="action" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<!--  <resultMap id="BaseResultMap1"
+		type="com.ck.springboot.pojo.CrowdRestrictionMedcine">
+		<result column="t_crowd_id" property="tCrowdId"
+			jdbcType="INTEGER" />
+		<result column="medcine_id" property="medcineId"
+			jdbcType="INTEGER" />
+		<result column="action" property="action" jdbcType="VARCHAR" />
+			 <association property="crowdrestriction" javaType="com.ck.springboot.pojo.CrowdRestriction"> 
+				<id column="id" property="id" /> 
+				<result column="type" property="type" />
+			</association>
+	</resultMap>-->
+
+	<insert id="insert"
+		parameterType="com.ck.springboot.pojo.CrowdRestrictionMedcine">
+		insert into t_crowd_restriction_medcine (t_crowd_id,
+		medcine_id, action
+		)
+		values (#{tCrowdId,jdbcType=INTEGER},
+		#{medcineId,jdbcType=INTEGER},
+		#{action,jdbcType=VARCHAR}
+		)
+	</insert>
+	<select id="selectCrowdByMedcineId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		select * from t_crowd_restriction_medcine where medcine_id =#{medcineId,jdbcType=INTEGER}
+	</select>
+	  <update id="updateByPrimaryKey" parameterType="java.util.List" >
+	    update t_crowd_restriction_medcine
+	               <trim prefix="set" suffixOverrides=",">
+             <trim prefix="action =case" suffix="end,">
+                 <foreach collection="record" item="i" index="index">
+                         <if test="i.action!=null">
+                          when id=#{i.id} then #{i.action}
+                         </if>
+                 </foreach>
+              </trim>
+             </trim>
+            where
+            <foreach collection="record" separator="or" item="a" index="index" >
+              id=#{a.id} and t_crowd_id=#{a.tCrowdId} and medcine_id=#{a.medcineId}
+          </foreach>
+	</update>
+	
+	<insert id="insertSelective"
+		parameterType="com.ck.springboot.pojo.CrowdRestrictionMedcine">
+		insert into t_crowd_restriction_medcine
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="tCrowdId != null">
+				t_crowd_id,
+			</if>
+			<if test="medcineId != null">
+				medcine_id,
+			</if>
+			<if test="action != null">
+				action,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="tCrowdId != null">
+				#{tCrowdId,jdbcType=INTEGER},
+			</if>
+			<if test="medcineId != null">
+				#{medcineId,jdbcType=INTEGER},
+			</if>
+			<if test="action != null">
+				#{action,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<delete id="deleteCrowdById" parameterType="java.lang.Integer">
+		delete from t_crowd_restriction_medcine
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+</mapper>

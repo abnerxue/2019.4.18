@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ck.springboot.mapper.CompatibilityMapper">
+	<resultMap id="BaseResultMapMdM" type="com.ck.springboot.pojo.CompatibilityMdM">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="medcine_pair_id" property="medcinePairId" jdbcType="INTEGER" />
+		<result column="reaction_description" property="reactionDescription" jdbcType="VARCHAR" />
+		<result column="medcine_id" property="medcineId" jdbcType="INTEGER" />
+		<result column="audit_level_id" property="auditLevelId" jdbcType="VARCHAR" />
+		<result column="type" property="type" jdbcType="INTEGER" />
+	</resultMap>
+	<resultMap id="BaseResultMapMdC" type="com.ck.springboot.pojo.CompatibilityMdC">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="category_id" property="categoryId" jdbcType="INTEGER" />
+		<result column="reaction_description" property="reactionDescription" jdbcType="VARCHAR" />
+		<result column="medcine_id" property="medcineId" jdbcType="INTEGER" />
+		<result column="audit_level_id" property="auditLevelId" jdbcType="VARCHAR" />
+		<result column="type" property="type" jdbcType="INTEGER" />
+	</resultMap>
+	<resultMap id="BaseResultMapMdL" type="com.ck.springboot.pojo.CompatibilityMdL">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="label_id" property="labelId" jdbcType="INTEGER" />
+		<result column="reaction_description" property="reactionDescription" jdbcType="VARCHAR" />
+		<result column="medcine_id" property="medcineId" jdbcType="INTEGER" />
+		<result column="audit_level_id" property="auditLevelId" jdbcType="VARCHAR" />
+		<result column="type" property="type" jdbcType="INTEGER" />
+	</resultMap>
+	<resultMap id="BaseResultMapCdC" type="com.ck.springboot.pojo.CompatibilityCdC">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="category_pair_id" property="categoryPairId" jdbcType="INTEGER" />
+		<result column="reaction_description" property="reactionDescription" jdbcType="VARCHAR" />
+		<result column="category_id" property="categoryId" jdbcType="INTEGER" />
+		<result column="audit_level_id" property="auditLevelId" jdbcType="VARCHAR" />
+		<result column="type" property="type" jdbcType="INTEGER" />
+	</resultMap>
+
+	<resultMap id="BaseResultMapCdL" type="com.ck.springboot.pojo.CompatibilityCdL">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="lbl_id" property="lblelId" jdbcType="INTEGER" />
+		<result column="reaction_description" property="reactionDescription" jdbcType="VARCHAR" />
+		<result column="category_id" property="categoryId" jdbcType="INTEGER" />
+		<result column="audit_level_id" property="auditLevelId" jdbcType="VARCHAR" />
+		<result column="type" property="type" jdbcType="INTEGER" />
+	</resultMap>
+	
+	<sql id="Base_Column_List">
+		id, medcine_pair_id, reaction_description, medcine_id
+	</sql>
+	<select id="selectMdM" resultMap="BaseResultMapMdM">
+		select * from t_compatibility_interplay
+		where medcine_id = #{Id,jdbcType=INTEGER} or
+		medcine_pair_id = #{Id,jdbcType=INTEGER}
+	</select>
+	<select id="selectMdC" resultMap="BaseResultMapMdC">
+		select * from t_compatibility_interplay_medcine_category
+		where medcine_id = #{Id,jdbcType=INTEGER}
+	</select>
+
+	<select id="selectMdL" resultMap="BaseResultMapMdL">
+		select * from t_compatibility_interplay_medcine_lbl
+		where medcine_id = #{Id,jdbcType=INTEGER}
+	</select>
+	
+	<select id="selectCdM" resultMap="BaseResultMapMdC">
+		select * from t_compatibility_interplay_medcine_category
+		where category_id = #{Id,jdbcType=INTEGER}
+	</select>
+	<select id="selectCdC" resultMap="BaseResultMapCdC">
+		select * from t_compatibility_category_category
+		where category_id = #{Id,jdbcType=INTEGER} or category_pair_id = #{Id,jdbcType=INTEGER}
+	</select>
+	
+	<select id="selectCdL" resultMap="BaseResultMapCdL">
+		select * from t_category_lbl
+		where category_id = #{Id,jdbcType=INTEGER}
+	</select>
+	<select id="repeatVerification"
+		parameterType="java.lang.Integer" resultType="INTEGER">
+		select count(*) from t_compatibility
+		where medcine_pair_id = #{medcinePairId,jdbcType=INTEGER} 
+		and medcine_id = #{medcineId,jdbcType=INTEGER}
+	</select>
+
+
+</mapper>

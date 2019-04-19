@@ -1,0 +1,636 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper
+	namespace="com.ck.springboot.mapper.PrescriptionHistoryMapper">
+	<resultMap id="BaseResultMap"
+		type="com.ck.springboot.pojo.PrescriptionHistory">
+		<id column="id" property="id" />
+		<result column="state" property="state" />
+		<result column="review_state" property="reviewState" />
+		<result column="prescription_number" property="prescriptionNumber" />
+		<result column="prescription_content" property="prescriptionContent" />
+		<result column="prescription_reason" property="prescriptionReason" />
+		<result column="patient_name" property="patientName" />
+		<result column="visit_number" property="visitNumber" />
+		<result column="submmit_time" property="submmitTime" />
+		<result column="audit_pharmacist" property="auditPharmacist" />
+		<result column="audit_time" property="auditTime" />
+		<result column="comfirm_pharmacist" property="comfirmPharmacist" />
+		<result column="submmit_time" property="comfirmTime" />
+		<result column="type" property="type" />
+		<result column="audit_center" property="auditCenter" />
+		<result column="medical_unit" property="medicalUnit" />
+		<result column="deny_reason" property="denyReason" />
+		<result column="deny_owner" property="denyOwner" />
+		<result column="deny_level" property="denyLevel" />
+		<result column="doctor_id" property="doctorId" />
+		<result column="dept_id" property="deptId" />
+		<result column="patient_id" property="patientId" />
+		<result column="total_fee" property="totalFee" />
+		<association property="auditstate" javaType="com.ck.springboot.pojo.AuditState">
+			<id property="id" column="aid" />
+			<result property="stateName" column="stateName" />
+			<result property="reviewName" column="reviewName" />
+		</association>
+		<association property="hospitalstaff" javaType="com.ck.springboot.pojo.HospitalStaff">
+			<id property="id" column="hsid" />
+			<result property="auditPharmacistName"
+				column="auditPharmacistName" />
+			<result property="comfirmPharmacistName"
+				column="comfirmPharmacistName" />
+			<result property="doctorName" column="doctorName" />
+		</association>
+		<association property="typedic" javaType="com.ck.springboot.pojo.Type">
+			<id property="id" column="tid" />
+			<result property="typeName" column="typeName" />
+		</association>
+		<association property="auditcenter" javaType="com.ck.springboot.pojo.AuditCenter">
+			<id property="id" column="aid" />
+			<result property="auditCenterName" column="auditCenterName" />
+		</association>
+		<association property="unitname" javaType="com.ck.springboot.pojo.UnitName">
+			<id property="id" column="uid" />
+			<result property="unitName" column="unitName" />
+		</association>
+		<association property="medicaldept" javaType="com.ck.springboot.pojo.MedicalDept">
+			<id property="id" column="mid" />
+			<result property="deptName" column="deptName" />
+		</association>
+		<association property="patient" javaType="com.ck.springboot.pojo.Patient">
+			<id property="id" column="pid" />
+			<result property="patientName" column="patientName" />
+		</association>
+	</resultMap>
+    <resultMap id="BaseResultMapLazy" type="com.ck.springboot.pojo.PrescriptionHistory" extends="BaseResultMap">
+        <collection property="problemcode" ofType="com.ck.springboot.pojo.ProblemCode" 
+		select="com.ck.springboot.mapper.PrescriptionHistoryMapper.getProblemName" column="id">
+        	<id property="problemCode" column="problem_code" />	
+			<result property="prescriptionHistoryId" column="prescription_history_id" />
+        </collection>
+        <collection property="diagnosis" ofType="com.ck.springboot.pojo.PrescriptionDiagnosis" 
+        select="com.ck.springboot.mapper.PrescriptionHistoryMapper.getDiagnsis" column="id">
+			<id property="diagnosisId" column="diagnosis_id" />		
+			<result property="prescriptionHistoryId" column="prescription_history_id" />
+		</collection>
+    </resultMap>
+	<resultMap id="BaseResultMap1"
+		type="com.ck.springboot.pojo.PrescriptionHistorySee">
+		<id column="id" property="id" />
+		<result column="review_state" property="reviewState" /><!-- 复审处理状态 -->
+		<result column="prescription_number" property="prescriptionNumber" /><!-- 处方号 -->
+		<result column="dept_id" property="deptId" /><!-- 科室id(外键) -->
+		<result column="visit_number" property="visitNumber" /><!-- 就诊号 -->
+		<result column="submmit_time" property="submmitTime" /><!-- 提交时间 -->
+		<result column="audit_pharmacist" property="auditPharmacist" /><!--审核药师 -->
+		<result column="audit_time" property="auditTime" /><!-- 审核时间 -->
+		<result column="audit_center" property="auditCenter" /><!-- 审方中心 -->
+		<result column="doctor_id" property="doctorId" /><!-- 医生id -->
+		<result column="patient_id" property="patientId" /><!-- 患者ID -->
+		<association property="patient"
+			javaType="com.ck.springboot.pojo.Patient">
+			<id property="id" column="pid" />
+			<result property="patientName" column="patientName" />
+			<result property="gender" column="gender" />
+		</association>
+		<association property="auditcenter"
+			javaType="com.ck.springboot.pojo.AuditCenter">
+			<id property="id" column="aid" />
+			<result property="auditCenterName" column="auditCenterName" />
+		</association>
+		<association property="unitname"
+			javaType="com.ck.springboot.pojo.UnitName">
+			<id property="id" column="uid" />
+			<result property="unitName" column="unitName" />
+		</association>
+		<association property="hospitalstaff"
+			javaType="com.ck.springboot.pojo.HospitalStaff">
+			<id property="id" column="hsid" />
+			<result property="auditPharmacistName"
+				column="auditPharmacistName" />
+			<result property="doctorName" column="doctorName" />
+		</association>
+		<association property="medicaldept"
+			javaType="com.ck.springboot.pojo.MedicalDept">
+			<id property="id" column="mid" />
+			<result property="deptName" column="deptName" />
+		</association>
+		<association property="auditstate"
+			javaType="com.ck.springboot.pojo.AuditState">
+			<id property="id" column="aid" />
+			<result property="reviewName" column="reviewName" />
+		</association>
+	</resultMap>
+
+	<resultMap id="BaseResultMap2"
+		type="com.ck.springboot.pojo.PrescriptionHistoryPending">
+		<id column="id" property="id" />
+		<result column="state" property="state" />
+		<result column="review_state" property="reviewState" />
+		<result column="prescription_number" property="prescriptionNumber" />
+		<result column="over_time" property="overTime" />
+		<result column="dept_id" property="deptId" />
+		<result column="visit_number" property="visitNumber" />
+		<result column="patient_id" property="patientId" />
+		<result column="prescription_reason" property="prescriptionReason" />
+		<result column="max_day" property="maxDay" />
+		<result column="type" property="type" />
+		<association property="auditstate"
+			javaType="com.ck.springboot.pojo.AuditState">
+			<id property="id" column="auid" />
+			<result property="stateName" column="stateName" />
+			<result property="reviewName" column="reviewName" />
+		</association>
+		<association property="typedic"
+			javaType="com.ck.springboot.pojo.Type">
+			<id property="id" column="tid" />
+			<result property="typeName" column="typeName" />
+		</association>
+		<association property="medicaldept"
+			javaType="com.ck.springboot.pojo.MedicalDept">
+			<id property="id" column="mid" />
+			<result property="deptName" column="deptName" />
+		</association>
+		<association property="patient"
+			javaType="com.ck.springboot.pojo.Patient">
+			<id property="id" column="pid" />
+			<result property="patientName" column="patientName" />
+		</association>
+	</resultMap>
+	<resultMap id="BaseResultMapLazy2" type="com.ck.springboot.pojo.PrescriptionHistoryPending" extends="BaseResultMap2">
+        <collection property="problemcode" ofType="com.ck.springboot.pojo.ProblemCode" 
+		select="com.ck.springboot.mapper.PrescriptionHistoryMapper.getProblemName" column="id">
+        	<id property="problemCode" column="problem_code" />	
+			<result property="prescriptionHistoryId" column="prescription_history_id" />
+        </collection>
+        <collection property="diagnosis" ofType="com.ck.springboot.pojo.PrescriptionDiagnosis" 
+        select="com.ck.springboot.mapper.PrescriptionHistoryMapper.getDiagnsis" column="id">
+			<id property="diagnosisId" column="diagnosis_id" />		
+			<result property="prescriptionHistoryId" column="prescription_history_id" />
+		</collection>
+    </resultMap>
+	<resultMap id="BaseResultMap3"
+		type="com.ck.springboot.pojo.PrescriptionHistoryDetail">
+		<id column="id" property="id" />
+		<result column="state" property="state" />
+		<result column="review_state" property="reviewState" />
+		<result column="prescription_number" property="prescriptionNumber" />
+		<result column="prescription_content" property="prescriptionContent" />
+		<result column="prescription_reason" property="prescriptionReason" />
+		<result column="patient_name" property="patientName" />
+		<result column="visit_number" property="visitNumber" />
+		<result column="submmit_time" property="submmitTime" />
+		<result column="audit_pharmacist" property="auditPharmacist" />
+		<result column="audit_time" property="auditTime" />
+		<result column="comfirm_pharmacist" property="comfirmPharmacist" />
+		<result column="submmit_time" property="comfirmTime" />
+		<result column="type" property="type" />
+		<result column="audit_center" property="auditCenter" />
+		<result column="medical_unit" property="medicalUnit" />
+		<result column="deny_reason" property="denyReason" />
+		<result column="deny_owner" property="denyOwner" />
+		<result column="deny_level" property="denyLevel" />
+		<result column="doctor_id" property="doctorId" />
+		<result column="dept_id" property="deptId" />
+		<result column="patient_id" property="patientId" />
+		<result column="total_fee" property="totalFee" />
+		<result column="diagnosis_id" property="diagnosisId" />
+		 <association property="medicaldept"
+			javaType="com.ck.springboot.pojo.MedicalDept">
+			<id property="id" column="mid" />
+			<result property="deptName" column="deptName" />
+			<result property="hospitalId" column="hospital_id" />
+		</association>
+		<association property="patient"
+			javaType="com.ck.springboot.pojo.Patient">
+			<id property="id" column="pid" />
+			<result property="patientName" column="patientName" />
+			<result property="gender" column="gender" />
+			<result property="age" column="age" />
+			<result property="address" column="address" />
+			<result property="allergyHistory" column="allergy_history" />
+			<result property="weight" column="weight" />
+			<result property="birthday" column="birthday" />
+			<result property="socialSecurityNumber" column="social_security_number" />	<!--***** -->
+			<result property="idNumber" column="id_number" />
+			<result property="height" column="height" />
+			<result property="specialGroup" column="special_group" />
+		</association>
+		<association property="unitname"
+			javaType="com.ck.springboot.pojo.UnitName">
+			<id property="id" column="uid" />
+			<result property="unitName" column="unitName" />
+			<result property="districtId" column="district_id" />
+		</association>
+		<association property="auditcentersee"
+			javaType="com.ck.springboot.pojo.AuditCenterSee">
+			<id property="id" column="aid" />
+			<result property="auditCenterName" column="auditCenterName" />
+		</association>
+
+		<association property="hospitalstaff"
+			javaType="com.ck.springboot.pojo.HospitalStaff">
+			<id property="id" column="hsid" />
+			<result property="doctorName" column="doctorName" />
+		</association>
+	 </resultMap>
+		<resultMap id="BaseResultMapLazy3" type="com.ck.springboot.pojo.PrescriptionHistoryDetail" extends="BaseResultMap3">
+        <collection property="premedcine" ofType="com.ck.springboot.pojo.PrescriptionMedcine" 
+		select="com.ck.springboot.mapper.PrescriptionHistoryMapper.getPreMedcine" column="id">
+        	<id property="medcineId" column="medcine_id" />	
+			<result property="medcineName" column="medcineName" />
+			<result property="prescriptionHistoryId" column="prescription_history_id" />
+			<result property="route" column="route" />
+			<result property="usage" column="usage" />
+			<result property="EachDose" column="each_dose" />
+        </collection>
+        <collection property="diagnosis" ofType="com.ck.springboot.pojo.PrescriptionDiagnosis" 
+        select="com.ck.springboot.mapper.PrescriptionHistoryMapper.getDiagnsis" column="id">
+			<id property="diagnosisId" column="diagnosis_id" />		
+			<result property="prescriptionHistoryId" column="prescription_history_id" />
+		</collection>
+		<collection property="problemcode" ofType="com.ck.springboot.pojo.ProblemCode" 
+		select="com.ck.springboot.mapper.PrescriptionHistoryMapper.getProblemName" 
+		column="{prescriptionNumber=prescription_number,medicalUnit=medical_unit}">
+		
+        </collection>
+        <collection property="problemcodehos" ofType="com.ck.springboot.pojo.ProblemCode" 
+		select="com.ck.springboot.mapper.PrescriptionHistoryMapper.getProblemNameHos" 
+		column="{prescriptionNumber=prescription_number,medicalUnit=medical_unit}">
+        </collection>
+    </resultMap>
+	<select id="getProblemName" resultType="com.ck.springboot.pojo.ProblemCode">
+		select ar.id as id, ar.prescription_number as prescriptionNumber,  
+		ar.submit_time as submitTime,ar.medical_unit as medicalUnit,
+		ar.audit_rules_code as problemCode,ar.problem_desp as problemName,
+		ar.audit_result as auditResult,ar.pharmacist_remark as pharmacistRemark,
+		ar.type as problemtype from t_audit_result ar 
+		where ar.prescription_number=#{prescriptionNumber} and ar.type=1 and ar.medical_unit=#{medicalUnit}
+	</select>
+	<select id="getProblemNameHos" resultType="com.ck.springboot.pojo.ProblemCode">
+		select ar.id as id, ar.prescription_number as prescriptionNumber,  
+		ar.submit_time as submitTime,ar.medical_unit as medicalUnit,
+		ar.audit_rules_code as problemCode,ar.problem_desp as problemName,
+		ar.audit_result as auditResult,ar.pharmacist_remark as pharmacistRemark,
+		ar.type as problemtype
+		from t_audit_result ar 
+		where ar.prescription_number=#{prescriptionNumber} and ar.type=2 and ar.medical_unit=#{medicalUnit}
+	</select>
+	<select id="getDiagnsis" resultType="com.ck.springboot.pojo.PrescriptionDiagnosis">
+		select pd.prescription_history_id as prescriptionHistoryId,
+		pd.diagnosis_id as diagnosisId,d.desp as diagnosisName from t_prescription_diagnosis pd
+		left join t_diagnosis d on pd.diagnosis_id = d.id
+		where pd.prescription_history_id = #{id}
+	</select>
+	<select id="getPreMedcine" resultType="com.ck.springboot.pojo.PrescriptionMedcine">
+		select pm.medcine_id as medcineId,pm.specification as specification,pm.total as total,
+		m.name as medcineName,pm.prescription_history_id as prescriptionHistoryId,pm.route,pm.usage,
+		pm.each_dose as EachDose
+		from t_prescription_medcine pm
+		left join t_medcine m on pm.medcine_id = m.id
+		where pm.prescription_history_id = #{id}
+	</select>
+	
+	<select id="getPrescriptionHistoryCountT"
+		resultType="java.lang.Integer">
+		select count(*) from t_prescription_history t where 1=1
+		<if test="auditCenterId!=null and auditCenterId!=-1">
+			AND t.audit_center=#{auditCenterId}
+		</if>
+		<if test="reviewStateId!=null and reviewStateId!=-1">
+			AND t.review_state=#{reviewStateId}
+		</if>
+		<if test="prescriptionNumber!=null and prescriptionNumber!=''">
+			AND (t.prescription_number=#{prescriptionNumber} or t.visit_number=#{prescriptionNumber})
+		</if>
+		<if test="startBeginDate!=null and endBeginDate!=null">
+			AND t.submmit_time BETWEEN #{startBeginDate} AND #{endBeginDate}
+		</if>
+	</select>
+	<select id="getPrescriptionHistoryCountF"
+		resultType="java.lang.Integer">
+		select count(*) from t_prescription_history t where t.review_state in
+		(3,4,5,6,7)
+		<if test="auditCenterId!=null and auditCenterId!=-1">
+			AND t.audit_center=#{auditCenterId}
+		</if>
+		<if test="reviewStateId!=null and reviewStateId!=-1">
+			AND t.review_state=#{reviewStateId}
+		</if>
+		<if test="prescriptionNumber!=null and prescriptionNumber!=''">
+			AND (t.prescription_number=#{prescriptionNumber} or t.visit_number=#{prescriptionNumber})
+		</if>
+		<if test="startBeginDate!=null and endBeginDate!=null">
+			AND t.submmit_time BETWEEN #{startBeginDate} AND
+			#{endBeginDate}
+		</if>
+	</select>
+	<select id="getPendingHistoryCount" resultType="java.lang.Integer">
+		select count(*) from t_prescription_history t 
+		where (t.state in (8,9) or t.review_state in (8,9)) and t.audit_center=#{auditCenterId}
+		<if test="prescriptionNumber!=null and prescriptionNumber!=-1">
+			AND (t.prescription_number=#{prescriptionNumber} or t.visit_number=#{prescriptionNumber})
+		</if>
+		<if test="reviewStateId!=null and reviewStateId!=-1">
+			AND (t.review_state=#{reviewStateId} or t.state=#{reviewStateId})
+		</if>
+		<if test="typeId!=null and typeId!=-1">
+			AND t.type=#{typeId}
+		</if>
+		<if test="startBeginDate!=null and endBeginDate!=null">
+			AND t.submmit_time BETWEEN #{startBeginDate} AND #{endBeginDate}
+		</if>
+	</select>
+	<select id="getPrescriptionHistoryCount"
+		resultType="java.lang.Integer">
+		select count(*) from (select tph.id from t_prescription_history tph
+		left join t_patient p on tph.patient_id = p.id
+		left join t_prescription_diagnosis pd on tph.id = pd.prescription_history_id
+		left join t_prescription_problem_code pp on tph.id = pp.prescription_history_id
+		where tph.audit_center=1
+		<if test="doctorId!=null and doctorId!=-1">
+			AND tph.doctor_id=#{doctorId}
+		</if>
+		<if test="auditPharmacistId!=null and auditPharmacistId!=-1">
+			AND tph.audit_pharmacist=#{auditPharmacistId}
+		</if>
+		<if test="patientName!=null and patientName!=''">
+			AND p.name like '%'+#{patientName}+'%'
+		</if>
+		<if test="typeId!=null and typeId!=-1">
+			AND tph.type=#{typeId}
+		</if>
+		<if test="problemCode!=null and problemCode!=''">
+			AND pp.problem_code=#{problemCode}
+		</if>
+		<if test="diagnosisId!=null and diagnosisId!=-1">
+			AND pd.diagnosis_id=#{diagnosisId}
+		</if>
+		<if test="stateId!=null and stateId!=-1">
+			AND tph.state=#{stateId}
+		</if>
+		<if test="reviewStateId!=null and reviewStateId!=-1">
+			AND tph.review_state=#{reviewStateId}
+		</if>
+		<if test="deptId!=null and deptId!=-1">
+			AND tph.dept_id=#{deptId}
+		</if>
+		<if test="startBeginDate!=null and endBeginDate!=null">
+			AND tph.submmit_time BETWEEN #{startBeginDate} AND #{endBeginDate}
+		</if> group by tph.id) as temp
+	</select>
+	<select id="getAllPrescriptionHistory" resultMap="BaseResultMapLazy">
+		select top ${pageSize} v.* from v_prescription_history v
+		where v.audit_center=#{auditCenterId} 
+		and v.id not in (select top (${pageSize}*(${pageNo}-1)) tph.id from t_prescription_history tph
+		where v.audit_center=#{auditCenterId}
+		<if test="doctorId!=null and doctorId!=-1">
+			AND tph.doctor_id=#{doctorId}
+		</if>
+		<if test="auditPharmacistId!=null and auditPharmacistId!=-1">
+			AND tph.audit_pharmacist=#{auditPharmacistId}
+		</if>
+		<if test="patientName!=null and patientName!=''">
+			AND p.name like '%'+#{patientName}+'%'
+		</if>
+		<if test="typeId!=null and typeId!=-1">
+			AND tph.type=#{typeId}
+		</if>
+		<if test="problemCode!=null and problemCode!=''">
+			AND pp.problem_code=#{problemCode}
+		</if>
+		<if test="diagnosisId!=null and diagnosisId!=-1">
+			AND pd.diagnosis_id=#{diagnosisId}
+		</if>
+		<if test="stateId!=null and stateId!=-1">
+			AND tph.state=#{stateId}
+		</if>
+		<if test="reviewStateId!=null and reviewStateId!=-1">
+			AND tph.review_state=#{reviewStateId}
+		</if>
+		<if test="deptId!=null and deptId!=-1">
+			AND tph.dept_id=#{deptId}
+		</if>
+		<if test="startBeginDate!=null and endBeginDate!=null">
+			AND tph.submmit_time BETWEEN #{startBeginDate} AND #{endBeginDate}
+		</if> order by id)
+		<if test="doctorId!=null and doctorId!=-1">
+			AND v.doctor_id=#{doctorId}
+		</if>
+		<if test="auditPharmacistId!=null and auditPharmacistId!=-1">
+			AND v.audit_pharmacist=#{auditPharmacistId}
+		</if>
+		<if test="patientName!=null and patientName!=''">
+			AND v.name like '%'+#{patientName}+'%'
+		</if>
+		<if test="typeId!=null and typeId!=-1">
+			AND v.type=#{typeId}
+		</if>
+		<if test="problemCode!=null and problemCode!=-1">
+			AND v.problem_code=#{problemCode}
+		</if>
+		<if test="diagnosisId!=null and diagnosisId!=-1">
+			AND pd.diagnosis_id=#{diagnosisId}
+		</if>
+		<if test="stateId!=null and stateId!=-1">
+			AND v.state=#{stateId}
+		</if>
+		<if test="reviewStateId!=null and reviewStateId!=-1">
+			AND v.review_state=#{reviewStateId}
+		</if>
+		<if test="deptId!=null and deptId!=-1">
+			AND v.dept_id=#{deptId}
+		</if>
+		<if test="startBeginDate!=null and endBeginDate!=null">
+			AND v.submmit_time BETWEEN #{startBeginDate} AND #{endBeginDate}
+		</if>
+		
+	</select>
+	<select id="getAllPrescriptionHistorySeeF" resultMap="BaseResultMap1">
+		select top ${pageSize} v.* from v_prescription_history v where v.review_state in (3,4,5,6,7) and
+		v.id not in (select top (${pageSize}*(${pageNo}-1)) t.id from t_prescription_history t where t.review_state in (3,4,5,6,7) 
+		<if test="auditCenterId!=null and auditCenterId!=-1">
+			AND t.audit_center=#{auditCenterId}
+		</if>
+		<if test="reviewStateId!=null and reviewStateId!=-1">
+			AND t.review_state=#{reviewStateId}
+		</if>
+		<if test="prescriptionNumber!=null and prescriptionNumber!=''">
+			AND (t.prescription_number=#{prescriptionNumber} or t.visit_number=#{prescriptionNumber})
+		</if>
+		<if test="startBeginDate!=null and endBeginDate!=null">
+			AND t.submmit_time BETWEEN #{startBeginDate} AND #{endBeginDate}
+		</if>order by t.id)
+		<if test="auditCenterId!=null and auditCenterId!=-1">
+			AND v.audit_center=#{auditCenterId}
+		</if>
+		<if test="reviewStateId!=null and reviewStateId!=-1">
+			AND v.review_state=#{reviewStateId}
+		</if>
+		<if test="prescriptionNumber!=null and prescriptionNumber!=''">
+			AND (v.prescription_number=#{prescriptionNumber} or v.visit_number=#{prescriptionNumber})
+		</if>
+		<if test="startBeginDate!=null and endBeginDate!=null">
+			AND v.submmit_time BETWEEN #{startBeginDate} AND #{endBeginDate}
+		</if>order by v.id
+	</select>
+	<select id="getAllPrescriptionHistorySeeT" resultMap="BaseResultMap1">
+		select top ${pageSize} v.* from v_prescription_history v
+		 where v.id not in (select top (${pageSize}*(${pageNo}-1)) id from t_prescription_history where 1=1
+		<if test="auditCenterId!=null and auditCenterId!=-1">
+			AND audit_center=#{auditCenterId}
+		</if>
+		<if test="reviewStateId!=null and reviewStateId!=-1">
+			AND review_state=#{reviewStateId}
+		</if>
+		<if test="prescriptionNumber!=null and prescriptionNumber!=''">
+			AND (prescription_number=#{prescriptionNumber} or visit_number=#{prescriptionNumber})
+		</if>
+		<if test="startBeginDate!=null and endBeginDate!=null">
+			AND submmit_time BETWEEN #{startBeginDate} AND #{endBeginDate}
+		</if>order by id)
+		<if test="auditCenterId!=null and auditCenterId!=-1">
+			AND v.audit_center=#{auditCenterId}
+		</if>
+		<if test="reviewStateId!=null and reviewStateId!=-1">
+			AND v.review_state=#{reviewStateId}
+		</if>
+		<if test="prescriptionNumber!=null and prescriptionNumber!=''">
+			AND (v.prescription_number=#{prescriptionNumber} or v.visit_number=#{prescriptionNumber})
+		</if>
+		<if test="startBeginDate!=null and endBeginDate!=null">
+			AND v.submmit_time BETWEEN #{startBeginDate} AND #{endBeginDate}
+		</if>
+		order by v.id
+	</select>
+	<select id="getPendingHistory" resultMap="BaseResultMapLazy2">
+		select top ${pageSize} v.* from v_prescription_history v 
+		where v.audit_center=#{auditCenterId} and (v.state in (8,9) or v.review_state in (8,9)) and
+		v.id not in (select top (${pageSize}*(${pageNo}-1)) t.id from t_prescription_history t
+		where t.state in (8,9) or t.review_state in (8,9) and v.audit_center=#{auditCenterId}
+		<if test="prescriptionNumber!=null and prescriptionNumber!=''">
+			AND (t.prescription_number=#{prescriptionNumber} or t.visit_number=#{prescriptionNumber})
+		</if>
+		<if test="reviewStateId!=null and reviewStateId!=-1">
+			AND (t.review_state=#{reviewStateId} or t.state=#{reviewStateId})
+		</if>
+		<if test="typeId!=null and typeId!=-1">
+			AND t.type=#{typeId}
+		</if>
+		<if test="startBeginDate!=null and endBeginDate!=null">
+			AND t.submmit_time BETWEEN #{startBeginDate} AND #{endBeginDate}
+		</if> order by t.id)
+		<if test="prescriptionNumber!=null and prescriptionNumber!=''">
+			AND (v.prescription_number=#{prescriptionNumber} or v.visit_number=#{prescriptionNumber})
+		</if>
+		<if test="reviewStateId!=null and reviewStateId!=-1">
+			AND (v.review_state=#{reviewStateId} or v.state=#{reviewStateId})
+		</if>
+		<if test="typeId!=null and typeId!=-1">
+			AND v.type=#{typeId}
+		</if>
+		<if test="startBeginDate!=null and endBeginDate!=null">
+			AND v.submmit_time BETWEEN #{startBeginDate} AND #{endBeginDate}
+		</if>
+	</select>
+	<select id="getPreHisById" resultMap="BaseResultMapLazy3">
+		select * from v_prescription_history v where 1=1
+		<if test="id!=null and id!=null">
+			AND v.id=#{id}
+		</if>
+	</select>
+	<select id="getPrescriptionMedcine"
+		resultType="com.ck.springboot.pojo.PrescriptionMedcine">
+		select * from t_prescription_medcine where id = #{0}
+	</select>
+	
+	
+	<!--******************************************** -->
+	
+	<resultMap type="com.ck.springboot.pojo.PrescriptionHistoryAndPatient" id="PrescriptionHistoryAndPatient">
+		<id property="id" column="id" />
+		<result property="patientId" column="patient_id" />
+		<result property="auditTime" column="audit_time" />
+		<result property="socialSecurityNumber" column="social_security_number" />
+		<result property="idNumber" column="id_number" />
+		<collection property="diagnosis"
+			ofType="com.ck.springboot.pojo.Diagnosis">
+			<id property="id" column="id" />
+			<result property="diagnosisName" column="desp" />
+			<result property="icd10" column="icd10" />
+		</collection>
+		<collection property="prescriptionMedcine"
+			ofType="com.ck.springboot.pojo.PrescriptionMedcine">
+			<result property="prescriptionNumber" column="prescription_number" />
+			<result property="auditCenterId" column="audit_center_id" />
+			<result property="medcineId" column="medcine_id" />
+			<result property="total" column="total" />
+			<result property="specification" column="specification" />
+			<result property="frequency" column="frequency" />
+			<result property="prescriptionHistoryId" column="prescription_history_id" />
+			<result property="route" column="route" />
+			<result property="usage" column="usage" />
+			<result property="EachDose" column="each_dose" />
+			<result property="medcineName" column="name" />
+		</collection>
+	</resultMap>
+	
+	<select id="getPrescriptionHistoryAndPatient" resultMap="PrescriptionHistoryAndPatient">
+		select tph.id,tph.patient_id,tph.audit_time,
+		tp.social_security_number,tp.id_number,
+		td.*,
+		tpm.*,
+		tm.name
+		from t_prescription_history tph
+		inner join t_patient tp on tph.patient_id = tp.id
+		inner join t_prescription_diagnosis tpd on tph.id=tpd.prescription_history_id
+		inner join t_diagnosis td on tpd.diagnosis_id=td.id
+		inner join t_prescription_medcine tpm on tph.id=tpm.prescription_history_id
+		inner join t_medcine tm on tm.id=tpm.medcine_id
+		<where>
+			<if test="idNumber != null">
+				and tp.id_number = #{idNumber}
+			</if>
+			<if test="socialSecurityNumber !=null">
+				and tp.social_security_number = #{socialSecurityNumber}
+			</if>
+			<if test="nowDate != null and beforeDate !=null">
+				and tph.audit_time between #{beforeDate} and #{nowDate}
+			</if>
+			
+			<if test="dTimeBefore != null and dTimeLater !=null">
+				and tph.audit_time between #{dTimeBefore} and #{dTimeLater}
+			</if>
+		</where>
+	</select>
+	
+	<select id="getHistoryCheckDays" resultType="int">
+		select [values] from t_config where id=4
+	</select>
+	
+	<!-- ******************** -->
+	<!-- 根据处方号和身份证号查询问题处方的数量 -->
+	<select id="getCountsByIdNumber" resultType="int">
+		select count(1) from t_conflict_prescription_in
+		where prescription_number = #{prescriptionNumber}
+		<if test="idNumber != null">
+			and id_number = #{idNumber} 
+		</if>
+	</select>
+	<!-- 根据处方号和社保号查询问题处方的数量 -->
+	<select id="getCountsBySocialSecurityNumber" resultType="int">
+		select count(1) from t_conflict_prescription_ssn
+		where prescription_number = #{prescriptionNumber}
+		<if test="socialSecurityNumber != null">
+			and social_security_number = #{socialSecurityNumber} 
+		</if>
+	</select>
+	
+	
+	
+	
+	
+	
+</mapper>

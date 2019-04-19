@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ck.springboot.mapper.CheckValuesSetMapper">
+	<resultMap type="ZyyCheckLimt" id="checkLimitEntity">
+		<id property="id" column="id"/>
+		<result property="ruleName" column="rule_name"/>
+		<result property="lowerbound" column="lowerbound"/>
+		<result property="upperbound" column="upperbound"/>
+		<result property="checkItemsId" column="check_items_id"/>
+		<result property="liverKidneyDicId" column="liver_kidney_dic_id"/>
+		<result property="name" column="name"/>
+		<result property="unitName" column="unit_name"/>
+		<result property="description" column="description"/>
+	</resultMap>
+	
+	
+	<resultMap type="GsonZyyCheckLimit" id="gsonZyyCheckLimit">
+		<result property="liverKidneyDicId" column="liver_kidney_dic_id"/>
+		<result property="description" column="description"/>
+		<result property="description" column="description"/>
+		<collection property="checkLimit" ofType="ZyyCheckLimt">
+			<result property="id" column="id"/>
+			<result property="ruleName" column="rule_name"/>
+			<result property="lowerbound" column="lowerbound"/>
+			<result property="upperbound" column="upperbound"/>
+			<result property="checkItemsId" column="check_items_id"/>
+			<result property="name" column="name"/>
+			<result property="unitName" column="unit_name"/>
+		</collection>
+	</resultMap>
+	
+	<select id="getCheckLimitListByType" resultMap="gsonZyyCheckLimit">
+		 select tcl.*,tci.name,tci.unit_name,tlkd.description from t_check_limit tcl
+		left join t_check_items tci on (tcl.check_items_id = tci.id)
+		left join t_liver_kidney_dic tlkd on (tcl.liver_kidney_dic_id = tlkd.id)
+		where liver_kidney_dic_id in (#{type},#{type2})
+	</select>
+	
+	<select id="getCheckLimitListByliverKidneyDicId" resultMap="gsonZyyCheckLimit">
+		 select tcl.*,tci.name,tci.unit_name,tlkd.description from t_check_limit tcl
+		left join t_check_items tci on (tcl.check_items_id = tci.id)
+		left join t_liver_kidney_dic tlkd on (tcl.liver_kidney_dic_id = tlkd.id)
+		where liver_kidney_dic_id = #{liverKidneyDicId}
+	</select>
+	
+	<insert id="addCheckLimit" parameterType="ZyyCheckLimt">
+		insert into t_check_limit (rule_name,lowerbound,upperbound,check_items_id,liver_kidney_dic_id)
+		values (#{ruleName},#{lowerbound},#{upperbound},#{checkItemsId},#{liverkidney})
+	</insert>
+	
+	<select id="getliverKidneyCount" parameterType="int" resultType="int">
+		select count(1) from t_check_limit where liver_kidney_dic_id = #{liverKidneyDicId}
+	</select>
+	
+	<select id="getliverKidneyDicIdById" parameterType="int" resultType="int">
+		select liver_kidney_dic_id from t_check_limit where id = #{id}
+	</select>
+	
+	<delete id="deletecheckLimitByliverKidneyDicId" parameterType="int">
+		delete from t_check_limit where liver_kidney_dic_id = #{liverKidneyDicId}
+	</delete>
+	
+	<select id="getCheckItemsList" resultType="CheckItems">
+		select id,name,unit_name as unitName from t_check_items
+	</select>
+	
+	<select id="getLiverKidneyDicList" resultType="LiverKidneyDic">
+		select * from t_liver_kidney_dic where id in (#{num1},#{num2})
+	</select>
+	
+	
+	
+	
+	
+</mapper>

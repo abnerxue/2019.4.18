@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ck.springboot.mapper.RoleMapper">
+	<resultMap id="BaseResultMap"
+		type="com.ck.springboot.pojo.Role">
+		<id column="id" property="roleId" jdbcType="INTEGER" />
+		<result column="name" property="roleName" jdbcType="VARCHAR" />
+	</resultMap>
+	<resultMap id="BaseResultMap1" type="com.ck.springboot.pojo.Permission" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="module_name" property="moduleName" jdbcType="VARCHAR" />
+  </resultMap>
+	<resultMap id="BaseResultMapLazy"
+		type="com.ck.springboot.pojo.Role" extends="BaseResultMap">
+		<collection property="rolepermission"
+			ofType="com.ck.springboot.pojo.RolePermission"
+			select="com.ck.springboot.mapper.RoleMapper.getRolePermission"
+			column="id">
+			<id property="permissionid" column="permissionId" />
+			<result property="roleid" column="roleId" />
+		</collection>
+	</resultMap>
+	<select id="getPermission" resultMap="BaseResultMap1">
+    select * from t_permission
+  	</select>
+	<select id="getRolePermission"
+		resultType="com.ck.springboot.pojo.RolePermission">
+		select * from t_role_permission where roleid = #{id}
+	</select>
+	
+	 <select id="getRoleIdByRoleName"
+		resultType="java.lang.Integer">
+		select id from t_role where name = #{roleName}
+	</select>
+	<sql id="Base_Column_List">
+		id, name
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from t_role
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<select id="getRole" resultMap="BaseResultMap" parameterType = "java.lang.Integer" >
+		select * from t_role t where 1=1
+		<if test="roleId!=null and roleId!=-1">
+			AND t.id=#{roleId}
+		</if>
+		order by id
+	</select>
+	<select id="judgeRolePermission" resultType="java.lang.Integer">
+		select count(*) from t_role_permission where roleid=#{roleId,jdbcType=INTEGER} and
+		permissionid=#{permissionId,jdbcType=INTEGER}
+	</select>
+	<select id="judgeRoleExistUser" resultType="java.lang.Integer">
+		select count(*) from t_user where roleid=#{roleId,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey"
+		parameterType="java.lang.Integer">
+		delete from t_role
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="com.ck.springboot.pojo.Role">
+		insert into t_role (id, name)
+		values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective"
+		parameterType="com.ck.springboot.pojo.Role">
+		insert into t_role
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="name != null">
+				name,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="name != null">
+				#{name,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective"
+		parameterType="com.ck.springboot.pojo.Role">
+		update t_role
+		<set>
+			<if test="name != null">
+				name = #{name,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey"
+		parameterType="com.ck.springboot.pojo.Role">
+		update t_role
+		set name = #{name,jdbcType=VARCHAR}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateRoleName"
+		parameterType="com.ck.springboot.pojo.Role">
+		update t_role
+		<set>
+			<if test="roleName != null">
+				name = #{roleName,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id = #{roleId,jdbcType=INTEGER}
+	</update>
+
+	<delete id="deleteRolePermission" parameterType="Integer">
+		DELETE FROM t_role_permission WHERE roleid=#{roleId}
+	</delete>
+	<delete id="deleteRole" parameterType="Integer">
+		DELETE FROM t_role WHERE id=#{roleId}
+	</delete>
+
+	<insert id="insertRole">
+		INSERT INTO t_role(name) VALUES (#{roleName})
+	</insert>
+
+	<insert id="insertRolePermission">
+		INSERT INTO t_role_permission(permissionid,roleid) VALUES
+		<foreach collection="pers" item="permissionid" separator=",">
+			(#{permissionid},#{roleId})
+		</foreach>
+	</insert>
+</mapper>

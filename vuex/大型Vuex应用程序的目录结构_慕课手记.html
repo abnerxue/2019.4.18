@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<!-- saved from url=(0035)https://www.imooc.com/article/35364 -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<title>
+大型Vuex应用程序的目录结构_慕课手记
+</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+<meta name="renderer" content="webkit">
+<meta name="mobile-agent" content="format=wml" ;="" url="https://m.imooc.com/article/35364">
+<link rel="alternate" media="only screen and (max-width: 640px)" href="https://m.imooc.com/article/35364">
+<meta name="mobile-agent" content="format=xhtml" ;="" url="https://m.imooc.com/article/35364">
+<meta name="mobile-agent" content="format=html5" ;="" url="https://m.imooc.com/article/35364">
+<meta property="qc:admins" content="77103107776157736375">
+<meta property="wb:webmaster" content="c4f857219bfae3cb">
+<meta http-equiv="Access-Control-Allow-Origin" content="*">
+<meta http-equiv="Cache-Control" content="no-transform ">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+<link rel="dns-prefetch" href="https://www.imooc.com/">
+<link rel="dns-prefetch" href="https://img.imooc.com/">
+<link rel="dns-prefetch" href="https://img.mukewang.com/">
+<link rel="apple-touch-icon" sizes="76x76" href="https://www.imooc.com/static/img/common/touch-icon-ipad.png">
+<link rel="apple-touch-icon" sizes="120x120" href="https://www.imooc.com/static/img/common/touch-icon-iphone-retina.png">
+<link rel="apple-touch-icon" sizes="152x152" href="https://www.imooc.com/static/img/common/touch-icon-ipad-retina.png">
+
+
+
+<meta name="Description" content="译者按： 听前端大佬聊聊Vuex大型项目架构的经验 原文: Large-scale Vuex application structures 译者: Fundebug 为了保证可读性">
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="./大型Vuex应用程序的目录结构_慕课手记_files/moco.min.css" type="text/css">
+    <link rel="stylesheet" href="./大型Vuex应用程序的目录结构_慕课手记_files/swiper-3.4.2.min.css">
+
+<script src="./大型Vuex应用程序的目录结构_慕课手记_files/push.js.下载"></script><script type="text/javascript" async="" src="./大型Vuex应用程序的目录结构_慕课手记_files/rt.js.下载"></script><script src="./大型Vuex应用程序的目录结构_慕课手记_files/hm.js.下载"></script><script type="text/javascript" id="zhuge-js" async="" src="./大型Vuex应用程序的目录结构_慕课手记_files/zhuge.min.js.下载"></script><script type="text/javascript">
+
+eval(function(p,a,c,k,e,d){e=function(c){return(c<a?"":e(parseInt(c/a)))+((c=c%a)>35?String.fromCharCode(c+29):c.toString(36))};if(!''.replace(/^/,String)){while(c--)d[e(c)]=k[c]||e(c);k=[function(e){return d[e]}];e=function(){return'\\w+'};c=1;};while(c--)if(k[c])p=p.replace(new RegExp('\\b'+e(c)+'\\b','g'),k[c]);return p;}('!4(){3 b={};3 d=0;3 5=[{c:\'//k.p.h/k/m/K/L.q\',6:0},{c:\'//m.p.h/I/J-O.q\',6:0}];3 u=4(){3 j,n=e P("(^| )"+"l=([^;]*)(;|$)");9(j=r.s.M(n)){o N(j[2])}D{o C}};3 A=4(t){3 B=u();3 8=e H();8.G(8.F()+E*v*v*10);r.s="l="+t+";13="+8.14()+";15=/;T=U.h";9(t&&t!=B){R.Y.Z()}};3 x=4(i){3 7=e X();7.V=4(){W(b[i]);b[i]=C;a(i,0)};7.Q=4(){a(i,1)};b[i]=S(4(){7.z="";a(i,1)},11);7.z=5[i].c+"?t="+12.16()};3 a=4(y,6){d++;5[y].6=6;9(d==5.f){3 g=0;w(3 i=0;i<5.f;i++){9(5[i].6==1){g=1}}A(g)}};w(3 i=0;i<5.f;i++){x(i)}}()',62,69,'|||var|function|urls|flag|imgobj|exp|if|callback|timer|url|count|new|length|error|com||arr|static|IMCDNS|img|reg|return|mukewang|png|document|cookie||getcookie|60|for|checkCdn|index|src|setcookie|_0|null|else|24|getTime|setTime|Date|images|unknow|common|logo|match|unescape|80|RegExp|onerror|window|setTimeout|domain|imooc|onload|clearTimeout|Image|location|reload|1000|3000|Math|expires|toGMTString|path|random'.split('|'),0,{}))
+
+</script>
+
+
+<script type="text/javascript">
+
+var OP_CONFIG={"module":"article","page":"details"};
+var isLogin = 0;
+var is_choice = "";
+var seajsTimestamp="v=201903261132";
+var _msg_unread = 0; 
+var _not_unread = 0; 
+var _cart_num = 0;
+</script>
+
+
+
+
+
+
+<link href="./大型Vuex应用程序的目录结构_慕课手记_files/captcha.min.css" rel="stylesheet">
+<script>
+var isLogin=0
+var _hmt = _hmt || [];
+var pageInfo = {
+	canForward:"1",
+    id: "35364",
+    praiseNum:"8"
+}
+var dtid = "31069";
+var marking = "fe";
+var user = {
+    uid : ""
+}
+var authorUid = {
+    uid : '6742431'
+}
+var curPage = 'details'
+
+var a_id = 35364
+
+// 为html转码，article_content 为新markdown编辑器接收的初始化内容
+var article_content = "&lt;p&gt;&lt;strong&gt;译者按：&lt;/strong&gt; 听前端大佬聊聊Vuex大型项目架构的经验&lt;/p&gt;\n&lt;ul&gt;\n&lt;li&gt;原文: &lt;a href=&quot;https://medium.com/3yourmind/large-scale-vuex-application-structures-651e44863e2f&quot; target=&quot;_blank&quot; rel=&quot;nofollow&quot;&gt;Large-scale Vuex application structures&lt;/a&gt;&lt;/li&gt;\n&lt;li&gt;译者: &lt;a href=&quot;https://fundebug.com/&quot; target=&quot;_blank&quot; rel=&quot;nofollow&quot;&gt;Fundebug&lt;/a&gt;&lt;/li&gt;\n&lt;/ul&gt;\n&lt;p&gt;&lt;strong&gt;为了保证可读性，本文采用意译而非直译。另外，本文版权归原作者所有，翻译仅用于学习。&lt;/strong&gt;&lt;/p&gt;\n&lt;p&gt;在编写大型应用程序时，管理前端的状态可能会非常困难。 例如对于Vue.js应用程序，有一个名为Vuex的插件，它以非常简单的方式提供状态管理，并官方建议使用以下应用&lt;a href=&quot;https://vuex.vuejs.org/guide/structure.html&quot; target=&quot;_blank&quot; rel=&quot;nofollow&quot;&gt;目录结构&lt;/a&gt;：&lt;/p&gt;\n&lt;p&gt;&lt;img title=大型Vuex应用程序的目录结构_ 图片1 src=&quot;//img.mukewang.com/5b1f2aef0001af4201440114.png&quot; alt=&quot;图片描述&quot; /&gt;&lt;br /&gt;\n对示例很感兴趣，可以查看官方Vuex存储库（&lt;a href=&quot;https://github.com/vuejs/vuex/tree/dev/examples/shopping-cart&quot; target=&quot;_blank&quot; rel=&quot;nofollow&quot;&gt;vuejs / vuex - shopping-cart&lt;/a&gt;）或者我创建的&amp;quot;购物车&amp;quot;示例（&lt;a href=&quot;https://github.com/igeligel/vuex-simple-structure/tree/master/src/store&quot; target=&quot;_blank&quot; rel=&quot;nofollow&quot;&gt;igeligel / vuex-simple-structure&lt;/a&gt;）。&lt;/p&gt;\n&lt;p&gt;官方推荐的目录结构是非常不错的，整个Vuex moudules看上去非常简单并且包含了moudules作用域中的actions，getters和mutations。共享actions，getters或者mutations被直接保存到store目录中。然后所有的modules，全局actions，getters和mutations被导入一个&lt;code&gt;index.js&lt;/code&gt;文件中，并在Vuex module的构造函数中再次导出。然而，当你moudules越来越多的时候就会出现问题，对于大型项目来说这是普遍的。想一下像GitLab这样的大型项目，它包含非常非常多的modules。比如GitLab存储库视图的侧边栏看起来是这个样子的：&lt;/p&gt;\n&lt;p&gt;&lt;img title=大型Vuex应用程序的目录结构_ 图片2 src=&quot;//img.mukewang.com/5b1f2b0d0001349002190462.png&quot; alt=&quot;图片描述&quot; /&gt;&lt;br /&gt;\n每个菜单条目基本上都是一个包含几个actions，getter和getters和mutations的module。 所有这些都列在单个module文件中。 这不会很好地扩展，因为考虑到module需要的功能越来越多，module就会变的非常大甚至会超过1000行代码。&lt;/p&gt;\n&lt;p&gt;但是这个问题有一个解决方案。 我们可以在module目录中提取actions，getters和mutations。 全局actions，getters或mutations可以直接存储在store目录中。 应用程序结构如下所示：&lt;/p&gt;\n&lt;p&gt;&lt;img title=大型Vuex应用程序的目录结构_ 图片3 src=&quot;//img.mukewang.com/5b1f2b1c0001fcff01790359.png&quot; alt=&quot;图片描述&quot; /&gt;&lt;br /&gt;\n基本上，你仍然有可能使用全局actions，getter和mutations，但我并不推荐它，因为它并不是真的有必要。 采用这种方法，我们将拥有多个独立的文件。 聊天module的所有actions，getters和mutations将通过聊天目录内的索引导入。 这个module将被导入到全局store。 需要注意的是，你应该在模块内设置命名空间选项，以便你拥有适当的命名空间。 这是在&lt;code&gt;store /index.js&lt;/code&gt;文件中完成的：&lt;/p&gt;\n&lt;pre class=&quot;prettyprint&quot;&gt;&lt;code class=&quot;language-js&quot;&gt;import Vue from &apos;vue&apos;;\nimport Vuex from &apos;vuex&apos;;\nimport chatModule from &apos;./modules/chat/index&apos;;\nimport productsModule from &apos;./modules/products/index&apos;;\n\nVue.use(Vuex);\n\nexport default new Vuex.Store({\n  modules: {\n    chat: chatModule,\n    products: productsModule,\n  },\n});\n&lt;/code&gt;&lt;/pre&gt;\n&lt;p&gt;在这个store里面，我们有两个module：&lt;code&gt;chat&lt;/code&gt;和&lt;code&gt;product&lt;/code&gt;。 两个模块都包含actions，getters和mutations，并被导入到module的主module文件&lt;code&gt;index.js&lt;/code&gt;中，然后再次导出。 最后，导出的数据可以被store module使用。&lt;/p&gt;\n&lt;p&gt;&lt;img title=大型Vuex应用程序的目录结构_ 图片4 src=&quot;//img.mukewang.com/5b1f2b300001c1ff10000274.png&quot; alt=&quot;图片描述&quot; /&gt;&lt;br /&gt;\n这将注册modules，并且代码将以这样的方式分离，并且它仍然是可读的，可导航的和可维护的。 实现实例可查看&lt;a href=&quot;https://github.com/bstavroulakis/vue-wordpress-pwa&quot; target=&quot;_blank&quot; rel=&quot;nofollow&quot;&gt;bstavroulakis/vue-wordpress-pwa&lt;/a&gt;或者我自己实现的实例&lt;a href=&quot;https://github.com/igeligel/vuex-namespaced-module-structure&quot; target=&quot;_blank&quot; rel=&quot;nofollow&quot;&gt;igeligel/vuex-namespaced-module-structure&lt;/a&gt;。 这个应用程序结构将很好地处理中小型应用程序。 代码库的新开发人员不会努力寻找业务逻辑所在的地方，因为每个模块都在组件内部有适当的名称和引用。 使用module真的很有趣，这在&lt;a href=&quot;https://vuex.vuejs.org/guide/modules.html&quot; target=&quot;_blank&quot; rel=&quot;nofollow&quot;&gt;官方文档&lt;/a&gt;中有解释。&lt;/p&gt;\n&lt;p&gt;&lt;a href=&quot;https://www.fundebug.com&quot; target=&quot;_blank&quot; rel=&quot;nofollow&quot;&gt;Fundebug&lt;/a&gt;错误实时监控为您的Vue项目保驾护航！&lt;/p&gt;\n&lt;p&gt;但是这样也有一个问题。当你后端团队创建越来越多的API时，并且程序变得越来越复杂，项目甚至达到20,30或者50个module。虽然维护没有问题，但是新加入的实习生可能就会因为架构纠结了，因为他不确定业务逻辑的调用方式。然后你就会想如何更好去架构。你可以直接在组件中执行API调用，但是这造成巨大混乱，因为组件将会持有业务逻辑。&lt;code&gt;组件应该只呈现数据，不处理数据&lt;/code&gt;。&lt;/p&gt;\n&lt;p&gt;在React中有容器和组件的概念。 它没有被Vue.js强制执行。 容器只是组件，但它们也可以从store 获取数据并与store交互。 组件就在那里保存数据并渲染它。 他们通过道具与上层集装箱进行沟通。 让我们想象一下我们应用程序中的聊天窗口小部件，它需要从商店获取某种数据，或者从API获得更好的数据。 我们将通过从聊天中获取所有消息并且不提供实时支持来创建一个简单示例。 让我们假设我们有一些容器来保存整个聊天。 该容器将与商店通信以更新数据或将数据填充到表示组件。 整个架构在这个小图中显示：&lt;/p&gt;\n&lt;p&gt;&lt;img title=大型Vuex应用程序的目录结构_ 图片5 src=&quot;//img.mukewang.com/5b1f2b3e0001e4b405920678.png&quot; alt=&quot;图片描述&quot; /&gt;&lt;br /&gt;\n在这个系统中，我们有一个名为&lt;code&gt;Chat.vue&lt;/code&gt;的容器，它与我们的store module &lt;code&gt;chat&lt;/code&gt;进行通信。 此chat module还通过调用API并更新store来处理逻辑。 当状态最终更新容器时，&lt;code&gt;Chat.vue&lt;/code&gt;也将通过使用计算属性进行更新，计算属性将由&lt;code&gt;Vue.js&lt;/code&gt;和&lt;code&gt;Vuex&lt;/code&gt;的反应性更新。 之后，该属性将作为props(传值)传递给&lt;code&gt;ChatList.vue&lt;/code&gt;。 由于props(传值)是该组件中的一个数组，所以会发生一次迭代，它将呈现一组&lt;code&gt;ChatListElement.vue&lt;/code&gt;组件，它们负责呈现聊天消息和元信息。&lt;/p&gt;\n&lt;p&gt;有了这种模式，我们已将应用程序分为三部分。 一部分是业务逻辑，它存在于store的module内，或者更普遍地存储在store内，容器元素负责获取数据并将其填充到呈现组件，这些组件仅用于呈现数据。 这为我们提供了很好的模块化并支持单一责任原则。 它还提供了很好的可测试性，因为你可以自行测试此结构的每个部分。 他们一起将形成某种综合测试。 但是这可以在另一篇文章中讨论。&lt;/p&gt;\n&lt;p&gt;现在想象应用程序会增长很多。 很多的意思是指是你有几个modules，不清楚这些modules在哪里使用，哪些组件取决于它们，哪些不取决于它们。 在巨大的应用中，这可能是一个真正的问题。 想象一下，一个新的代码库可以忽略50个模块和大约50个组件。 他会有一个很大的问题来导航。&lt;/p&gt;\n&lt;p&gt;Vuex推荐是在store目录中有业务逻辑特征的目录。 有时与使用这些modules的容器的连接可能会断开，并且不清楚使用哪些Vuex modules的位置。 有些modules可能只是在那里，因为有一个容器，所以将这个业务逻辑放在处理数据的容器附近就好了。 让我们稍微调整应用程序。 该模板基于&lt;a href=&quot;https://github.com/vuejs-templates/webpack&quot; target=&quot;_blank&quot; rel=&quot;nofollow&quot;&gt;vuejs-templates/webpack&lt;/a&gt;。&lt;/p&gt;\n&lt;p&gt;&amp;lt;img  src=&amp;quot;large-scale-vuex-application-structures/application-structure.png&amp;quot; /&amp;gt;&lt;/p&gt;\n&lt;p&gt;唯一的区别是我将Vuex安装到这个模板中，设置它并在src目录下面添加modules目录。 稍后可以在此博客文章中找到此应用程序。 与此目录的区别在于它包含modules。 不要将这些modules与Vuex modules混淆。 有可能是一个更好的名字，所以如果你知道一个名字，请在这篇文章下评论它。 因此，在modules目录中，我们有这个Vue.js应用程序的模块。 它看起来像这样：&lt;/p&gt;\n&lt;p&gt;&lt;img title=大型Vuex应用程序的目录结构_ 图片6 src=&quot;//img.mukewang.com/5b1f2b4c0001dadc02090311.png&quot; alt=&quot;图片描述&quot; /&gt;&lt;br /&gt;\n在modules目录中，有几个目录描述不同的功能。例如，我们有chat和product功能。但有趣的是，它们在这些module目录中,有一个store目录，一个&lt;code&gt;index.vue&lt;/code&gt;文件和组件。清除一些干扰，我们只会看一下单个文件组件文件。 &lt;code&gt;index.vue&lt;/code&gt;被用作容器组件。此容器将从store中提取所有数据，并将这些数据作为props(传值)传递给组件。组件&lt;code&gt;ChatList.vue&lt;/code&gt;和&lt;code&gt;ChatListElement.vue&lt;/code&gt;就是在那里从组件中获取数据并触发到store的行为，该store全局连接到Vue.js实例。最大的问题是为什么这些组件不在组件目录中。原因是这些组件是专门为此功能而制作的。如果他们将被重新用于其他功能，那么我会考虑将其移入组件目录。基本上这里的问题是，如果组件以某种方式被重用。然后我们应该将组件重构到共享组件目录中。现在来看store。它与其他模式基本相同，但移入本地目录store。要注册它，我们使用Vuex的&lt;code&gt;registerModule&lt;/code&gt;函数。该功能将动态注册Vuex模块。通常它被用于插件，但我们将在这里使用它来更好地分离问题。在&lt;code&gt;index.vue文件&lt;/code&gt;中，我们可以通过&lt;code&gt;Vue.js&lt;/code&gt;访问生命周期函数，并且在创建的函数中，我们可以安全地创建module。&lt;/p&gt;\n&lt;pre class=&quot;prettyprint&quot;&gt;&lt;code class=&quot;language-js&quot;&gt;import { mapGetters } from &apos;vuex&apos;;\nimport store from &apos;./_store&apos;;\nimport ChatList from &apos;./_components/ChatList&apos;;\n\nexport default {\n  name: &apos;ChatModule&apos;,\n  components: {\n    ChatList,\n  },\n  computed: {\n    ...mapGetters({\n      messages: &apos;$_chat/messages&apos;,\n    }),\n  },\n  created() {\n    this.$store.registerModule(&apos;$_chat&apos;, store);\n  },\n  mounted() {\n    this.$store.dispatch(&apos;$_chat/getMessages&apos;);\n  },\n};\n&lt;/code&gt;&lt;/pre&gt;\n&lt;p&gt;我们用$ _作为前缀，表明这个module是私有的，因为它只在module中可用。 注册后，该store将填充到我们的全局Vuex store。 从那里开始，我们可以在组件内使用这些Vuex功能。 要注册store，我们需要以某种方式将Vuex功能绑定到Vue.js实例。 这可以通过创建一个空的Vuex store，导出并将其附加到Vue.js构造函数来轻松完成。 查找这些文件以获取想法（&lt;a href=&quot;https://github.com/igeligel/vuex-feature-scoped-structure/blob/master/src/store/index.js&quot; target=&quot;_blank&quot; rel=&quot;nofollow&quot;&gt;store/index.js&lt;/a&gt;，&lt;a href=&quot;https://github.com/igeligel/vuex-feature-scoped-structure/blob/master/src/main.js&quot; target=&quot;_blank&quot; rel=&quot;nofollow&quot;&gt;main.js&lt;/a&gt;）。&lt;/p&gt;\n&lt;p&gt;如果我们发现自己需要某种全局store，我会在store目录下创建一个Vuex module，并使用推荐的结构。 例如，如果我们需要在应用程序内部的不同位置进行身份验证，最好以不与容器耦合的方式进行共享。 这对于拥有共享的Vuex module将是一个很好的实例。&lt;/p&gt;\n&lt;p&gt;&lt;img title=大型Vuex应用程序的目录结构_ 图片7 src=&quot;//img.mukewang.com/5b1f2b5c00015c6e01720176.png&quot; alt=&quot;图片描述&quot; /&gt;&lt;br /&gt;\n一些问题：可能不清楚哪些module需要全局或本地可用，而且很难做出决定。 它也很难找到应该是全局的组件，但基本上，所有通用组件应该位于由不同module使用的目录中。 维持这种结构真的很难，但最终我认为为了扩展应用程序是值得的。 另一个问题是命名。 你现在有遍布整个地方的组件目录。 将模块&lt;code&gt;_components&lt;/code&gt;中的目录命名为私有组件可能更好，但这是个人偏好。&lt;/p&gt;\n&lt;p&gt;这个结构的一个很好论点是modules在某种程度上是可以提取的。 如果一个功能变得太大，你可以通过在&lt;code&gt;src/modules&lt;/code&gt;目录内的目录中创建一个module来提取它，然后制作一个npm软件包。 您需要导出的唯一东西是容器组件。 然后，这个npm包可以托管在公司的注册表中，也可以公布在npm上。 只要确保以某种方式使Vuex模块的行为可配置。 另一个很好的论点是测试可以用特征范围的方式编写。&lt;/p&gt;\n&lt;p&gt;最积极的论点是Vuex module的范围，容器和组件对于每个正在阅读代码的开发者都是清楚的。 由于在整个应用程序中使用关注点分离原则，因此可以快速找到每个功能的业务逻辑并且功能很容易测试。&lt;/p&gt;\n&lt;p&gt;不同结构的例子：&lt;/p&gt;\n&lt;ul&gt;\n&lt;li&gt;&lt;a href=&quot;https://github.com/igeligel/vuex-simple-structure&quot; target=&quot;_blank&quot; rel=&quot;nofollow&quot;&gt;igeligel/vuex-simple-structure&lt;/a&gt;&lt;/li&gt;\n&lt;li&gt;&lt;a href=&quot;https://github.com/igeligel/vuex-namespaced-module-structure&quot; target=&quot;_blank&quot; rel=&quot;nofollow&quot;&gt;igeligel/vuex-namespaced-module-structure&lt;/a&gt;&lt;/li&gt;\n&lt;li&gt;&lt;a href=&quot;https://github.com/igeligel/vuex-feature-scoped-structure&quot; target=&quot;_blank&quot; rel=&quot;nofollow&quot;&gt;igeligel/vuex-feature-scoped-structure&lt;/a&gt;&lt;/li&gt;\n&lt;/ul&gt;";
+// 为html反转码
+article_content = article_content.replace(/\&lt\;/g, "<").replace(/\&gt\;/g, ">").replace(/\&amp\;/g, "&").replace(/\&quot\;/g, '"').replace(/\&apos\;/g, "'");
+// 递归遍历dom，处理图片懒加载
+function dfs(root) {
+	var nodes = Array.prototype.slice.call(root.children);
+	if (nodes.length) {
+		nodes.forEach(function (node) {
+			if(node.tagName == 'IMG') {
+				var src = node.src;
+				node.setAttribute('data-original', src);
+				node.setAttribute('class', 'lazyload');
+				node.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC';
+			}
+			dfs(node);
+		});
+	}
+}
+// 创建手记内容dom节点
+var articleEl = document.createElement("div");
+articleEl.innerHTML = article_content;
+// 遍历手记dom树
+dfs(articleEl);
+</script>
+
+<script src="./大型Vuex应用程序的目录结构_慕课手记_files/init.js.下载"></script>
+<link rel="stylesheet" href="./大型Vuex应用程序的目录结构_慕课手记_files/saved_resource" type="text/css">
+<script charset="utf-8" async="" src="./大型Vuex应用程序的目录结构_慕课手记_files/seajs-text.js.下载"></script><script charset="utf-8" async="" src="./大型Vuex应用程序的目录结构_慕课手记_files/common.js.下载"></script><script charset="utf-8" async="" src="./大型Vuex应用程序的目录结构_慕课手记_files/jquery.js.下载"></script><script charset="utf-8" async="" src="./大型Vuex应用程序的目录结构_慕课手记_files/string.js.下载"></script><script charset="utf-8" async="" src="./大型Vuex应用程序的目录结构_慕课手记_files/userinfo.js.下载"></script><script charset="utf-8" async="" src="./大型Vuex应用程序的目录结构_慕课手记_files/cart.js.下载"></script><script charset="utf-8" async="" src="./大型Vuex应用程序的目录结构_慕课手记_files/cookie.js.下载"></script><script charset="utf-8" async="" src="./大型Vuex应用程序的目录结构_慕课手记_files/suggest.js.下载"></script><script charset="utf-8" async="" src="./大型Vuex应用程序的目录结构_慕课手记_files/store.js.下载"></script><script charset="utf-8" async="" src="./大型Vuex应用程序的目录结构_慕课手记_files/json.js.下载"></script><script charset="utf-8" async="" src="./大型Vuex应用程序的目录结构_慕课手记_files/im.js.下载"></script><script charset="utf-8" async="" src="./大型Vuex应用程序的目录结构_慕课手记_files/details.js.下载"></script><script charset="utf-8" async="" src="./大型Vuex应用程序的目录结构_慕课手记_files/addadvertise.js.下载"></script><script charset="utf-8" async="" src="./大型Vuex应用程序的目录结构_慕课手记_files/moco.min.js.下载"></script><script charset="utf-8" async="" src="./大型Vuex应用程序的目录结构_慕课手记_files/socket.io.min.js.下载"></script><script charset="utf-8" async="" src="./大型Vuex应用程序的目录结构_慕课手记_files/insetadvertising.js.下载"></script><script charset="utf-8" async="" src="./大型Vuex应用程序的目录结构_慕课手记_files/prettify.js.下载"></script><link charset="utf-8" rel="stylesheet" href="./大型Vuex应用程序的目录结构_慕课手记_files/prettify.css"><script charset="utf-8" async="" src="./大型Vuex应用程序的目录结构_慕课手记_files/jquery.lazyload.js.下载"></script><script charset="utf-8" async="" src="./大型Vuex应用程序的目录结构_慕课手记_files/ueditor.parse.js.下载"></script><script charset="utf-8" async="" src="./大型Vuex应用程序的目录结构_慕课手记_files/layer.min.js.下载"></script><link charset="utf-8" rel="stylesheet" href="./大型Vuex应用程序的目录结构_慕课手记_files/layer.css"><link charset="utf-8" rel="stylesheet" href="./大型Vuex应用程序的目录结构_慕课手记_files/ueditor.css"><script charset="utf-8" async="" src="./大型Vuex应用程序的目录结构_慕课手记_files/addCopy.js.下载"></script><script charset="utf-8" async="" src="./大型Vuex应用程序的目录结构_慕课手记_files/course_tipoff.js.下载"></script><script charset="utf-8" async="" src="./大型Vuex应用程序的目录结构_慕课手记_files/discoverycount.js.下载"></script><script charset="utf-8" async="" src="./大型Vuex应用程序的目录结构_慕课手记_files/praise.js.下载"></script><script charset="utf-8" async="" src="./大型Vuex应用程序的目录结构_慕课手记_files/common.js(1).下载"></script><script charset="utf-8" async="" src="./大型Vuex应用程序的目录结构_慕课手记_files/verify-code.js.下载"></script><script charset="utf-8" async="" src="./大型Vuex应用程序的目录结构_慕课手记_files/mo.min.js.下载"></script><script charset="utf-8" async="" src="./大型Vuex应用程序的目录结构_慕课手记_files/juicer.min.js.下载"></script><script charset="utf-8" async="" src="./大型Vuex应用程序的目录结构_慕课手记_files/jquery.qrcode.min.js.下载"></script><script charset="utf-8" async="" src="./大型Vuex应用程序的目录结构_慕课手记_files/limitinput.js.下载"></script><script charset="utf-8" async="" src="./大型Vuex应用程序的目录结构_慕课手记_files/publish.js.下载"></script><script charset="utf-8" async="" src="./大型Vuex应用程序的目录结构_慕课手记_files/detail.js.下载"></script><script charset="utf-8" async="" src="./大型Vuex应用程序的目录结构_慕课手记_files/forward.js.下载"></script><script charset="utf-8" async="" src="./大型Vuex应用程序的目录结构_慕课手记_files/detail_forward.js.下载"></script><script src="./大型Vuex应用程序的目录结构_慕课手记_files/share.js.下载"></script><style type="text/css" id="MOCO_ADV_STYLE">#MOCO_TOP_ADVERTISING{width: 100%;min-width: 1152px;max-width: 2560px;height: 40px;overflow: hidden;background: #eee;cursor: pointer;position: relative;z-index:901}#MOCO_TOP_ADVERTISING > img{height: 100%;display: block;position: absolute;top: 0;left: 50%;transform: translateX(-50%);-ms-transform: translateX(-50%);-webkit-transform: translateX(-50%);}#MOCO_TOP_ADVERTISING > .close-adv{color:#000;position: absolute;right: 15%;top: 8px;cursor: pointer;z-index: 1;font-size: 24px;}#MOCO_FLOATRIGHT_ADVERTISING{width: 102px;height: 102px;position: fixed;right: 0;top: 50%;margin-top: -218px;cursor: pointer;overflow: hidden;z-index:901}#MOCO_FLOATRIGHT_ADVERTISING .close-adv{position: absolute;right: 3px;top: 5px;cursor: pointer;color: rgba(255,255,255,0.8);font-size:16px;}#MOCO_FLOATRIGHT_ADVERTISING .close-adv:hover{color: rgba(242,13,13,0.8);}#MOCO_FLOATRIGHT_ADVERTISING > img{width: 100%;}#MOCO_BOTTOM_ADVERTISING{width:100%;max-height:200px;position:fixed;bottom:0;left:0;cursor:pointer;z-index:2}#MOCO_BOTTOM_ADVERTISING > .close-adv{position:absolute;top:0;right:10px;font-size:18px;color: rgba(168, 160, 160, 0.8);transform: translateY(-65%);-ms-transform: translateY(-65%);-webkit-transform: translateY(-65%);z-index: 2;}#MOCO_BOTTOM_ADVERTISING > img{width: 100%;display: block;}</style><link rel="stylesheet" href="./大型Vuex应用程序的目录结构_慕课手记_files/share_style0_16.css"><link id="syntaxhighlighter_css" rel="stylesheet" type="text/css" href="./大型Vuex应用程序的目录结构_慕课手记_files/shCoreDefault.css"><script id="syntaxhighlighter_js" src="./大型Vuex应用程序的目录结构_慕课手记_files/shCore.js.下载" type="text/javascript" defer="defer"></script><style id="chartsContainerHeight">
+.edui-chart-container { height:500px}</style><style id="list">
+body ol,body ul{margin:0;padding:0;}body .list-paddingleft-1{padding-left:0}
+body .list-paddingleft-2{padding-left:20px}
+body .list-paddingleft-3{padding-left:40px}</style></head>
+
+<body>
+
+
+<div id="moco-top-advertising" style=""><div id="MOCO_TOP_ADVERTISING"><div class="close-adv imv2-close_c"></div><img src="./大型Vuex应用程序的目录结构_慕课手记_files/5c90a585098a75ae51200080.jpg"></div></div>
+<div id="new_header" class="special-header">
+    <div class="page-container new-header clearfix" id="nav">
+        <ul class="nav-item">
+            <li><a href="https://www.imooc.com/" target="_self" class="imooc">慕课网首页</a></li>
+            <li><a href="https://www.imooc.com/course/list" target="_self">免费课程</a></li>
+            <li><a href="https://coding.imooc.com/" target="_self">实战课程</a></li>
+            <li><a href="https://class.imooc.com/" class="" target="_self">就业班<i class="icn-new"></i></a></li>
+            <li><a href="https://www.imooc.com/read" target="_self">专栏</a></li>
+            <li><a href="https://www.imooc.com/wenda" target="_self">猿问</a></li>
+            <li><a href="https://www.imooc.com/article" class="active" target="_self">手记</a></li>
+            <!-- <li><a href="//job.imooc.com" target="_self">猿聘<i class="icn-new"></i></a></li> -->
+            <li class="search" id="common-nav-search">
+                <a href="javascript:void(0);">
+                    <i class="imv2-search"></i>
+                </a>
+            </li>
+            <li class="input-search hide" id="common-input-search">
+                <div class="input-box">
+                    <input type="text" class="nav-search-input" autocomplete="off">
+                    <a href="javascript:void(0);" class="nav-searchBtn js-nav-searchBtn">
+                        <i class="imv2-search"></i>
+                    </a>
+                </div>
+                <div class="nav-search-box hide">
+                    <div class="hot">
+                        <h2>热搜</h2>
+                        <div class="hot-box"><a href="javascript:void(0)" class="hot-item js-history-search">React</a><a href="javascript:void(0)" class="hot-item js-history-search">面试</a><a href="javascript:void(0)" class="hot-item js-history-search">算法</a><a href="javascript:void(0)" class="hot-item js-history-search">Vue.js</a><a href="javascript:void(0)" class="hot-item js-history-search">Python</a><a href="javascript:void(0)" class="hot-item js-history-search">人工智能</a><a href="javascript:void(0)" class="hot-item js-history-search">GO语言</a><a href="javascript:void(0)" class="hot-item js-history-search">小程序</a></div>
+                    </div>
+                    <div class="history hide">
+                        <h2>最近搜索<a href="javascript:void(0);" class="history-clear js-clear-history">清空</a></h2>
+                        <div class="history-box">
+                        </div>
+                    </div>
+                </div>
+                <div class="nav-correlate-box hide">
+                    <div class="correlate">
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <div class="header-right clearfix">
+            <div class="dist-money">
+                <a href="https://order.imooc.com/pay/sharegoods" target="_blank"><div class="redPacket"></div>分享赚学费</a>
+            </div>
+            <div class="app-download" id="js-app-load">
+                <a href="https://www.imooc.com/mobile/app" target="_blank" style="width:60px;">下载APP</a>
+                <div class="app-load-box clearfix js-load-box">
+                    <div class="browser-load-box">
+                        <h4>慕课网浏览器 - PC客户端</h4>
+                        <a class="app-load-btn" href="https://www.imooc.com/mobile/app"><i class="imv2-windows"></i>Windows版</a>
+                        <span class="browser-load-mac">Mac版开发中，敬请期待…</span>
+                    </div>
+                    <div class="mobile-load-box">
+                        <h4>慕课网APP - 随时随地学编程</h4>
+                        <img src="./大型Vuex应用程序的目录结构_慕课手记_files/appload.png" class="l">
+                        <div class="r">
+                            <a class="app-load-btn" href="https://itunes.apple.com/cn/app/mu-ke-wang/id722179140?mt=8" target="_blank"><i class="icon-apple"></i>App Store下载</a>
+                            <a class="app-load-btn" href="https://www.imooc.com/mobile/appdown" target="_blank"><i class="icon-android"></i>Android下载</a>
+                            <p>扫描下载慕课网APP</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="shop-cart" id="shop-cart">
+                <a href="https://order.imooc.com/pay/cart" class="shop-cart-icon" target="_blank">
+                    <span class="imv2-cart js-endcart"></span><span>购物车</span><span class="shopping_icon js-cart-num" data-ordernum="0" data-cartnum="0" style="display: none">0</span>
+                </a>
+                <div class="my-cart" id="js-my-cart"></div>
+            </div>
+                        <div id="login-area">
+                <ul class="header-unlogin clearfix">
+                    <li class="header-signin">
+                        <a href="https://www.imooc.com/user/newlogin" id="js-signin-btn">登录</a> / <a href="https://www.imooc.com/user/newsignup" id="js-signup-btn">注册</a>
+                    </li>
+                </ul>
+            </div>
+                    </div>
+    </div>
+</div>
+<div id="sub-header">
+            <div class="sub-container" id="sub-nav">
+            <a class="article-logo" href="https://www.imooc.com/article"><img src="./大型Vuex应用程序的目录结构_慕课手记_files/article-logo.png" alt=""></a>
+            <div class="operate-area clearfix">
+                <span>
+                    <a href="https://www.imooc.com/article/publish" target="_blank" class="btn btn-blue btn-article">写文章</a>
+                </span>
+                <span>
+                    <a href="https://www.imooc.com/discovery" target="_blank" class="btn btn-discovery">动态圈</a>
+                    <a class="count hide">0</a>
+                </span>
+            </div>
+            <div class="search-warp clearfix" style="min-width: 32px;">
+                
+
+                <div class="search-area" data-search="top-banner">
+                    <input class="search-input" data-suggest-trigger="suggest-trigger" placeholder="搜索感兴趣的知识和文章" type="text" autocomplete="off">
+                    <input type="hidden" class="btn_search" data-search-btn="search-btn">
+                    <ul class="search-area-result" data-suggest-result="suggest-result">
+                    </ul>
+                </div>
+                <div class="showhide-search" data-show="no"><i class="icon-search"></i></div>
+            </div>
+            
+        </div>
+    </div>
+<div class="bindHintBox js-bindHintBox hide">
+    <div class="pr">
+        为了账号安全，请及时绑定邮箱和手机<a href="https://www.imooc.com/user/setbindsns" class="ml20 color-red" target="_blank">立即绑定</a>
+        <button class="closeBindHint js-closeBindHint" type="button"></button>
+        <div class="arrow"> </div>
+    </div>
+</div>
+
+
+<div id="main">
+
+<div class="main_con clearfix">
+	<!-- 分享&收藏 -->
+	<div class="active-box js-active-fixed">
+		<div class="share-box">
+			<div class="small-share">
+				<ul class="share-wrap">
+					<li class="weichat-posi">
+						<!-- 推荐 --> 
+						<div class="praise-box">
+														<button id="js-praise-left"><span class="imv2-thumb_up"></span></button>
+																						<span class="praise-num">8</span>
+													</div>
+						<!-- 推荐end -->
+
+
+
+						<div class="icon-warp">
+						  <div class="follow-warp">
+							<a onclick="_hmt.push([&#39;_trackEvent&#39;, &#39;sjtj_left&#39;, &#39;share&#39;, &#39;pl&#39;])" data-track="pl-1-1" href="https://www.imooc.com/article/35364#comment" class="icon-nav imv2-chat_bubble" title="评论"></a>  
+							 							 	<span class="comment-num">评论</span>
+							 						  </div>
+						</div>
+						<div class="icon-warp">
+							 								<div class="follow-warp">
+									<a onclick="_hmt.push([&#39;_trackEvent&#39;, &#39;sjtj_left&#39;, &#39;share&#39;, &#39;sc&#39;])" data-track="sc-1-1" data-id="35364" href="javascript:" class="js-follow dc-follow  icon-nav icon-star2 " title="收藏"></a>
+																			<span>10</span>
+																	</div>
+													</div>    
+						
+						<p class="line"></p>
+
+
+						<div class="bdsharebuttonbox weichat-style bdshare-button-style0-16" data-bd-bind="1553752157251">
+							<div class="icon-warp2">
+								<a class="js-forward-btn imv2-forward icon-nav" href="https://www.imooc.com/article/35364#">
+								</a>
+								<!-- 只在第一次访问显示 -->
+																<p class="tip js-tip">
+									<span class="text">点击这里，将文章分享到自己的动态</span>
+									<span class="js-close imv2-close"></span>
+								</p>
+															</div>
+							<div class="icon-warp2">
+								<a onclick="_hmt.push([&#39;_trackEvent&#39;, &#39;sjtj_left&#39;, &#39;share&#39;, &#39;wx&#39;])" data-track="letfshare-1-1" href="https://www.imooc.com/article/35364#" class="bds_weixin icon-nav icon-share-weichat share-icon" data-cmd="weixin" title="分享到微信"></a>
+							</div>
+							<div class="icon-warp2">
+								<a onclick="_hmt.push([&#39;_trackEvent&#39;, &#39;sjtj_left&#39;, &#39;share&#39;, &#39;wb&#39;])" data-track="letfshare-1-2" href="https://www.imooc.com/article/35364#" class="bds_tsina icon-nav icon-share-weibo share-icon" data-cmd="tsina" title="分享到新浪微博"></a>
+							</div>
+							<div class="icon-warp2">
+								<a onclick="_hmt.push([&#39;_trackEvent&#39;, &#39;sjtj_left&#39;, &#39;share&#39;, &#39;qq&#39;])" data-track="letfshare-1-3" href="https://www.imooc.com/article/35364#" class="bds_qzone icon-nav icon-share-qq share-icon" data-cmd="qzone" title="分享到QQ空间"></a>    
+							</div>                               
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<!-- 分享&收藏 end -->
+	<div class="left_essay l">
+		<div class="part_essay js-part_essay">
+						<!-- 面包屑 -->
+			<div class="detail-path">
+				<a class="imooc" target="_blank" href="https://www.imooc.com/"><i class="imv2-imooc"></i></a>
+				<a href="https://www.imooc.com/article" target="_blank">手记</a>  /<a href="https://www.imooc.com/article/fe" target="_blank" class="js-column">前端开发</a>
+			</div>
+			<!-- 面包屑end -->       
+			<div class="detail-title-wrap">
+				<h1 class="detail-title">
+					<span class="d-t js-title">大型Vuex应用程序的目录结构</span>
+				</h1>
+				<div class="dc-profile clearfix">
+					<div class="l">
+						<span class="spacer">2018.06.12 10:10</span>
+						<span class="spacer spacer-2">4844浏览</span>
+					</div>
+					<div class="r path-right-box">
+						<div class="rinfo l">
+																					
+							
+						</div> 
+					</div>	
+				</div>
+			</div> 
+
+			 <!-- 手记详情 -->
+			<div class="detail-content-wrap">  
+				<div class="detail-content js-lookimg">
+					
+					<div><p><strong>译者按：</strong> 听前端大佬聊聊Vuex大型项目架构的经验</p>
+<ul>
+<li>原文: <a href="https://medium.com/3yourmind/large-scale-vuex-application-structures-651e44863e2f" target="_blank" rel="nofollow">Large-scale Vuex application structures</a></li>
+<li>译者: <a href="https://fundebug.com/" target="_blank" rel="nofollow">Fundebug</a></li>
+</ul>
+<p><strong>为了保证可读性，本文采用意译而非直译。另外，本文版权归原作者所有，翻译仅用于学习。</strong></p>
+<p>在编写大型应用程序时，管理前端的状态可能会非常困难。 例如对于Vue.js应用程序，有一个名为Vuex的插件，它以非常简单的方式提供状态管理，并官方建议使用以下应用<a href="https://vuex.vuejs.org/guide/structure.html" target="_blank" rel="nofollow">目录结构</a>：</p>
+<p><img title="大型Vuex应用程序的目录结构_" 图片1="" src="./大型Vuex应用程序的目录结构_慕课手记_files/5b1f2aef0001af4201440114.png" alt="图片描述" data-original="https://img.mukewang.com/5b1f2aef0001af4201440114.png" class="" style="cursor: pointer; display: block;"><br>
+对示例很感兴趣，可以查看官方Vuex存储库（<a href="https://github.com/vuejs/vuex/tree/dev/examples/shopping-cart" target="_blank" rel="nofollow">vuejs / vuex - shopping-cart</a>）或者我创建的"购物车"示例（<a href="https://github.com/igeligel/vuex-simple-structure/tree/master/src/store" target="_blank" rel="nofollow">igeligel / vuex-simple-structure</a>）。</p>
+<p>官方推荐的目录结构是非常不错的，整个Vuex moudules看上去非常简单并且包含了moudules作用域中的actions，getters和mutations。共享actions，getters或者mutations被直接保存到store目录中。然后所有的modules，全局actions，getters和mutations被导入一个<code>index.js</code>文件中，并在Vuex module的构造函数中再次导出。然而，当你moudules越来越多的时候就会出现问题，对于大型项目来说这是普遍的。想一下像GitLab这样的大型项目，它包含非常非常多的modules。比如GitLab存储库视图的侧边栏看起来是这个样子的：</p>
+<p><img title="大型Vuex应用程序的目录结构_" 图片2="" src="./大型Vuex应用程序的目录结构_慕课手记_files/5b1f2b0d0001349002190462.png" alt="图片描述" data-original="https://img.mukewang.com/5b1f2b0d0001349002190462.png" class="" style="cursor: pointer; display: block;"><br>
+每个菜单条目基本上都是一个包含几个actions，getter和getters和mutations的module。 所有这些都列在单个module文件中。 这不会很好地扩展，因为考虑到module需要的功能越来越多，module就会变的非常大甚至会超过1000行代码。</p>
+<p>但是这个问题有一个解决方案。 我们可以在module目录中提取actions，getters和mutations。 全局actions，getters或mutations可以直接存储在store目录中。 应用程序结构如下所示：</p>
+<p><img title="大型Vuex应用程序的目录结构_" 图片3="" src="./大型Vuex应用程序的目录结构_慕课手记_files/5b1f2b1c0001fcff01790359.png" alt="图片描述" data-original="https://img.mukewang.com/5b1f2b1c0001fcff01790359.png" class="" style="cursor: pointer; display: block;"><br>
+基本上，你仍然有可能使用全局actions，getter和mutations，但我并不推荐它，因为它并不是真的有必要。 采用这种方法，我们将拥有多个独立的文件。 聊天module的所有actions，getters和mutations将通过聊天目录内的索引导入。 这个module将被导入到全局store。 需要注意的是，你应该在模块内设置命名空间选项，以便你拥有适当的命名空间。 这是在<code>store /index.js</code>文件中完成的：</p>
+<pre class="prettyprint"><code class="language-js"><span class="kwd">import</span><span class="pln"> </span><span class="typ">Vue</span><span class="pln"> from </span><span class="str">'vue'</span><span class="pun">;</span><span class="pln">
+</span><span class="kwd">import</span><span class="pln"> </span><span class="typ">Vuex</span><span class="pln"> from </span><span class="str">'vuex'</span><span class="pun">;</span><span class="pln">
+</span><span class="kwd">import</span><span class="pln"> chatModule from </span><span class="str">'./modules/chat/index'</span><span class="pun">;</span><span class="pln">
+</span><span class="kwd">import</span><span class="pln"> productsModule from </span><span class="str">'./modules/products/index'</span><span class="pun">;</span><span class="pln">
+
+</span><span class="typ">Vue</span><span class="pun">.</span><span class="pln">use</span><span class="pun">(</span><span class="typ">Vuex</span><span class="pun">);</span><span class="pln">
+
+</span><span class="kwd">export</span><span class="pln"> </span><span class="kwd">default</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> </span><span class="typ">Vuex</span><span class="pun">.</span><span class="typ">Store</span><span class="pun">({</span><span class="pln">
+  modules</span><span class="pun">:</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+    chat</span><span class="pun">:</span><span class="pln"> chatModule</span><span class="pun">,</span><span class="pln">
+    products</span><span class="pun">:</span><span class="pln"> productsModule</span><span class="pun">,</span><span class="pln">
+  </span><span class="pun">},</span><span class="pln">
+</span><span class="pun">});</span></code></pre>
+<p>在这个store里面，我们有两个module：<code>chat</code>和<code>product</code>。 两个模块都包含actions，getters和mutations，并被导入到module的主module文件<code>index.js</code>中，然后再次导出。 最后，导出的数据可以被store module使用。</p>
+<p><img title="大型Vuex应用程序的目录结构_" 图片4="" src="./大型Vuex应用程序的目录结构_慕课手记_files/5b1f2b300001c1ff10000274.png" alt="图片描述" data-original="https://img.mukewang.com/5b1f2b300001c1ff10000274.png" class="" style="cursor: pointer; display: block;"><br>
+这将注册modules，并且代码将以这样的方式分离，并且它仍然是可读的，可导航的和可维护的。 实现实例可查看<a href="https://github.com/bstavroulakis/vue-wordpress-pwa" target="_blank" rel="nofollow">bstavroulakis/vue-wordpress-pwa</a>或者我自己实现的实例<a href="https://github.com/igeligel/vuex-namespaced-module-structure" target="_blank" rel="nofollow">igeligel/vuex-namespaced-module-structure</a>。 这个应用程序结构将很好地处理中小型应用程序。 代码库的新开发人员不会努力寻找业务逻辑所在的地方，因为每个模块都在组件内部有适当的名称和引用。 使用module真的很有趣，这在<a href="https://vuex.vuejs.org/guide/modules.html" target="_blank" rel="nofollow">官方文档</a>中有解释。</p>
+<p><a href="https://www.fundebug.com/" target="_blank" rel="nofollow">Fundebug</a>错误实时监控为您的Vue项目保驾护航！</p>
+<p>但是这样也有一个问题。当你后端团队创建越来越多的API时，并且程序变得越来越复杂，项目甚至达到20,30或者50个module。虽然维护没有问题，但是新加入的实习生可能就会因为架构纠结了，因为他不确定业务逻辑的调用方式。然后你就会想如何更好去架构。你可以直接在组件中执行API调用，但是这造成巨大混乱，因为组件将会持有业务逻辑。<code>组件应该只呈现数据，不处理数据</code>。</p>
+<p>在React中有容器和组件的概念。 它没有被Vue.js强制执行。 容器只是组件，但它们也可以从store 获取数据并与store交互。 组件就在那里保存数据并渲染它。 他们通过道具与上层集装箱进行沟通。 让我们想象一下我们应用程序中的聊天窗口小部件，它需要从商店获取某种数据，或者从API获得更好的数据。 我们将通过从聊天中获取所有消息并且不提供实时支持来创建一个简单示例。 让我们假设我们有一些容器来保存整个聊天。 该容器将与商店通信以更新数据或将数据填充到表示组件。 整个架构在这个小图中显示：</p>
+<p><img title="大型Vuex应用程序的目录结构_" 图片5="" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC" alt="图片描述" data-original="https://img.mukewang.com/5b1f2b3e0001e4b405920678.png" class="lazyload" style="cursor: pointer;"><br>
+在这个系统中，我们有一个名为<code>Chat.vue</code>的容器，它与我们的store module <code>chat</code>进行通信。 此chat module还通过调用API并更新store来处理逻辑。 当状态最终更新容器时，<code>Chat.vue</code>也将通过使用计算属性进行更新，计算属性将由<code>Vue.js</code>和<code>Vuex</code>的反应性更新。 之后，该属性将作为props(传值)传递给<code>ChatList.vue</code>。 由于props(传值)是该组件中的一个数组，所以会发生一次迭代，它将呈现一组<code>ChatListElement.vue</code>组件，它们负责呈现聊天消息和元信息。</p>
+<p>有了这种模式，我们已将应用程序分为三部分。 一部分是业务逻辑，它存在于store的module内，或者更普遍地存储在store内，容器元素负责获取数据并将其填充到呈现组件，这些组件仅用于呈现数据。 这为我们提供了很好的模块化并支持单一责任原则。 它还提供了很好的可测试性，因为你可以自行测试此结构的每个部分。 他们一起将形成某种综合测试。 但是这可以在另一篇文章中讨论。</p>
+<p>现在想象应用程序会增长很多。 很多的意思是指是你有几个modules，不清楚这些modules在哪里使用，哪些组件取决于它们，哪些不取决于它们。 在巨大的应用中，这可能是一个真正的问题。 想象一下，一个新的代码库可以忽略50个模块和大约50个组件。 他会有一个很大的问题来导航。</p>
+<p>Vuex推荐是在store目录中有业务逻辑特征的目录。 有时与使用这些modules的容器的连接可能会断开，并且不清楚使用哪些Vuex modules的位置。 有些modules可能只是在那里，因为有一个容器，所以将这个业务逻辑放在处理数据的容器附近就好了。 让我们稍微调整应用程序。 该模板基于<a href="https://github.com/vuejs-templates/webpack" target="_blank" rel="nofollow">vuejs-templates/webpack</a>。</p>
+<p>&lt;img  src="large-scale-vuex-application-structures/application-structure.png" /&gt;</p>
+<p>唯一的区别是我将Vuex安装到这个模板中，设置它并在src目录下面添加modules目录。 稍后可以在此博客文章中找到此应用程序。 与此目录的区别在于它包含modules。 不要将这些modules与Vuex modules混淆。 有可能是一个更好的名字，所以如果你知道一个名字，请在这篇文章下评论它。 因此，在modules目录中，我们有这个Vue.js应用程序的模块。 它看起来像这样：</p>
+<p><img title="大型Vuex应用程序的目录结构_" 图片6="" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC" alt="图片描述" data-original="https://img.mukewang.com/5b1f2b4c0001dadc02090311.png" class="lazyload" style="cursor: pointer;"><br>
+在modules目录中，有几个目录描述不同的功能。例如，我们有chat和product功能。但有趣的是，它们在这些module目录中,有一个store目录，一个<code>index.vue</code>文件和组件。清除一些干扰，我们只会看一下单个文件组件文件。 <code>index.vue</code>被用作容器组件。此容器将从store中提取所有数据，并将这些数据作为props(传值)传递给组件。组件<code>ChatList.vue</code>和<code>ChatListElement.vue</code>就是在那里从组件中获取数据并触发到store的行为，该store全局连接到Vue.js实例。最大的问题是为什么这些组件不在组件目录中。原因是这些组件是专门为此功能而制作的。如果他们将被重新用于其他功能，那么我会考虑将其移入组件目录。基本上这里的问题是，如果组件以某种方式被重用。然后我们应该将组件重构到共享组件目录中。现在来看store。它与其他模式基本相同，但移入本地目录store。要注册它，我们使用Vuex的<code>registerModule</code>函数。该功能将动态注册Vuex模块。通常它被用于插件，但我们将在这里使用它来更好地分离问题。在<code>index.vue文件</code>中，我们可以通过<code>Vue.js</code>访问生命周期函数，并且在创建的函数中，我们可以安全地创建module。</p>
+<pre class="prettyprint"><code class="language-js"><span class="kwd">import</span><span class="pln"> </span><span class="pun">{</span><span class="pln"> mapGetters </span><span class="pun">}</span><span class="pln"> from </span><span class="str">'vuex'</span><span class="pun">;</span><span class="pln">
+</span><span class="kwd">import</span><span class="pln"> store from </span><span class="str">'./_store'</span><span class="pun">;</span><span class="pln">
+</span><span class="kwd">import</span><span class="pln"> </span><span class="typ">ChatList</span><span class="pln"> from </span><span class="str">'./_components/ChatList'</span><span class="pun">;</span><span class="pln">
+
+</span><span class="kwd">export</span><span class="pln"> </span><span class="kwd">default</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+  name</span><span class="pun">:</span><span class="pln"> </span><span class="str">'ChatModule'</span><span class="pun">,</span><span class="pln">
+  components</span><span class="pun">:</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+    </span><span class="typ">ChatList</span><span class="pun">,</span><span class="pln">
+  </span><span class="pun">},</span><span class="pln">
+  computed</span><span class="pun">:</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+    </span><span class="pun">...</span><span class="pln">mapGetters</span><span class="pun">({</span><span class="pln">
+      messages</span><span class="pun">:</span><span class="pln"> </span><span class="str">'$_chat/messages'</span><span class="pun">,</span><span class="pln">
+    </span><span class="pun">}),</span><span class="pln">
+  </span><span class="pun">},</span><span class="pln">
+  created</span><span class="pun">()</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+    </span><span class="kwd">this</span><span class="pun">.</span><span class="pln">$store</span><span class="pun">.</span><span class="pln">registerModule</span><span class="pun">(</span><span class="str">'$_chat'</span><span class="pun">,</span><span class="pln"> store</span><span class="pun">);</span><span class="pln">
+  </span><span class="pun">},</span><span class="pln">
+  mounted</span><span class="pun">()</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+    </span><span class="kwd">this</span><span class="pun">.</span><span class="pln">$store</span><span class="pun">.</span><span class="pln">dispatch</span><span class="pun">(</span><span class="str">'$_chat/getMessages'</span><span class="pun">);</span><span class="pln">
+  </span><span class="pun">},</span><span class="pln">
+</span><span class="pun">};</span></code></pre>
+<p>我们用$ _作为前缀，表明这个module是私有的，因为它只在module中可用。 注册后，该store将填充到我们的全局Vuex store。 从那里开始，我们可以在组件内使用这些Vuex功能。 要注册store，我们需要以某种方式将Vuex功能绑定到Vue.js实例。 这可以通过创建一个空的Vuex store，导出并将其附加到Vue.js构造函数来轻松完成。 查找这些文件以获取想法（<a href="https://github.com/igeligel/vuex-feature-scoped-structure/blob/master/src/store/index.js" target="_blank" rel="nofollow">store/index.js</a>，<a href="https://github.com/igeligel/vuex-feature-scoped-structure/blob/master/src/main.js" target="_blank" rel="nofollow">main.js</a>）。</p>
+<p>如果我们发现自己需要某种全局store，我会在store目录下创建一个Vuex module，并使用推荐的结构。 例如，如果我们需要在应用程序内部的不同位置进行身份验证，最好以不与容器耦合的方式进行共享。 这对于拥有共享的Vuex module将是一个很好的实例。</p>
+<p><img title="大型Vuex应用程序的目录结构_" 图片7="" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC" alt="图片描述" data-original="https://img.mukewang.com/5b1f2b5c00015c6e01720176.png" class="lazyload" style="cursor: pointer;"><br>
+一些问题：可能不清楚哪些module需要全局或本地可用，而且很难做出决定。 它也很难找到应该是全局的组件，但基本上，所有通用组件应该位于由不同module使用的目录中。 维持这种结构真的很难，但最终我认为为了扩展应用程序是值得的。 另一个问题是命名。 你现在有遍布整个地方的组件目录。 将模块<code>_components</code>中的目录命名为私有组件可能更好，但这是个人偏好。</p>
+<p>这个结构的一个很好论点是modules在某种程度上是可以提取的。 如果一个功能变得太大，你可以通过在<code>src/modules</code>目录内的目录中创建一个module来提取它，然后制作一个npm软件包。 您需要导出的唯一东西是容器组件。 然后，这个npm包可以托管在公司的注册表中，也可以公布在npm上。 只要确保以某种方式使Vuex模块的行为可配置。 另一个很好的论点是测试可以用特征范围的方式编写。</p>
+<p>最积极的论点是Vuex module的范围，容器和组件对于每个正在阅读代码的开发者都是清楚的。 由于在整个应用程序中使用关注点分离原则，因此可以快速找到每个功能的业务逻辑并且功能很容易测试。</p>
+<p>不同结构的例子：</p>
+<ul>
+<li><a href="https://github.com/igeligel/vuex-simple-structure" target="_blank" rel="nofollow">igeligel/vuex-simple-structure</a></li>
+<li><a href="https://github.com/igeligel/vuex-namespaced-module-structure" target="_blank" rel="nofollow">igeligel/vuex-namespaced-module-structure</a></li>
+<li><a href="https://github.com/igeligel/vuex-feature-scoped-structure" target="_blank" rel="nofollow">igeligel/vuex-feature-scoped-structure</a></li>
+</ul></div>
+					<div>
+						<div class=""></div>
+						<div class="showMore"><span>点击查看更多内容</span></div>
+					</div>
+				</div>
+				<!-- 标签 -->
+												<div class="cat-box">
+					<div class="cat-wrap clearfix">
+																															<a class="cat l" href="https://www.imooc.com/article/tag/17" target="_blank">JavaScript</a>
+																		<a class="cat l" href="https://www.imooc.com/article/tag/52" target="_blank">Vue.js</a>
+											</div>
+					                    				</div>
+								<!-- 推荐 --> 
+				<div class="praise-box">
+										<button id="js-praise"><span class="imv2-thumb_up"></span><div style="position: absolute; top: 50%; left: 50%; width: 230px; height: 230px; margin-left: -115px; margin-top: -115px; opacity: 0.6; display: none; transform: rotate(0deg) translate(0px, 0px);"><svg style="position: absolute; width: 100%; height: 100%;"><ellipse cy="0" cx="0" ry="15" rx="15" transform="rotate(0,0,0)" fill-opacity="1" stroke-linecap="" stroke-dashoffset="NaN " fill="#F9B552" stroke-dasharray="NaN " stroke-opacity="1" stroke-width="0" stroke="transparent" style="opacity: 1; display: none;"></ellipse><ellipse cy="0" cx="0" ry="15" rx="15" transform="rotate(0,0,0)" fill-opacity="1" stroke-linecap="" stroke-dashoffset="NaN " fill="#F9B552" stroke-dasharray="NaN " stroke-opacity="1" stroke-width="0" stroke="transparent" style="opacity: 1; display: none;"></ellipse><ellipse cy="0" cx="0" ry="15" rx="15" transform="rotate(0,0,0)" fill-opacity="1" stroke-linecap="" stroke-dashoffset="NaN " fill="#F9B552" stroke-dasharray="NaN " stroke-opacity="1" stroke-width="0" stroke="transparent" style="opacity: 1; display: none;"></ellipse><ellipse cy="0" cx="0" ry="15" rx="15" transform="rotate(0,0,0)" fill-opacity="1" stroke-linecap="" stroke-dashoffset="NaN " fill="#F9B552" stroke-dasharray="NaN " stroke-opacity="1" stroke-width="0" stroke="transparent" style="opacity: 1; display: none;"></ellipse><ellipse cy="0" cx="0" ry="15" rx="15" transform="rotate(0,0,0)" fill-opacity="1" stroke-linecap="" stroke-dashoffset="NaN " fill="#F9B552" stroke-dasharray="NaN " stroke-opacity="1" stroke-width="0" stroke="transparent" style="opacity: 1; display: none;"></ellipse><ellipse cy="0" cx="0" ry="15" rx="15" transform="rotate(0,0,0)" fill-opacity="1" stroke-linecap="" stroke-dashoffset="NaN " fill="#F9B552" stroke-dasharray="NaN " stroke-opacity="1" stroke-width="0" stroke="transparent" style="opacity: 1; display: none;"></ellipse></svg></div><div style="position: absolute; top: 50%; left: 50%; width: 180px; height: 180px; margin-left: -90px; margin-top: -90px; opacity: 0.6; display: none; transform: translate(0px, 0px);"><svg style="position: absolute; width: 100%; height: 100%;"><ellipse cy="90" cx="90" ry="0" rx="0" transform="rotate(0,90,90)" fill-opacity="transparent" stroke-linecap="" stroke-dashoffset="" fill="transparent" stroke-dasharray="" stroke-opacity="1" stroke-width="20" stroke="#F9B552"></ellipse></svg></div></button>
+										<div class="num-person"><em class="num">8</em>人点赞</div>
+					<div class="praise-share icon-drop_up hide">
+						<div class="praise-share-box">
+							<p>若觉得本文不错，就分享一下吧！</p>
+							<div class="share-content bdsharebuttonbox bdshare-button-style0-16" data-bd-bind="1553752157251">
+								<div class="icon-warp">
+									<a onclick="_hmt.push([&#39;_trackEvent&#39;, &#39;sjtj_top&#39;, &#39;share&#39;, &#39;wx&#39;])" data-track="topshare-1-1" href="https://www.imooc.com/article/35364#" class="bds_weixin icon-nav imv2-weixin_c share-icon" data-cmd="weixin" title="分享到微信"></a>
+								</div>
+								<div class="icon-warp">
+									<a onclick="_hmt.push([&#39;_trackEvent&#39;, &#39;sjtj_top&#39;, &#39;share&#39;, &#39;wb&#39;])" data-track="topshare-1-2" href="https://www.imooc.com/article/35364#" class="bds_tsina icon-nav imv2-weibo_c share-icon" data-cmd="tsina" title="分享到新浪微博"></a>
+								</div>
+								<div class="icon-warp">
+									<a onclick="_hmt.push([&#39;_trackEvent&#39;, &#39;sjtj_top&#39;, &#39;share&#39;, &#39;qq&#39;])" data-track="topshare-1-3" href="https://www.imooc.com/article/35364#" class="bds_qzone icon-nav imv2-qq_c share-icon" data-cmd="qzone" title="分享到QQ空间"></a>    
+								</div> 
+							</div>
+						</div>	
+					</div>
+				</div>
+				<!-- 推荐end -->
+			</div>
+
+			
+		</div>	
+		<div class="opus-wrap clearfix">
+			<div class="detail-left">
+				<div class="df-title" id="all_comments"><span class="comment-num"><i>0</i></span> 评论</div>
+				<div class="detail-feedback-wrap">
+					<!-- 评论框 -->
+					<div class="df-ipt-wrap clearfix" id="comment">
+					
+						<div class="feeds-author l">
+							
+							评论
+							
+						</div>
+						<p class="fadeInput l js-showcommentModal">共同学习，写下你的评论</p>
+					
+					</div>
+					<!-- 评论框end -->
+					<!-- 评论 -->
+					<div id="js-feedback-list-wrap" class="feedback-list js-feedback-lookimg"><p class="feedback-none">暂无评论</p></div>
+					<!-- 分页页码  -->
+					<!-- <div class="qa-comment-page hide"></div> -->
+
+					<div class="qa-comment-page hide" style="display: none;">
+						<div class="moreBtn js-more" data-page="2">展开查看更多评论</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="article_wrap">
+			<div class="line_con">
+				<p class="line"></p>
+				<p class="line_text">相关文章推荐</p>
+			</div>
+			<div class="article-wrapper">
+				<div class="articleCon js-articleCon js-usercard-box">
+					
+				<div class="article clearfix">                    <div class="imgCon l">                        <img src="./大型Vuex应用程序的目录结构_慕课手记_files/5a6755320001f80817481096-200-200.jpg">                    </div>                    <div class="list-content l">                        <a href="https://www.imooc.com/article/22924" target="_blank" class="title"><p>［自动化实战］大型项目中ansible playbook官方建议的剧本</p></a>                        <div class="list-bottom clearfix">                            <div class="labels-area l clearfix">                                <div class="browseNum l">                                    <i class="imv2-visibility"></i>                                    <span>1684</span>                                </div>                                <div data-fuid="1352822" class="nickName l js-usercard-dialog" data-userid="1352822">Jeson老师</div>                                <span class="skill clearfix"><a href="https://www.imooc.com/article/tag/18" target="_blank"><span>Python</span></a><a><i class="imv2-dot_samll"></i></a><a href="https://www.imooc.com/article/tag/20" target="_blank"><span>Linux</span></a><a></a></span><a>                        </a></div><a>                            <div class="createTime r">01.23</div>                        </a></div><a>                    </a></div><a>                </a></div><div class="article clearfix"><a>                    <div class="imgCon l">                        <img src="./大型Vuex应用程序的目录结构_慕课手记_files/5b938aad00015a3602400240-200-200.jpg">                    </div>                    </a><div class="list-content l"><a>                        </a><a href="https://www.imooc.com/article/75221" target="_blank" class="title"><p>Android SDK的目录结构及作用</p></a>                        <div class="list-bottom clearfix">                            <div class="labels-area l clearfix">                                <div class="browseNum l">                                    <i class="imv2-visibility"></i>                                    <span>4</span>                                </div>                                <div data-fuid="6457908" class="nickName l js-usercard-dialog" data-userid="6457908">喵喔喔</div>                                <span class="skill clearfix"><a href="https://www.imooc.com/article/tag/12" target="_blank"><span>Android</span></a><a></a></span><a>                        </a></div><a>                            <div class="createTime r">09.08</div>                        </a></div><a>                    </a></div><a>                </a></div><div class="article clearfix"><a>                    <div class="imgCon l">                        <img src="./大型Vuex应用程序的目录结构_慕课手记_files/pic10.jpg">                    </div>                    </a><div class="list-content l"><a>                        </a><a href="https://www.imooc.com/article/23919" target="_blank" class="title"><p>Android的目录结构</p></a>                        <div class="list-bottom clearfix">                            <div class="labels-area l clearfix">                                <div class="browseNum l">                                    <i class="imv2-visibility"></i>                                    <span>120</span>                                </div>                                <div data-fuid="5546117" class="nickName l js-usercard-dialog" data-userid="5546117">qq_启航_9</div>                                <span class="skill clearfix"><a href="https://www.imooc.com/article/tag/12" target="_blank"><span>Android</span></a><a></a></span><a>                        </a></div><a>                            <div class="createTime r">03.14</div>                        </a></div><a>                    </a></div><a>                </a></div><div class="article clearfix"><a>                    <div class="imgCon l">                        <img src="./大型Vuex应用程序的目录结构_慕课手记_files/pic16.jpg">                    </div>                    </a><div class="list-content l"><a>                        </a><a href="https://www.imooc.com/article/74565" target="_blank" class="title"><p>eclipse Android 项目的目录结构：</p></a>                        <div class="list-bottom clearfix">                            <div class="labels-area l clearfix">                                <div class="browseNum l">                                    <i class="imv2-visibility"></i>                                    <span>3</span>                                </div>                                <div data-fuid="6463776" class="nickName l js-usercard-dialog" data-userid="6463776">largeQ</div>                                <span class="skill clearfix"><a href="https://www.imooc.com/article/tag/3" target="_blank"><span>JAVA</span></a><a></a></span><a>                        </a></div><a>                            <div class="createTime r">09.05</div>                        </a></div><a>                    </a></div><a>                </a></div><div class="article clearfix"><a>                    <div class="imgCon l">                        <img src="./大型Vuex应用程序的目录结构_慕课手记_files/pic19.jpg">                    </div>                    </a><div class="list-content l"><a>                        </a><a href="https://www.imooc.com/article/51288" target="_blank" class="title"><p>IIs 网站应用程序与虚拟目录的区别及高级应用说明</p></a>                        <div class="list-bottom clearfix">                            <div class="labels-area l clearfix">                                <div class="browseNum l">                                    <i class="imv2-visibility"></i>                                    <span>0</span>                                </div>                                <div data-fuid="6149646" class="nickName l js-usercard-dialog" data-userid="6149646">零基础h5前端入门培训</div>                                <span class="skill clearfix"><a href="https://www.imooc.com/article/tag/49" target="_blank"><span>产品</span></a><a></a></span><a>                        </a></div><a>                            <div class="createTime r">08.08</div>                        </a></div><a>                    </a></div><a>                </a></div><div class="article clearfix"><a>                    <div class="imgCon l">                        <img src="./大型Vuex应用程序的目录结构_慕课手记_files/pic7.jpg">                    </div>                    </a><div class="list-content l"><a>                        </a><a href="https://www.imooc.com/article/271806" target="_blank" class="title"><p>大型项目架构演进过程及思考的点</p></a>                        <div class="list-bottom clearfix">                            <div class="labels-area l clearfix">                                <div class="browseNum l">                                    <i class="imv2-visibility"></i>                                    <span>4</span>                                </div>                                <div data-fuid="6798222" class="nickName l js-usercard-dialog" data-userid="6798222">慕侠2389804</div>                                <span class="skill clearfix"><a href="https://www.imooc.com/article/tag/35" target="_blank"><span>大数据</span></a><a></a></span><a>                        </a></div><a>                            <div class="createTime r">01.04</div>                        </a></div><a>                    </a></div><a>                </a></div><div class="article clearfix"><a>                    <div class="imgCon l">                        <img src="./大型Vuex应用程序的目录结构_慕课手记_files/58fb7dfe0001083c07440432-200-200.jpg">                    </div>                    </a><div class="list-content l"><a>                        </a><a href="https://www.imooc.com/article/17545" target="_blank" class="title"><p>大型项目架构演进过程及思考的点</p></a>                        <div class="list-bottom clearfix">                            <div class="labels-area l clearfix">                                <div class="browseNum l">                                    <i class="imv2-visibility"></i>                                    <span>36368</span>                                </div>                                <div data-fuid="2705746" class="nickName l js-usercard-dialog" data-userid="2705746">Geely</div>                                <span class="skill clearfix"><a href="https://www.imooc.com/article/tag/3" target="_blank"><span>JAVA</span></a><a><i class="imv2-dot_samll"></i></a><a href="https://www.imooc.com/article/tag/20" target="_blank"><span>Linux</span></a><a><i class="imv2-dot_samll"></i></a><a href="https://www.imooc.com/article/tag/47" target="_blank"><span>设计</span></a><a></a></span><a>                        </a></div><a>                            <div class="createTime r">04.17</div>                        </a></div><a>                    </a></div><a>                </a></div><div class="article clearfix"><a>                    <div class="imgCon l">                        <img src="./大型Vuex应用程序的目录结构_慕课手记_files/pic5.jpg">                    </div>                    </a><div class="list-content l"><a>                        </a><a href="https://www.imooc.com/article/70834" target="_blank" class="title"><p>在vue-cli项目里使用vuex,vuex的详细使用</p></a>                        <div class="list-bottom clearfix">                            <div class="labels-area l clearfix">                                <div class="browseNum l">                                    <i class="imv2-visibility"></i>                                    <span>3</span>                                </div>                                <div data-fuid="6463676" class="nickName l js-usercard-dialog" data-userid="6463676">www说</div>                                <span class="skill clearfix"><a href="https://www.imooc.com/article/tag/52" target="_blank"><span>Vue.js</span></a><a></a></span><a>                        </a></div><a>                            <div class="createTime r">08.24</div>                        </a></div><a>                    </a></div><a>                </a></div><div class="article clearfix"><a>                    <div class="imgCon l">                        <img src="./大型Vuex应用程序的目录结构_慕课手记_files/pic12.jpg">                    </div>                    </a><div class="list-content l"><a>                        </a><a href="https://www.imooc.com/article/28331" target="_blank" class="title"><p>SQLSERVER2005的安装目录结构</p></a>                        <div class="list-bottom clearfix">                            <div class="labels-area l clearfix">                                <div class="browseNum l">                                    <i class="imv2-visibility"></i>                                    <span>2</span>                                </div>                                <div data-fuid="6458166" class="nickName l js-usercard-dialog" data-userid="6458166">翻阅古今</div>                                <span class="skill clearfix"><a href="https://www.imooc.com/article/tag/36" target="_blank"><span>SQL Server</span></a><a></a></span><a>                        </a></div><a>                            <div class="createTime r">05.04</div>                        </a></div><a>                    </a></div><a>                </a></div><div class="article clearfix"><a>                    <div class="imgCon l">                        <img src="./大型Vuex应用程序的目录结构_慕课手记_files/5b18c85400012f2101360136-200-200.jpg">                    </div>                    </a><div class="list-content l"><a>                        </a><a href="https://www.imooc.com/article/34652" target="_blank" class="title"><p>从任务到线程：Java结构化并发应用程序</p></a>                        <div class="list-bottom clearfix">                            <div class="labels-area l clearfix">                                <div class="browseNum l">                                    <i class="imv2-visibility"></i>                                    <span>6</span>                                </div>                                <div data-fuid="6463666" class="nickName l js-usercard-dialog" data-userid="6463666">ITMISS</div>                                <span class="skill clearfix"><a href="https://www.imooc.com/article/tag/3" target="_blank"><span>JAVA</span></a><a></a></span><a>                        </a></div><a>                            <div class="createTime r">06.09</div>                        </a></div><a>                    </a></div><a>                </a></div><ul class="clearfix"><li class="l"><a href="https://www.imooc.com/article/tag/14" target="_blank">Html5</a></li><li class="l"><a href="https://www.imooc.com/article/tag/27" target="_blank">WebApp</a></li><li class="l"><a href="https://www.imooc.com/article/tag/50" target="_blank">React.JS</a></li><li class="l"><a href="https://www.imooc.com/article/tag/25" target="_blank">CSS3</a></li><li class="l"><a href="https://www.imooc.com/article/tag/22" target="_blank">AngularJS</a></li><li class="l"><a href="https://www.imooc.com/article/tag/121" target="_blank">webpack</a></li><li class="l"><a href="https://www.imooc.com/article/tag/13" target="_blank">Node.js</a></li><li class="l"><a href="https://www.imooc.com/article/tag/88" target="_blank">小程序</a></li><li class="l"><a href="https://www.imooc.com/article/tag/17" target="_blank">JavaScript</a></li><li class="l"><a href="https://www.imooc.com/article/tag/53" target="_blank">Sass/Less</a></li></ul><div class="article clearfix">                    <div class="imgCon l">                        <img src="./大型Vuex应用程序的目录结构_慕课手记_files/pic16.jpg">                    </div>                    <div class="list-content l">                        <a href="https://www.imooc.com/article/43545" target="_blank" class="title"><p>springcloud应用程序上下文层次结构</p></a>                        <div class="list-bottom clearfix">                            <div class="labels-area l clearfix">                                <div class="browseNum l">                                    <i class="imv2-visibility"></i>                                    <span>5</span>                                </div>                                <div data-fuid="6761410" class="nickName l js-usercard-dialog" data-userid="6761410">qq_IT达人_0</div>                                <span class="skill clearfix"><a href="https://www.imooc.com/article/tag/3" target="_blank"><span>JAVA</span></a><a><i class="imv2-dot_samll"></i></a><a href="https://www.imooc.com/article/tag/62" target="_blank"><span>SpringBoot</span></a><a></a></span><a>                        </a></div><a>                            <div class="createTime r">07.12</div>                        </a></div><a>                    </a></div><a>                </a></div><div class="article clearfix"><a>                    <div class="imgCon l">                        <img src="./大型Vuex应用程序的目录结构_慕课手记_files/5b3627220001980702000200-200-200.jpg">                    </div>                    </a><div class="list-content l"><a>                        </a><a href="https://www.imooc.com/article/39795" target="_blank" class="title"><p>vuex的使用</p></a>                        <div class="list-bottom clearfix">                            <div class="labels-area l clearfix">                                <div class="browseNum l">                                    <i class="imv2-visibility"></i>                                    <span>3</span>                                </div>                                <div data-fuid="6457983" class="nickName l js-usercard-dialog" data-userid="6457983">呼啦一阵风</div>                                <span class="skill clearfix"><a href="https://www.imooc.com/article/tag/52" target="_blank"><span>Vue.js</span></a><a></a></span><a>                        </a></div><a>                            <div class="createTime r">06.29</div>                        </a></div><a>                    </a></div><a>                </a></div><div class="article clearfix"><a>                    <div class="imgCon l">                        <img src="./大型Vuex应用程序的目录结构_慕课手记_files/5b7a7ad5000161f404200294-200-200.jpg">                    </div>                    </a><div class="list-content l"><a>                        </a><a href="https://www.imooc.com/article/69884" target="_blank" class="title"><p>Linux必知必会的目录结构</p></a>                        <div class="list-bottom clearfix">                            <div class="labels-area l clearfix">                                <div class="browseNum l">                                    <i class="imv2-visibility"></i>                                    <span>5</span>                                </div>                                <div data-fuid="6798304" class="nickName l js-usercard-dialog" data-userid="6798304">胡说叔叔</div>                                <span class="skill clearfix"><a href="https://www.imooc.com/article/tag/20" target="_blank"><span>Linux</span></a><a></a></span><a>                        </a></div><a>                            <div class="createTime r">08.20</div>                        </a></div><a>                    </a></div><a>                </a></div><div class="article clearfix"><a>                    <div class="imgCon l">                        <img src="./大型Vuex应用程序的目录结构_慕课手记_files/pic19.jpg">                    </div>                    </a><div class="list-content l"><a>                        </a><a href="https://www.imooc.com/article/29748" target="_blank" class="title"><p>用winform应用程序登录网站的解决方案</p></a>                        <div class="list-bottom clearfix">                            <div class="labels-area l clearfix">                                <div class="browseNum l">                                    <i class="imv2-visibility"></i>                                    <span>0</span>                                </div>                                <div data-fuid="6458352" class="nickName l js-usercard-dialog" data-userid="6458352">慕慕森</div>                                <span class="skill clearfix"><a href="https://www.imooc.com/article/tag/77" target="_blank"><span>安全</span></a><a></a></span><a>                        </a></div><a>                            <div class="createTime r">05.17</div>                        </a></div><a>                    </a></div><a>                </a></div><div class="article clearfix"><a>                    <div class="imgCon l">                        <img src="./大型Vuex应用程序的目录结构_慕课手记_files/5bf39fbf00014af202720272-200-200.jpg">                    </div>                    </a><div class="list-content l"><a>                        </a><a href="https://www.imooc.com/article/282756" target="_blank" class="title"><p>vue 目录结构解析</p></a>                        <div class="list-bottom clearfix">                            <div class="labels-area l clearfix">                                <div class="browseNum l">                                    <i class="imv2-visibility"></i>                                    <span>6</span>                                </div>                                <div data-fuid="6800535" class="nickName l js-usercard-dialog" data-userid="6800535">米脂</div>                                <span class="skill clearfix"><a href="https://www.imooc.com/article/tag/14" target="_blank"><span>Html5</span></a><a></a></span><a>                        </a></div><a>                            <div class="createTime r">03.10</div>                        </a></div><a>                    </a></div><a>                </a></div></div>
+				
+				<div class="feed-loading js-feed-loading" data-page="2">
+					<i class="imv2-loading"></i><span>正在加载中</span>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="right_recommend r">
+				<!-- 作者信息 -->
+		<div class="author_info js-author_info clearfix">
+			<a href="https://www.imooc.com/u/6742431/articles" class="l img_con" title="Fundebug" target="_blank">
+				<img src="./大型Vuex应用程序的目录结构_慕课手记_files/5b07c7fa0001790f02560256-100-100.jpg">
+			</a>
+			<div class="text_con l">
+				<div class="name_con clearfix">
+					<p class="name l">
+					 	<a class="nick" href="https://www.imooc.com/u/6742431/articles" title="Fundebug" target="_blank">
+						Fundebug
+						</a>
+					</p>
+											<p class="forward">
+							<span class="js-add-follow" data-uid="6742431" data-type="1">关注</span>
+						</p>
+									</div>
+				<div class="job">
+					<span class="job-title" title="全栈工程师">全栈工程师</span>
+					<span class="job-icon">
+																		<i class="user-icon great" title="认证作者"></i>
+						       
+											</span>
+				</div>
+				<div class="contribution clearfix">
+					<a href="https://www.imooc.com/u/6742431/articles" target="_blank" class="js-article-num l">
+						<span>106</span> 篇手记
+					</a>
+					<a href="https://www.imooc.com/u/6742431/articles" target="_blank" class="js-article-words l">
+						贡献 <span>619926</span> 字
+					</a>
+				</div>
+			</div>
+		</div>   
+		<!-- 作者信息end -->
+				<!-- 作者相关文章 -->
+				<div class="other_article js-other_article clearfix">
+			<div class="title l">作者相关文章</div>
+			<div class="more r">
+				<a href="https://www.imooc.com/u/6742431/articles" target="_blank">更多<i class="imv2-arrow2_r"></i></a>
+			</div>
+			<ul class="l">
+							<li class="article-item clearfix">
+					<i class="imv2-shouji l"></i>
+					<a href="https://www.imooc.com/article/74218" class="l" target="_blank">
+						2018前端工程师成长路线图
+					</a>
+				</li>
+							<li class="article-item clearfix">
+					<i class="imv2-shouji l"></i>
+					<a href="https://www.imooc.com/article/31012" class="l" target="_blank">
+						5分钟掌握JavaScript小技巧
+					</a>
+				</li>
+							<li class="article-item clearfix">
+					<i class="imv2-shouji l"></i>
+					<a href="https://www.imooc.com/article/31489" class="l" target="_blank">
+						想成为顶级开发者？你需要多练习！请收好这些资源
+					</a>
+				</li>
+							<li class="article-item clearfix">
+					<i class="imv2-shouji l"></i>
+					<a href="https://www.imooc.com/article/79038" class="l" target="_blank">
+						你试过不用if撸代码吗？
+					</a>
+				</li>
+							<li class="article-item clearfix">
+					<i class="imv2-shouji l"></i>
+					<a href="https://www.imooc.com/article/70393" class="l" target="_blank">
+						20个Chrome DevTools调试技巧
+					</a>
+				</li>
+						</ul>
+		</div>
+				<!-- 作者相关文章end -->
+		<!-- 专栏推荐手记详情右侧 -->
+		<!--推荐专栏 手记首页右侧和手记详情页右侧使用此模块-->
+<div class="column_recommend hide">
+    <div class="title">
+        慕课专栏
+        <a href="https://www.imooc.com/read" target="_blank" class="more">更多<i class="imv2-arrow2_r"></i></a>
+    </div>
+    <ul>
+                    <li class="clearfix">
+                <a href="https://www.imooc.com/read/8" target="_blank">
+                    <div class="img l" style="background-image:url(//img1.mukewang.com/5c3dc7ae0001fc1f01800240.jpg)">
+                         
+                    </div>
+                </a>
+                <div class="text_con l">
+                    <a href="https://www.imooc.com/read/8" target="_blank">
+                        <p class="title">两小时学会 Node.js stream</p>
+                    </a>
+                    <div class="info">
+                        <span>共8小节</span>
+                        <i class="imv2-dot_samll"></i>
+                        <span>820人已购买</span>
+                    </div>
+                    <div class="price_con clearfix">
+                                                    <a href="javascript:;" onclick="$(&#39;#js-signin-btn&#39;).click();">
+                                <div class="goBuy r">马上订阅</div>
+                            </a>
+                         
+                                                                                    <p class="ori l">¥ 9.99</p>
+                                                                            
+                    </div>
+                </div>
+            </li>
+                    <li class="clearfix">
+                <a href="https://www.imooc.com/read/13" target="_blank">
+                    <div class="img l" style="background-image:url(//img3.mukewang.com/5c247b0b0001a0a903600480.jpg)">
+                         
+                    </div>
+                </a>
+                <div class="text_con l">
+                    <a href="https://www.imooc.com/read/13" target="_blank">
+                        <p class="title">教你用 Python 进阶量化交易</p>
+                    </a>
+                    <div class="info">
+                        <span>共24小节</span>
+                        <i class="imv2-dot_samll"></i>
+                        <span>558人已购买</span>
+                    </div>
+                    <div class="price_con clearfix">
+                                                    <a href="javascript:;" onclick="$(&#39;#js-signin-btn&#39;).click();">
+                                <div class="goBuy r">马上订阅</div>
+                            </a>
+                         
+                                                                                    <p class="ori l">¥ 29.90</p>
+                                                                            
+                    </div>
+                </div>
+            </li>
+            </ul>
+</div>
+
+
+		<!-- 相关课程 -->
+		<div class="related_lessons js-related_lessons js-fixed"><div class="title">相关课程</div><ul class="moco-aside-course"><li><div class="aside-course-img"><img src="./大型Vuex应用程序的目录结构_慕课手记_files/5c0493ce000126b106000338-360-202.jpg"><p class="aside-course-type">实战</p></div><div class="aside-course-content"><a href="https://coding.imooc.com/class/75.html?mc_marking=4655172e1a62839eea65105dbf244230&amp;mc_channel=sjkctjpc" class="aside-course-name" target="_blank">微信小程序入门与实战 常用组件API开发技巧项目实战</a><p class="aside-course-price"><span>￥149</span></p><div class="aside-course-dot"><i class="imv2-dot_samll"></i></div><p class="aside-course-grade">初级</p><div class="aside-course-dot"><i class="imv2-dot_samll"></i></div><p class="aside-course-people"><i class="imv2-set-sns"></i><span>17051</span></p></div></li><li><div class="aside-course-img"><img src="./大型Vuex应用程序的目录结构_慕课手记_files/5902a84b0001b54f05400300-360-202.jpg"><p class="aside-course-type">实战</p></div><div class="aside-course-content"><a href="https://coding.imooc.com/class/50.html?mc_marking=4655172e1a62839eea65105dbf244230&amp;mc_channel=sjkctjpc" class="aside-course-name" target="_blank">响应式开发一招致胜</a><p class="aside-course-price"><span>￥128</span></p><div class="aside-course-dot"><i class="imv2-dot_samll"></i></div><p class="aside-course-grade">初级</p><div class="aside-course-dot"><i class="imv2-dot_samll"></i></div><p class="aside-course-people"><i class="imv2-set-sns"></i><span>3736</span></p></div></li><li><div class="aside-course-img"><img src="./大型Vuex应用程序的目录结构_慕课手记_files/595067d5000132a105400300-360-202.jpg"><p class="aside-course-type">实战</p></div><div class="aside-course-content"><a href="https://coding.imooc.com/class/115.html?mc_marking=4655172e1a62839eea65105dbf244230&amp;mc_channel=sjkctjpc" class="aside-course-name" target="_blank">前端JavaScript面试技巧</a><p class="aside-course-price"><span>￥149</span></p><div class="aside-course-dot"><i class="imv2-dot_samll"></i></div><p class="aside-course-grade">初级</p><div class="aside-course-dot"><i class="imv2-dot_samll"></i></div><p class="aside-course-people"><i class="imv2-set-sns"></i><span>3689</span></p></div></li><li><div class="aside-course-img"><img src="./大型Vuex应用程序的目录结构_慕课手记_files/53e1d0470001ad1e06000338-240-135.jpg"></div><div class="aside-course-content"><a href="https://www.imooc.com/learn/36?mc_marking=4655172e1a62839eea65105dbf244230&amp;mc_channel=sjkctjpc" class="aside-course-name" target="_blank">JavaScript入门篇</a><p class="aside-course-grade">入门</p><div class="aside-course-dot"><i class="imv2-dot_samll"></i></div><p class="aside-course-people"><i class="imv2-set-sns"></i><span>636772</span></p></div></li><li><div class="aside-course-img"><img src="./大型Vuex应用程序的目录结构_慕课手记_files/574678bd00010a7206000338-240-135.jpg"></div><div class="aside-course-content"><a href="https://www.imooc.com/learn/10?mc_marking=4655172e1a62839eea65105dbf244230&amp;mc_channel=sjkctjpc" class="aside-course-name" target="_blank">JavaScript进阶篇</a><p class="aside-course-grade">入门</p><div class="aside-course-dot"><i class="imv2-dot_samll"></i></div><p class="aside-course-people"><i class="imv2-set-sns"></i><span>404610</span></p></div></li><li><div class="aside-course-img"><img src="./大型Vuex应用程序的目录结构_慕课手记_files/59030cc50001144806000338-228-128.jpg"><p class="aside-course-type">就业班</p></div><div class="aside-course-content"><a href="https://class.imooc.com/sc/20?mc_marking=4655172e1a62839eea65105dbf244230&amp;mc_channel=sjkctjpc" class="aside-course-name" target="_blank">前端零基础入门</a><p class="aside-course-price"><span>￥568</span></p><div class="aside-course-dot"><i class="imv2-dot_samll"></i></div><p class="aside-course-grade">5步骤/32门课</p><div class="aside-course-dot"><i class="imv2-dot_samll"></i></div><p class="aside-course-people"><i class="imv2-set-sns"></i><span>7326</span></p></div></li></ul></div>
+		<!-- 相关课程end -->
+	</div>
+</div>
+<div class="bottom-fixed js-bottom-fixed hide">
+	<ul class="bottom-wrap clearfix">
+		<!-- 推荐 --> 
+		<li class="praise-box l">
+						<button id="js-praise-bottom"><span class="imv2-thumb_up"></span></button>
+										<span class="praise-num">8</span>
+					</li>
+		<!-- 推荐end -->
+		<li class="icon-warp l">
+			<a onclick="_hmt.push([&#39;_trackEvent&#39;, &#39;sjtj_left&#39;, &#39;share&#39;, &#39;pl&#39;])" data-track="pl-1-1" href="https://www.imooc.com/article/35364#comment" class="icon-nav imv2-chat_bubble" title="评论"></a>  
+							<span class="comment-num">评论</span>
+					</li>
+		<li class="icon-warp l">
+							<a onclick="_hmt.push([&#39;_trackEvent&#39;, &#39;sjtj_left&#39;, &#39;share&#39;, &#39;sc&#39;])" data-track="sc-1-1" data-id="35364" href="javascript:" class="js-follow icon-nav icon-star2 " title="收藏"></a>
+				<span>收藏</span>   
+					</li>    
+		<li class="input l js-showcommentModal">共同学习，写下你的评论</li>
+		<li class="icon-warp2 l">
+			<a class="js-forward-btn imv2-forward icon-nav2" href="https://www.imooc.com/article/35364#">
+			</a>
+			<a onclick="_hmt.push([&#39;_trackEvent&#39;, &#39;sjtj_left&#39;, &#39;share&#39;, &#39;wx&#39;])" data-track="letfshare-1-1" href="https://www.imooc.com/article/35364#" class="bds_weixin icon-nav2 icon-share-weichat share-icon" data-cmd="weixin" title="分享到微信"></a>
+			<a onclick="_hmt.push([&#39;_trackEvent&#39;, &#39;sjtj_left&#39;, &#39;share&#39;, &#39;wb&#39;])" data-track="letfshare-1-2" href="https://www.imooc.com/article/35364#" class="bds_tsina icon-nav2 icon-share-weibo share-icon" data-cmd="tsina" title="分享到新浪微博"></a>
+			<a onclick="_hmt.push([&#39;_trackEvent&#39;, &#39;sjtj_left&#39;, &#39;share&#39;, &#39;qq&#39;])" data-track="letfshare-1-3" href="https://www.imooc.com/article/35364#" class="bds_qzone icon-nav2 icon-share-qq share-icon" data-cmd="qzone" title="分享到QQ空间"></a>                                  
+		</li>
+	</ul>
+</div>
+
+
+
+
+<div class="hide">
+	<input type="hidden" data-pic="5b1f2b840001e50212800720" id="js-share-img">
+	<input type="hidden" data-pic="//img3.mukewang.com/5b07c7fa0001790f02560256-100-100.jpg" id="js-img-author">
+</div>
+<div class="r"></div>
+
+</div>
+
+
+<div id="J_GotoTop" class="elevator">
+    <a href="https://www.imooc.com/user/feedback" class="elevator-msg" target="_blank">
+        <i class="icon-feedback"></i>
+        <span class="">意见反馈</span>
+    </a>
+    <a href="https://order.imooc.com/pay/sharegoods" class="elevator-dist" target="_blank">
+        <i class=""></i>
+        <span class="">去赚学费</span>
+    </a>
+    <a href="https://www.imooc.com/help" class="elevator-faq" target="_blank">
+        <i class="icon-ques"></i>
+        <span class="">帮助中心</span>
+    </a>
+    <a href="https://www.imooc.com/mobile/app" target="_blank" class="elevator-app">
+        <i class="icon-appdownload"></i>
+        <span class="">APP下载</span>
+        <div class="elevator-app-box"></div>
+    </a>
+    <a href="javascript:void(0)" class="elevator-weixin" id="js-elevator-weixin">
+        <i class="icon-wxgzh"></i>
+        <span class="">官方微信</span>
+        <div class="elevator-weixin-box"></div>
+    </a>
+    <a href="javascript:void(0)" class="elevator-top no-goto" style="display: block;" id="backTop">
+        <i class="icon-up2"></i>
+        <span class="">返回顶部</span>
+    </a>
+</div>
+
+
+<div class="lottery" id="moco-right-float-advertising"></div>
+
+
+
+
+<script type="text/javascript" charset="utf-8" src="./大型Vuex应用程序的目录结构_慕课手记_files/ueditor.final.min.js.下载"></script><script src="./大型Vuex应用程序的目录结构_慕课手记_files/visual"></script>
+
+
+<!--script-->
+<script type="text/javascript" src="./大型Vuex应用程序的目录结构_慕课手记_files/error.js.下载"></script>
+<script src="./大型Vuex应用程序的目录结构_慕课手记_files/ssologin.js.下载"></script>
+<script type="text/javascript" src="./大型Vuex应用程序的目录结构_慕课手记_files/sea.js.下载"></script>
+<script type="text/javascript" src="./大型Vuex应用程序的目录结构_慕课手记_files/sea_config.js.下载"></script>
+<script type="text/javascript">seajs.use("/static/page/"+OP_CONFIG.module+"/"+OP_CONFIG.page);</script>
+
+<script type="text/javascript" src="./大型Vuex应用程序的目录结构_慕课手记_files/dist-zhuge.js.下载"></script>
+
+<script type="text/javascript">seajs.use("/static/page/common/addadvertise.js");</script>
+<script>
+    //动态加载advertisementReportjs
+
+    var checkJQ = function(){
+        // console.log(typeof jQuery)
+       if(typeof jQuery != 'undefined') {
+           clearInterval(timer);
+           var scr = document.createElement('script');
+           scr.type="text/javascript";
+           scr.src="/static/page/common/advertisementReport.js";
+           document.body.appendChild(scr);
+
+       }
+    }
+    var timer = setInterval(checkJQ,1000);
+
+</script>
+
+
+<script src="./大型Vuex应用程序的目录结构_慕课手记_files/captcha.min.js.下载"></script>
+<script>
+	// 处理长篇幅文章部分显示
+	var hideArticleInterval, htmlFilterInterval;
+	(function() {
+		hideArticleInterval = setInterval(function() {
+			contentEl = document.querySelector('.detail-content');
+			var height = contentEl.offsetHeight;
+			if(contentEl && height > 0) {
+				clearInterval(hideArticleInterval);
+				hideArticleInterval = null;
+				if(height > 3000) {
+					contentEl.className += ' long-content';
+				}
+				document.querySelector('.showMore span').addEventListener('click', function() {
+					$('.detail-content').removeClass('long-content');
+				});
+			}
+		},5);
+		htmlFilterInterval = setInterval(function() {
+			var articleBox = document.getElementById('article_content');
+			if(window.$ && $.fn.lazyload && articleBox) {
+				clearInterval(htmlFilterInterval);
+				htmlFilterInterval = null;
+				$(articleBox).replaceWith(articleEl);
+				$('img.lazyload').lazyload({
+					load: function() {
+						$(this).removeClass('lazyload');
+					}
+				});
+			}
+		},5);
+	}());
+</script>
+<script>
+window.onload = function() {
+	zhuge.track('ContentPage', {
+			'Category': '手记',
+			'Name': '大型Vuex应用程序的目录结构',
+			'CID': '35364',
+			'Direction': '前端开发',
+			'Price': 0
+	});
+}
+</script>
+
+<div class="tipoff-block js-tipoff-block"></div>
+<div class="tipoff-box js-tipoff-box">
+	<div class="tipoff-top-box clearfix">
+		<p class="l tipoff-title">举报</p>
+		<span class="r tipoff-close-btn icon-close2 js-tipoff-close"></span>
+	</div>
+	<div class="tipoff-type-box js-tipoff-typebox clearfix">
+		<div class="tipoff-loading">
+		  	<div class="bounce1"></div>
+			<div class="bounce2"></div>
+			<div class="bounce3"></div>
+		</div>
+	</div>
+	<div class="tipoff-content">
+		<textarea name="tipoff-content" class="tipoff-desc js-tipoff-desc" placeholder="写下举报理由"></textarea>
+		<div class="tipoff-text"><span class="js-tipoff-text">0</span>/150</div>
+	</div>
+	<div class="tipoff-btn-box clearfix">
+		<div class="r tipoff-submit-btn js-tipoff-submit" data-tipofftype="">提交</div>
+		<div class="r tipoff-cancel-btn js-tipoff-close">取消</div>
+	</div>
+</div>
+
+
+
+
+
+
+
+
+<div style="display: none">
+<script type="text/javascript">
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?f0cfcccd7b1393990c78efdeebff3968";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+(function (d) {
+window.bd_cpro_rtid="rHT4P1c";
+var s = d.createElement("script");s.type = "text/javascript";s.async = true;s.src = location.protocol + "//cpro.baidu.com/cpro/ui/rt.js";
+var s0 = d.getElementsByTagName("script")[0];s0.parentNode.insertBefore(s, s0);
+})(document);
+</script>
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+</div>
+
+
+<div></div><div style="position: absolute; top: 100px; left: 100px; width: 164px; height: 164px; margin-left: -82px; margin-top: -82px; opacity: 1; display: none; transform: rotate(0deg) translate(0px, 0px);"><svg style="position: absolute; width: 100%; height: 100%;"><ellipse cy="0" cx="0" ry="7" rx="7" transform="rotate(0,0,0)" fill-opacity="1" stroke-linecap="" stroke-dashoffset="NaN " fill="deeppink" stroke-dasharray="NaN " stroke-opacity="1" stroke-width="0" stroke="transparent" style="opacity: 1; display: none;"></ellipse><ellipse cy="0" cx="0" ry="7" rx="7" transform="rotate(0,0,0)" fill-opacity="1" stroke-linecap="" stroke-dashoffset="NaN " fill="deeppink" stroke-dasharray="NaN " stroke-opacity="1" stroke-width="0" stroke="transparent" style="opacity: 1; display: none;"></ellipse><ellipse cy="0" cx="0" ry="7" rx="7" transform="rotate(0,0,0)" fill-opacity="1" stroke-linecap="" stroke-dashoffset="NaN " fill="deeppink" stroke-dasharray="NaN " stroke-opacity="1" stroke-width="0" stroke="transparent" style="opacity: 1; display: none;"></ellipse><ellipse cy="0" cx="0" ry="7" rx="7" transform="rotate(0,0,0)" fill-opacity="1" stroke-linecap="" stroke-dashoffset="NaN " fill="deeppink" stroke-dasharray="NaN " stroke-opacity="1" stroke-width="0" stroke="transparent" style="opacity: 1; display: none;"></ellipse><ellipse cy="0" cx="0" ry="7" rx="7" transform="rotate(0,0,0)" fill-opacity="1" stroke-linecap="" stroke-dashoffset="NaN " fill="deeppink" stroke-dasharray="NaN " stroke-opacity="1" stroke-width="0" stroke="transparent" style="opacity: 1; display: none;"></ellipse></svg></div><script type="text/javascript" src="./大型Vuex应用程序的目录结构_慕课手记_files/advertisementReport.js.下载"></script><div id="imgPreview" class="imgPreview pngshow" style="height: 274px; width: 1000px; margin-left: -500px; margin-top: -137px; display: block;"><img class="nopreview" src="./大型Vuex应用程序的目录结构_慕课手记_files/5b1f2b300001c1ff10000274.png"></div><div id="imgPreviewMake" class="imgPreview-make"></div><div id="imgPreviewHandle" class="imgPreviewHandle"><a target="_blank" class="viewOriginalImg" href="./大型Vuex应用程序的目录结构_慕课手记_files/5b1f2b300001c1ff10000274.png"><span class="viewOriginalImgText">查看原图</span></a><span class="imgPreview-btn next moco-icon-right"></span><span class="imgPreview-btn prev moco-icon-left"></span><i title="关闭" class="imgPreview-close moco-icon-close2"></i></div></body></html>

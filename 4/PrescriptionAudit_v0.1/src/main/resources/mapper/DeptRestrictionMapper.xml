@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper
+	namespace="com.ck.springboot.mapper.DeptRestrictionMapper">
+	<resultMap id="BaseResultMap"
+		type="com.ck.springboot.pojo.DeptRestriction">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="medcine_id" property="medcineId"
+			jdbcType="INTEGER" />
+		<result column="dept_id" property="deptId" jdbcType="INTEGER" />
+		<result column="action" property="action" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<!-- <resultMap id="BaseResultMap1" type="com.ck.springboot.pojo.DeptRestriction" 
+		> <id column="id" property="id" jdbcType="INTEGER" /> <result column="medcine_id" 
+		property="medcineId" jdbcType="INTEGER" /> <result column="dept_id" property="deptId" 
+		jdbcType="INTEGER" /> <result column="action" property="action" jdbcType="VARCHAR" 
+		/> <association property="medicaldept" javaType="com.ck.springboot.pojo.MedicalDept"> 
+		<id column="id" property="id" /> <result column="name" property="name" /> 
+		<result column="hospital_id" property="hospitalId" /> </association> </resultMap> -->
+	<sql id="Base_Column_List">
+		id, medcine_id, dept_id, action
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from t_dept_restriction
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<select id="selectByMedcineId" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select * from t_dept_restriction
+		where medcine_id = #{medcineId,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey"
+		parameterType="java.lang.Integer">
+		delete from t_dept_restriction
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert"
+		parameterType="com.ck.springboot.pojo.DeptRestriction">
+		insert into t_dept_restriction (id, medcine_id, dept_id,
+		action)
+		values (#{id,jdbcType=INTEGER}, #{medcineId,jdbcType=INTEGER},
+		#{deptId,jdbcType=INTEGER},
+		#{action,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective"
+		parameterType="com.ck.springboot.pojo.DeptRestriction">
+		insert into t_dept_restriction
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="medcineId != null">
+				medcine_id,
+			</if>
+			<if test="deptId != null">
+				dept_id,
+			</if>
+			<if test="action != null">
+				action,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="medcineId != null">
+				#{medcineId,jdbcType=INTEGER},
+			</if>
+			<if test="deptId != null">
+				#{deptId,jdbcType=INTEGER},
+			</if>
+			<if test="action != null">
+				#{action,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective"
+		parameterType="com.ck.springboot.pojo.DeptRestriction">
+		update t_dept_restriction
+		<set>
+			<if test="medcineId != null">
+				medcine_id = #{medcineId,jdbcType=INTEGER},
+			</if>
+			<if test="deptId != null">
+				dept_id = #{deptId,jdbcType=INTEGER},
+			</if>
+			<if test="action != null">
+				action = #{action,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+
+	<update id="updateByPrimaryKey" parameterType="java.util.List">
+		update t_dept_restriction
+		<trim prefix="set" suffixOverrides=",">
+			<trim prefix="action =case" suffix="end,">
+				<foreach collection="record" item="i" index="index">
+					<if test="i.action!=null">
+						when id=#{i.id} then #{i.action}
+					</if>
+				</foreach>
+			</trim>
+		</trim>
+		where
+		<foreach collection="record" separator="or" item="a"
+			index="index">
+			id=#{a.id} and dept_id=#{a.deptId} and medcine_id=#{a.medcineId}
+		</foreach>
+	</update>
+
+	<delete id="deleteDeptById" parameterType="java.lang.Integer">
+		delete from
+		t_dept_restriction
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+</mapper>

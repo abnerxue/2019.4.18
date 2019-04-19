@@ -1,0 +1,119 @@
+<template>
+  <div>
+    <el-input
+      size="small"
+      placeholder="输入关键字进行过滤"
+      v-model="filterText"
+      clearable
+    >
+    </el-input>
+    <div class="space"></div>
+    <el-tree
+      ref="tree"
+      :data="list"
+      node-key="id"
+      :props="defaultProps"
+      highlight-current
+      auto-expand-parent
+      :filter-node-method="filterNode"
+      @node-click="handleNodeClick"
+      :default-expanded-keys="[0]"
+    ></el-tree>
+  </div>
+</template>
+
+<script>
+import { Allcategory } from '@/api/dictionaries'
+import { Allmedcinefold } from '@/api/dataMana'
+
+export default {
+  props: ['type'],
+  data() {
+    return {
+      filterText: '',
+      allcategory: [], // 药品分类
+      allmedcine: [], // 药品信息
+      list: [
+        {
+          id: 0,
+          name: '药品信息',
+          children: []
+        }
+      ],
+      defaultProps: {
+        children: 'children',
+        label: 'name'
+      }
+    }
+  },
+  async created() {
+    await this.getAllCategory()
+    await this.getAllMedcine()
+    await this.formatList(this.list, '0')
+  },
+  watch: {
+    filterText(val) {
+      this.$refs.tree.filter(val)
+    }
+  },
+  methods: {
+    filterNode(value, data) {
+      if (!value) return true
+      return data.label.indexOf(value) !== -1
+    },
+
+    handleNodeClick(value) {
+      if (this.type === 'all' && value.pid !== 0) {
+        this.$emit('updateChoose', value)
+      } else if (!value.children) {
+        // 只有在选择药品时 触发
+        this.$emit('updateChoose', value)
+      }
+    },
+    formatMedcine() {
+      this.allmedcine.forEach((medcine) => {
+        this.allcategory.forEach((category) => {
+          if (Number(medcine.subcategory) === Number(category.id)) {
+            category.children.push(medcine)
+          }
+        })
+      })
+    },
+
+    formatList(arr, mypid) {
+      if (this.allcategory && this.allcategory.length > 0) {
+        this.allcategory.forEach((category) => {
+          if (arr && arr.length > 0) {
+            arr.forEach((item) => {
+              if (Number(item.id) === Number(mypid) && Number(mypid) === Number(category.pid)) {
+                item.children.push(category)
+                this.formatList(item.children, category.id)
+              }
+            })
+          }
+        })
+      }
+    },
+
+    // 获取药品信息
+    async getAllMedcine() {
+      const res = await Allmedcinefold()
+      if (res.code === 0) {
+        this.allmedcine = res.result
+        await this.formatMedcine()
+      }
+    },
+
+    // 获取药品分类
+    async getAllCategory() {
+      const res = await Allcategory()
+      if (res.code === 0) {
+        this.allcategory = res.result
+        this.allcategory.forEach((item) => {
+          Object.assign(item, { children: [] })
+        })
+      }
+    }
+  }
+}
+</script>

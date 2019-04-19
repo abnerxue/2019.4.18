@@ -1,0 +1,40 @@
+.router-fade-enter-active, .router-fade-leave-active {
+  transition: opacity .3s;
+}
+.router-fade-enter, .router-fade-leave-active {
+  opacity: 0;
+}
+
+.toggle-menu-enter-active, .toggle-menu-leave-active {
+  transition: all .3s ease-out;
+}
+.toggle-menu-enter, .toggle-menu-leave-active {
+  transform: translateX(-100%);
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .3s ease-in-out;
+}
+.fade-enter, .fade-leave-active {
+  opacity: 0;
+}
+
+.bottom-up-enter,
+.bottom-up-leave-active {
+  transform: translate3d(0, 100%, 0);
+}
+
+.bottom-up-enter-active,
+.bottom-up-leave-active {
+  transition: all 0.3s ease-in-out;
+}
+
+.fade-choose-enter-active, .fade-choose-leave-active {
+  transition: opacity .5s;
+}
+.fade-choose-leave, .fade-choose-leave-active {
+  display: none;
+}
+.fade-choose-enter, .fade-choose-leave-active {
+  opacity: 0;
+}
